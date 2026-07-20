@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Source Trail{% endblock %}
+{% block body_class %}campus-page source-trail-room{% endblock %}
+{% block content %}
+<main class="campus-reading-room source-reading">
+  <header class="room-heading">
+    <span class="campus-kicker">The Library · Source Trail</span>
+    <h1>Every visible layer has a trail.</h1>
+    <p>Source, time state, retrieval condition, claim class, and limitation remain together so the Observatory can be inspected rather than merely admired.</p>
+  </header>
+  <p class="source-summary">{{ citations.display_label }} · {{ citations.status|replace('_',' ') }}</p>
+  <section class="source-ledger">
+    {% for item in citations.entries %}
+    <details class="source-entry">
+      <summary><span>{{ '%02d'|format(loop.index) }}</span><b>{{ item.title }}</b><em>{{ item.status|replace('_',' ') }}</em></summary>
+      <div>
+        <dl class="record-list">
+          <div><dt>Source</dt><dd>{{ item.source }}</dd></div>
+          <div><dt>Type</dt><dd>{{ item.source_type }}</dd></div>
+          <div><dt>Time</dt><dd>{{ item.timestamp_utc or 'Unresolved / not applicable' }}</dd></div>
+          <div><dt>Retrieval</dt><dd>{{ item.retrieval_state }}</dd></div>
+          <div><dt>Claim class</dt><dd>{{ item.claim_class|replace('_',' ') }}</dd></div>
+        </dl>
+        {% if item.source_url %}<a href="{{ item.source_url }}" target="_blank" rel="noopener">Open source record →</a>{% else %}<p>Source URL unresolved.</p>{% endif %}
+        <p><b>Boundary:</b> {{ item.boundary }}</p>
+      </div>
+    </details>
+    {% endfor %}
+  </section>
+  <p class="room-boundary">{{ citations.claim_boundary }}</p>
+</main>
+{% endblock %}

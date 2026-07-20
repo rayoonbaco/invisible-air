@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}SV2-57 Release Proof · Invisible Air{% endblock %}
+{% block content %}
+<main class="synthesis-page release-proof-page">
+  <p class="eyebrow">SV2-57 · Final Scientific Audit, Launch Readiness, and Proof Package</p>
+  <h1>A defensible proof release.</h1>
+  <p class="lede">The Level Five scene is frozen as a human-review prototype with its science, uncertainty, provenance, and limitations intact.</p>
+  <section class="release-score-card">
+    <span class="state-kicker">Release state</span>
+    <h2>{{ release.display_label }}</h2>
+    <p>{{ release.launch_state|replace('_',' ') }} · {{ release.unresolved_evidence_count }} unresolved evidence inputs remain visible.</p>
+  </section>
+  <section class="synthesis-grid release-gates">
+    {% for check in release.checks %}
+    <article class="synthesis-card {{ 'release-pass' if check.passed else 'release-hold' }}">
+      <span class="state-kicker">{{ 'PASS' if check.passed else 'REVIEW' }}</span>
+      <h2>{{ check.name }}</h2><p>{{ check.detail }}</p>
+    </article>
+    {% endfor %}
+  </section>
+  <section class="review-action-card">
+    <span class="state-kicker">Non-negotiable scientific boundaries</span>
+    <h2>What this release does not claim</h2>
+    <ul>{% for item in release.guardrails %}<li>{{ item }}</li>{% endfor %}</ul>
+  </section>
+  <section class="review-action-card">
+    <span class="state-kicker">Proof surfaces</span>
+    <h2>Review the release</h2>
+    <div class="proof-links">{% for item in release.proof_surfaces %}<a href="{{ item.path }}">{{ item.label }}</a>{% endfor %}</div>
+  </section>
+  <section class="review-action-card"><span class="state-kicker">Boundary</span><h2>{{ release.claim_boundary }}</h2></section>
+</main>
+{% endblock %}

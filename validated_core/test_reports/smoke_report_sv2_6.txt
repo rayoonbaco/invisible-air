@@ -1,0 +1,16 @@
+Atmosphere Window Realtime
+SV2-6 - Terrain-Affected Plume Behavior
+
+Automated smoke test:
+Passed: 77
+Failed: 0
+Total: 77
+
+Internal self-test:
+Passed: 31
+Failed: 0
+Total: 31
+
+One-click launch wiring:
+- RUN_LOCAL.bat opens /scene
+- RUN_VERIFY_SV2_6.bat runs smoke tests and opens /scene plus /self-test

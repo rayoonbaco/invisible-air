@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Full DEM · Invisible Air{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Continuous terrain foundation · SV2-19</p>
+  <h1>Acquire the land as a raster, not a handful of points.</h1>
+  <p class="lead">{{ dem.display_label }}</p>
+  <section class="layer-card">
+    <p class="eyebrow">{{ dem.data_state }}</p>
+    <h2>{{ dem.provider }}</h2>
+    <p><b>Coverage:</b> {{ dem.coverage_status }} · {{ (dem.coverage_ratio * 100)|round|int }}%</p>
+    <p><b>Requested grid:</b> {{ dem.requested_grid.width }} × {{ dem.requested_grid.height }}</p>
+    <p><b>Approximate pixel size:</b> {{ dem.approx_pixel_size_m.x }} m × {{ dem.approx_pixel_size_m.y }} m</p>
+    <p><b>Raster bytes:</b> {{ dem.byte_size }}</p>
+    <p><b>Retrieved:</b> {{ dem.retrieved_at_utc or 'not retrieved' }}</p>
+    {% if dem.failure_reason %}<p class="boundary"><b>Provider result:</b> {{ dem.failure_reason }}</p>{% endif %}
+    <p class="boundary">{{ dem.claim_boundary }}</p>
+  </section>
+  <section class="layer-card compact">
+    <h3>Why this pass matters</h3>
+    <p>This raster becomes the common terrain substrate for certified hillshade generation, slope, aspect, curvature, landform classification, and later 3D terrain. Those derived products are not claimed until their own passes.</p>
+  </section>
+  <div class="actions"><a href="/scene">Return to scene</a><a class="secondary" href="/dem.json">Open DEM JSON</a>{% if dem.data_state == 'continuous_dem_cache' %}<a class="secondary" href="/dem-file">Download cached TIFF</a>{% endif %}</div>
+</main>
+{% endblock %}

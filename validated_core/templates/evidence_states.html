@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Evidence-State Vocabulary · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="evidence-page vocabulary-page">
+  <p class="eyebrow">Atmosphere Window · SV2-16 · Controlled Evidence Language</p>
+  <h1>Every layer says what kind of truth it carries.</h1>
+  <p class="lede">One primary state per visible layer. Missing data stays missing. Visual reconstruction never masquerades as measurement.</p>
+  <section class="vocabulary-legend">
+  {% for state_id, item in vocabulary.definitions.items() %}
+    <article class="vocabulary-definition evidence-state-card-{{ state_id }}"><span class="evidence-state evidence-state-{{ state_id }}">{{ item.label }}</span><p>{{ item.meaning }}</p></article>
+  {% endfor %}
+  </section>
+  <section class="vocabulary-layer-grid">
+  {% for item in vocabulary.layers %}
+    <article class="vocabulary-layer-card">
+      <div class="citation-card-head"><span>{{ item.layer_id|replace('_',' ') }}</span><b>{{ item.state.label }}</b></div>
+      <h2>{{ item.purpose }}</h2>
+      <p><strong>Represents:</strong> {{ item.represents }}</p>
+      <p><strong>Does not represent:</strong> {{ item.does_not_represent|join(' · ') }}</p>
+    </article>
+  {% endfor %}
+  </section>
+  <p class="boundary"><strong>Vocabulary boundary:</strong> {{ vocabulary.claim_boundary }}</p>
+</main>
+{% endblock %}

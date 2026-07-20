@@ -1,0 +1,44 @@
+{
+  "contract_version": "terrain_convergence_accumulation_v1",
+  "pass_id": "SV2-38",
+  "layer": "terrain_convergence_and_focused_accumulation",
+  "evidence_state": "inferred",
+  "data_state": "terrain_convergence_accumulation_cache",
+  "status": "ready",
+  "cache_key": "e6a432a786e839852a460a90df620c25abb50491e9acc6978672118fd3e839d4",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_support": 0.5263,
+  "atmospheric_basis": "terrain_and_current_context_only",
+  "convergence_statistics": {
+    "mean_potential": 0.105,
+    "potential_band": "low",
+    "elevated_cell_ratio": 0.0
+  },
+  "accumulation_statistics": {
+    "mean_potential": 0.1558,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.0
+  },
+  "convergence_image_url": "/terrain-convergence-image",
+  "convergence_image_sha256": "522abc6e79d1329b07dc421d2c1c14337b38bcd5b29936ae33925cb811c33e26",
+  "accumulation_image_url": "/terrain-focused-accumulation-image",
+  "accumulation_image_sha256": "507867a8a3ebcf51aa74f51c4f4c89c1270295bc8948c22e57d3e881715dd87d",
+  "particle_directives": {
+    "convergence_pull_px": 0.61,
+    "focus_slowdown": 0.9836,
+    "focus_broadening": 1.0164,
+    "focus_band": [
+      0.48,
+      0.9
+    ]
+  },
+  "display_label": "terrain convergence low \u00b7 focused accumulation low-moderate \u00b7 53% support",
+  "scene_directive": "Show restrained teal convergence illumination and a quiet violet focused-accumulation veil. Apply only small confidence-gated visual focusing, slowdown, and broadening.",
+  "claim_boundary": "Terrain convergence and focused accumulation are DEM-derived visual potentials. They are not measured airflow convergence, methane concentration, pollutant trapping, exposure, CFD, or proof that emissions accumulated at a location."
+}

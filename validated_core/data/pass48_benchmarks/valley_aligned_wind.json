@@ -1,0 +1,22 @@
+{
+  "source": {
+    "latitude": 36.5,
+    "longitude": -118.2,
+    "relative_strength": 1.0,
+    "release_height_m": 12.0
+  },
+  "meteorology": {
+    "wind_from_deg": 180.0,
+    "wind_speed_mps": 4.5,
+    "stability_class": "stable",
+    "boundary_layer_depth_m": 360.0,
+    "direction_variability_deg": 7.0,
+    "gust_factor": 1.12
+  },
+  "terrain": {
+    "regime": "valley",
+    "alignment_deg": 0.0,
+    "response_strength": 1.0,
+    "evidence_support": 0.88
+  }
+}

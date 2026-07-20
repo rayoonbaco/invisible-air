@@ -1,0 +1,47 @@
+{
+  "contract_version": "multi_level_wind_v1",
+  "pass_id": "SV2-35",
+  "provider": "Open-Meteo Historical Weather API",
+  "source_type": "historical reanalysis / archived height-level wind context",
+  "observation_timestamp": "2026-01-01T12:20:00Z",
+  "latitude": 34.2,
+  "longitude": -119.1,
+  "requested_levels_m": [
+    10,
+    100
+  ],
+  "evidence_state": "modeled",
+  "claim_boundary": "Height-level winds are model-derived context at nominal heights. They are not an observed vertical profile, turbulence measurement, plume-height estimate, or atmospheric dispersion model.",
+  "data_state": "multi_level_wind_cache",
+  "status": "ready",
+  "selected_time_utc": "2026-01-01T12:00:00Z",
+  "time_offset_minutes": -20.0,
+  "levels": [
+    {
+      "level_key": "10m",
+      "height_m": 10,
+      "label": "near-surface wind",
+      "wind_speed_mph": 7.0,
+      "wind_direction_degrees": 225.0,
+      "wind_direction_cardinal": "SW"
+    },
+    {
+      "level_key": "100m",
+      "height_m": 100,
+      "label": "lower atmospheric wind",
+      "wind_speed_mph": 12.0,
+      "wind_direction_degrees": 255.0,
+      "wind_direction_cardinal": "WSW"
+    }
+  ],
+  "shear": {
+    "speed_change_mph": 5.0,
+    "direction_change_degrees": 30.0,
+    "interpretation": "height-level contrast for human review only"
+  },
+  "cache_status": "refreshed",
+  "retrieved_at_utc": "2026-07-20T19:31:49.325420Z",
+  "provider_url": "fixture://multi-level-wind",
+  "display_label": "multi-level wind ready \u00b7 10 m + 100 m \u00b7 nearest hour 20 min from observation",
+  "scene_directive": "Use height-level contrast as review context only; do not drive vertical plume geometry until a later controlled pass."
+}

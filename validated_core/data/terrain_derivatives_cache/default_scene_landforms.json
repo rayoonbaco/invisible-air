@@ -1,0 +1,229 @@
+{
+  "contract_version": "1.0",
+  "pass_id": "SV2-35",
+  "layer": "dem_derived_landform_classification",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_dem_provider": "USGS 3DEP Elevation ImageServer",
+  "source_dem_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "source_dem_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "landform_output_path": "data/terrain_derivatives_cache/default_scene_landforms.png",
+  "confidence_output_path": "data/terrain_derivatives_cache/default_scene_landform_confidence.png",
+  "metadata_path": "data/terrain_derivatives_cache/default_scene_landforms.json",
+  "evidence_state": "measured",
+  "class_definitions": [
+    {
+      "id": 0,
+      "label": "flat",
+      "color_rgb": [
+        112,
+        126,
+        124
+      ]
+    },
+    {
+      "id": 1,
+      "label": "ridge",
+      "color_rgb": [
+        224,
+        202,
+        128
+      ]
+    },
+    {
+      "id": 2,
+      "label": "spur",
+      "color_rgb": [
+        192,
+        169,
+        110
+      ]
+    },
+    {
+      "id": 3,
+      "label": "valley",
+      "color_rgb": [
+        67,
+        128,
+        147
+      ]
+    },
+    {
+      "id": 4,
+      "label": "drainage",
+      "color_rgb": [
+        46,
+        94,
+        124
+      ]
+    },
+    {
+      "id": 5,
+      "label": "saddle",
+      "color_rgb": [
+        171,
+        133,
+        175
+      ]
+    },
+    {
+      "id": 6,
+      "label": "upper_slope",
+      "color_rgb": [
+        151,
+        147,
+        112
+      ]
+    },
+    {
+      "id": 7,
+      "label": "midslope",
+      "color_rgb": [
+        124,
+        120,
+        100
+      ]
+    },
+    {
+      "id": 8,
+      "label": "lower_slope",
+      "color_rgb": [
+        100,
+        124,
+        108
+      ]
+    },
+    {
+      "id": 9,
+      "label": "bench",
+      "color_rgb": [
+        133,
+        154,
+        119
+      ]
+    },
+    {
+      "id": 10,
+      "label": "basin",
+      "color_rgb": [
+        73,
+        112,
+        113
+      ]
+    },
+    {
+      "id": 11,
+      "label": "shoulder",
+      "color_rgb": [
+        176,
+        156,
+        113
+      ]
+    }
+  ],
+  "visual_role": "reproducible terrain anatomy for human review and later atmospheric-context comparison",
+  "claim_boundary": "Landforms are DEM-derived geomorphometric classes, not field-surveyed geology, atmospheric transport, methane evidence, event reconstruction, or source attribution.",
+  "data_state": "dem_derived_landform_cache",
+  "cache_status": "refreshed",
+  "coverage_status": "source_dem_bbox_covered",
+  "generated_at_utc": "2026-07-20T19:31:57.207019+00:00",
+  "display_label": "DEM-derived landforms ready \u00b7 768 \u00d7 512",
+  "failure_reason": null,
+  "output_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "landform_sha256": "4a2d42b374d0fd38eee5d2634584b7a95538357023e230a85522fa3b72b79202",
+  "confidence_sha256": "648091d36d377bc2cb5e2924712bf8c02c7289ca246e7db468681e7502438cb4",
+  "landform_byte_size": 266995,
+  "confidence_byte_size": 272471,
+  "statistics": {
+    "class_count": 11,
+    "dominant_classes": [
+      {
+        "class": "basin",
+        "cells": 109723,
+        "ratio": 0.279
+      },
+      {
+        "class": "spur",
+        "cells": 61459,
+        "ratio": 0.1563
+      },
+      {
+        "class": "flat",
+        "cells": 61323,
+        "ratio": 0.156
+      },
+      {
+        "class": "drainage",
+        "cells": 60086,
+        "ratio": 0.1528
+      },
+      {
+        "class": "lower_slope",
+        "cells": 23067,
+        "ratio": 0.0587
+      }
+    ],
+    "mean_confidence": 0.8445,
+    "p10_confidence": 0.6906,
+    "p90_confidence": 0.97,
+    "classification_distribution": {
+      "flat": {
+        "cells": 61323,
+        "ratio": 0.156
+      },
+      "ridge": {
+        "cells": 20796,
+        "ratio": 0.0529
+      },
+      "spur": {
+        "cells": 61459,
+        "ratio": 0.1563
+      },
+      "drainage": {
+        "cells": 60086,
+        "ratio": 0.1528
+      },
+      "saddle": {
+        "cells": 7271,
+        "ratio": 0.0185
+      },
+      "upper_slope": {
+        "cells": 7405,
+        "ratio": 0.0188
+      },
+      "midslope": {
+        "cells": 17233,
+        "ratio": 0.0438
+      },
+      "lower_slope": {
+        "cells": 23067,
+        "ratio": 0.0587
+      },
+      "bench": {
+        "cells": 4257,
+        "ratio": 0.0108
+      },
+      "basin": {
+        "cells": 109723,
+        "ratio": 0.279
+      },
+      "shoulder": {
+        "cells": 20596,
+        "ratio": 0.0524
+      }
+    },
+    "method": "multi-scale topographic-position, slope, local relief, and curvature rules"
+  },
+  "landform_image_url": "/landform-image",
+  "confidence_image_url": "/landform-confidence-image"
+}

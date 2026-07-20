@@ -1,0 +1,39 @@
+{
+  "contract_version": "1.0",
+  "pass_id": "SV2-35",
+  "layer": "full_dem",
+  "provider": "USGS 3DEP Elevation ImageServer",
+  "source_type": "continuous_elevation_raster",
+  "bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "spatial_reference": "EPSG:4326 request; provider-returned TIFF raster",
+  "requested_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "approx_pixel_size_m": {
+    "x": 67.08,
+    "y": 66.93
+  },
+  "raster_path": "data/dem_cache/default_scene_3dep_dem.tif",
+  "metadata_path": "data/dem_cache/default_scene_3dep_dem.json",
+  "source_endpoint": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage",
+  "evidence_state": "measured",
+  "visual_role": "continuous terrain foundation for later hillshade, slope, aspect, curvature, and 3D terrain",
+  "claim_boundary": "The cached raster is terrain elevation context. It is not methane evidence, atmospheric transport, source attribution, or a certified derived hillshade product.",
+  "data_state": "continuous_dem_cache",
+  "cache_status": "refreshed",
+  "coverage_status": "requested_bbox_covered",
+  "coverage_ratio": 1.0,
+  "retrieved_at_utc": "2026-07-20T19:31:56.410250+00:00",
+  "byte_size": 1573862,
+  "sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "content_type": "image/tiff",
+  "request_url": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage?bbox=-119.33%2C34.12%2C-118.77%2C34.43&bboxSR=4326&imageSR=4326&size=768%2C512&format=tiff&pixelType=F32&interpolation=RSP_BilinearInterpolation&f=image",
+  "display_label": "continuous 3DEP DEM cached \u00b7 768 \u00d7 512",
+  "failure_reason": null
+}

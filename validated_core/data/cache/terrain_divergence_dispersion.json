@@ -1,0 +1,44 @@
+{
+  "contract_version": "terrain_divergence_dispersion_v1",
+  "pass_id": "SV2-39",
+  "layer": "terrain_induced_divergence_and_dispersion_potential",
+  "evidence_state": "inferred",
+  "data_state": "terrain_divergence_dispersion_cache",
+  "status": "ready",
+  "cache_key": "f9d3ed12b507506901caff08a2f38ff2e4f71779c0505dc039fdca31f1159215",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_support": 0.5263,
+  "atmospheric_basis": "terrain_and_current_context_only",
+  "divergence_statistics": {
+    "mean_potential": 0.1018,
+    "potential_band": "low",
+    "elevated_cell_ratio": 0.0
+  },
+  "dispersion_statistics": {
+    "mean_potential": 0.1525,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.0236
+  },
+  "divergence_image_url": "/terrain-divergence-image",
+  "divergence_image_sha256": "3816d80927db84202d7303de46ce16ba522cf2a6d6f98157e3847d1f20befc70",
+  "dispersion_image_url": "/terrain-dispersion-image",
+  "dispersion_image_sha256": "1a6da9504d15482028cbe3a74cd8b91060bd6212e44e602fbc1a84ceb853cf43",
+  "particle_directives": {
+    "divergence_spread_px": 0.64,
+    "dispersion_broadening": 1.0177,
+    "dispersion_speed_multiplier": 1.008,
+    "dispersion_band": [
+      0.56,
+      0.96
+    ]
+  },
+  "display_label": "terrain divergence low \u00b7 dispersion low-moderate \u00b7 53% support",
+  "scene_directive": "Show restrained amber divergence illumination and a quiet blue dispersion veil. Apply only small confidence-gated visual spreading, broadening, and speed variation.",
+  "claim_boundary": "Terrain-induced divergence and dispersion are DEM-derived visual potentials. They are not measured airflow divergence, concentration decay, dilution, CFD, travel time, exposure, or proof that emissions dispersed."
+}

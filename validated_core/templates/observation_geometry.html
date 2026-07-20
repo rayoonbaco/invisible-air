@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Observation Geometry Adapter · Invisible Air{% endblock %}
+{% block content %}
+<main class="content-shell">
+  <p class="eyebrow">SV2-19 · Observation Geometry Adapter</p>
+  <h1>Source geometry remains separate from reconstruction.</h1>
+  <p>{{ geometry.display_label }}</p>
+  <section class="card-grid">
+    <article class="card"><h2>Adapter state</h2><p><b>{{ geometry.adapter_status }}</b></p><p>Observation: {{ geometry.observation_id }}</p><p>Geometry state: {{ geometry.geometry_state }}</p><p>Features: {{ geometry.feature_count }}</p></article>
+    <article class="card"><h2>Accepted contracts</h2><p>Payloads: {{ geometry.supported_payload_types|join(', ') }}</p><p>Geometry: {{ geometry.supported_geometry_types|join(', ') }}</p></article>
+    <article class="card"><h2>Render directive</h2><p>{{ geometry.render_directive }}</p></article>
+  </section>
+  {% if geometry.validation_errors %}<section class="warning-card"><h2>Validation errors</h2>{% for error in geometry.validation_errors %}<p>{{ error }}</p>{% endfor %}</section>{% endif %}
+  <p class="boundary"><strong>Boundary:</strong> {{ geometry.claim_boundary }}</p>
+  <p><a href="/observation-geometry.json">View machine-readable geometry contract</a></p>
+</main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Atmospheric Stability · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-shell evidence-page">
+  <p class="eyebrow">SV2-35 · Atmospheric Stability</p>
+  <h1>How readily might the near-surface air mix?</h1>
+  <p class="lede">A bounded screening class derived from archived wind, solar radiation, and cloud cover near the reported observation time.</p>
+  <section class="evidence-card">
+    <h2>{{ stability.stability_class|replace('_',' ')|title }}</h2>
+    <p><b>Status:</b> {{ stability.display_label }}</p>
+    <p><b>Evidence state:</b> {{ stability.evidence_state }}</p>
+    <p><b>Selected weather time:</b> {{ stability.selected_time_utc or 'unavailable' }}</p>
+    <p><b>Observation offset:</b> {{ stability.time_offset_minutes if stability.time_offset_minutes is not none else 'unavailable' }} minutes</p>
+    <p><b>Confidence:</b> {{ stability.confidence_band }}{% if stability.confidence_score %} · {{ (stability.confidence_score * 100)|round|int }}% bounded support{% endif %}</p>
+  </section>
+  <section class="evidence-card">
+    <h2>Screening inputs</h2>
+    {% if stability.inputs %}
+    <dl>
+      <div><dt>10 m wind</dt><dd>{{ stability.inputs.wind_speed_10m_mph }} mph</dd></div>
+      <div><dt>Shortwave radiation</dt><dd>{{ stability.inputs.shortwave_radiation_w_m2 }} W/m²</dd></div>
+      <div><dt>Cloud cover</dt><dd>{{ stability.inputs.cloud_cover_percent }}%</dd></div>
+      <div><dt>Temperature</dt><dd>{{ stability.inputs.temperature_2m_c }} °C</dd></div>
+    </dl>
+    {% else %}<p>Inputs remain unavailable because the observation clock or provider record is unresolved.</p>{% endif %}
+  </section>
+  <section class="evidence-card"><h2>Why this screen</h2>{% for reason in stability.screening_reasons %}<p>{{ reason }}</p>{% else %}<p>No stability interpretation is made without sufficient evidence.</p>{% endfor %}</section>
+  <section class="boundary-card"><h2>Scientific boundary</h2><p>{{ stability.claim_boundary }}</p><p>{{ stability.scene_directive }}</p></section>
+</main>
+{% endblock %}

@@ -1,0 +1,8 @@
+SV2-19 — Full DEM Acquisition
+
+Standalone smoke suite: 175 passed, 0 failed
+Internal live checks: 117 passed, 0 failed
+Python syntax: passed
+JavaScript syntax: passed
+DEM failure safety: passed (provider unavailable leaves sparse terrain active and coverage at 0%)
+Raster contract: continuous USGS 3DEP TIFF acquisition, local cache, SHA-256 integrity, bbox coverage metadata

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Map-Registered Surface · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">SV2-3 · Map-registered plume + terrain basemap prep</p>
+  <h1>Put the plume in coordinate space.</h1>
+  <p class="lead">The source marker, wind path, plume animation, and uncertainty field now share map coordinates. The scene is still a visual reconstruction, but it is no longer only screen-positioned.</p>
+  <section class="quad">
+    <article>
+      <p class="eyebrow">Provider</p>
+      <h3>{{ basemap.provider }}</h3>
+      <p>{{ basemap.attribution }}</p>
+    </article>
+    <article>
+      <p class="eyebrow">Role</p>
+      <h3>Geographic context only</h3>
+      <p>Map tiles orient the reviewer. They do not show methane.</p>
+    </article>
+    <article>
+      <p class="eyebrow">Registration</p>
+      <h3>Lat/lon visual geometry</h3>
+      <p>The plume source, centerline, and uncertainty envelope are now drawn from coordinate geometry.</p>
+    </article>
+    <article>
+      <p class="eyebrow">Next layer</p>
+      <h3>Real terrain</h3>
+      <p>{{ basemap.terrain_prep.future_source }} is next for DEM-derived hillshade and contours.</p>
+    </article>
+  </section>
+  <section class="layer-card">
+    <p class="eyebrow">Basemap modes</p>
+    <h2>Standard, terrain/topo prep, and dark review.</h2>
+    {% for mode in basemap.basemap_modes %}
+      <p><b>{{ mode.label }}:</b> {{ mode.role }} · {{ mode.attribution }}</p>
+    {% endfor %}
+    <p class="boundary">{{ basemap.claim_boundary }}</p>
+    <div class="actions"><a class="primary" href="/scene">Open scene</a><a class="secondary" href="/evidence">Open evidence</a></div>
+  </section>
+</main>
+{% endblock %}

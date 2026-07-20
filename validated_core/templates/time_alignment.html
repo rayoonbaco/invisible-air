@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Evidence-Time Alignment · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Invisible Air · SV2-13</p>
+  <h1>Keep the evidence clocks separate.</h1>
+  <p class="boundary">The reported observation and the current wind are different time layers. This page makes that gap explicit before anyone interprets the moving scene.</p>
+  <section class="time-alignment-grid">
+    <article class="layer-card"><p class="eyebrow">Observation</p><h2>{{ alignment.observation_time_label }}</h2><p>Source-product observation time remains unresolved until a real observation manifest supplies it.</p></article>
+    <article class="layer-card"><p class="eyebrow">Current context</p><h2>{{ alignment.current_wind_time_label }}</h2><p>Current wind helps inspect present-day orientation only.</p></article>
+    <article class="layer-card time-gap-card"><p class="eyebrow">Alignment verdict</p><h2>{{ alignment.display_label }}</h2><p>{{ alignment.scene_directive }}</p><p class="boundary">{{ alignment.claim_boundary }}</p></article>
+  </section>
+  <div class="field-actions"><a href="/scene">Return to scene</a><a href="/time-alignment.json">JSON contract</a><a href="/evidence">Evidence</a></div>
+</main>
+{% endblock %}

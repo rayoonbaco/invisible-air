@@ -1,0 +1,50 @@
+{
+  "contract_version": "ridge_spillover_shelter_v1",
+  "pass_id": "SV2-35",
+  "layer": "ridge_spillover_and_lee_side_shelter",
+  "evidence_state": "inferred",
+  "data_state": "ridge_spillover_shelter_cache",
+  "status": "ready",
+  "cache_key": "bdd55a604c884069a3b5467a4c051c3de5769e59ddb05434b5933dc3667a3a49",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "wind_to_degrees": 74.0,
+  "wind_speed_mph": 11.9,
+  "temporal_basis": "current_atmospheric_context_only",
+  "confidence_support": 0.5263,
+  "spillover_statistics": {
+    "mean_potential": 0.0189,
+    "potential_band": "low",
+    "elevated_cell_ratio": 0.0037
+  },
+  "shelter_statistics": {
+    "mean_potential": 0.0803,
+    "potential_band": "low",
+    "elevated_cell_ratio": 0.0386
+  },
+  "spillover_image_url": "/ridge-spillover-image",
+  "spillover_image_sha256": "5319d2b777fec9eae67548c937c534104cf22bbb8a84a103873af30b1183da04",
+  "shelter_image_url": "/lee-side-shelter-image",
+  "shelter_image_sha256": "be5017a99cb1c2bff2251b3b15483fd11d89d6524f87eddbec22808223552286",
+  "particle_directives": {
+    "spillover_lift_px": 0.22,
+    "lee_slowdown_multiplier": 0.9856,
+    "lee_spread_multiplier": 1.0183,
+    "crest_band": [
+      0.4,
+      0.62
+    ],
+    "lee_band": [
+      0.56,
+      0.86
+    ]
+  },
+  "display_label": "ridge spillover low \u00b7 lee shelter low \u00b7 53% support",
+  "scene_directive": "Show restrained crest illumination and a quiet lee-side shelter veil. Let visual tracers rise slightly near the crest envelope and slow or broaden modestly in the lee envelope, always gated by steering confidence.",
+  "claim_boundary": "Ridge spillover and lee-side shelter are DEM-derived visual potentials. They are not measured airflow, verified recirculation, rotor diagnosis, CFD, plume transport, concentration, exposure, or proof of actual atmospheric behavior."
+}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Evidence Review{% endblock %}
+{% block body_class %}campus-page evidence-review-room{% endblock %}
+{% block content %}
+<main class="campus-reading-room evidence-reading">
+  <span class="sr-only">Reviewer-Guided Evidence Exploration</span>
+  <header class="room-heading">
+    <span class="campus-kicker">The Library · Evidence Review</span>
+    <h1>Follow one thread at a time.</h1>
+    <p>{{ exploration.scene_directive }}</p>
+  </header>
+  <section class="evidence-thread-list">
+    {% for family in exploration.families %}{% if family.id != 'overview' %}
+    <details>
+      <summary><span>{{ '%02d'|format(loop.index) }}</span><b>{{ family.label }}</b></summary>
+      <p>{{ family.description }}</p>
+    </details>
+    {% endif %}{% endfor %}
+  </section>
+  <section class="record-section claim-section">
+    <span class="campus-kicker">Scientific boundary</span>
+    <p>{{ exploration.claim_boundary }}</p>
+  </section>
+</main>
+{% endblock %}

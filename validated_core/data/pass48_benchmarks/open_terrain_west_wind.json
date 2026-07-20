@@ -1,0 +1,21 @@
+{
+  "source": {
+    "latitude": 39.0,
+    "longitude": -101.0,
+    "relative_strength": 1.0,
+    "release_height_m": 15.0
+  },
+  "meteorology": {
+    "wind_from_deg": 270.0,
+    "wind_speed_mps": 6.0,
+    "stability_class": "neutral",
+    "boundary_layer_depth_m": 900.0,
+    "direction_variability_deg": 8.0,
+    "gust_factor": 1.18
+  },
+  "terrain": {
+    "regime": "open",
+    "response_strength": 0.0,
+    "evidence_support": 0.95
+  }
+}

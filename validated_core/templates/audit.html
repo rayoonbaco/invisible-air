@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Boundaries · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Claim boundary</p>
+  <h1>Showable because it is careful, not because it is certain.</h1>
+  <p class="lead">The scene may move and feel alive, but it remains bounded by evidence status.</p>
+  <section class="quad">
+    {% for item in scene.boundary_pack.not_claimed %}<article><h3>Not claimed</h3><p>{{ item }}</p></article>{% endfor %}
+  </section>
+  <section class="layer-card">
+    <p class="eyebrow">Plume model</p>
+    <h2>{{ plume.model_name }}</h2>
+    <p>{{ plume.purpose }}</p>
+    <p class="boundary">Not a detector, not a certified dispersion model, not source attribution.</p>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Data Status · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Realtime readiness</p>
+  <h1>Layer status before live ingestion.</h1>
+  <p class="lead">SV2-4 adds the terrain loader and measured-elevation cache path while preserving the remaining live-data sockets.</p>
+  <section class="registry-list">
+    {% for layer in registry %}
+    <article class="layer-card compact">
+      <p class="eyebrow">{{ layer.layer_id }} · {{ layer.status }} · {{ layer.claim_strength }}</p>
+      <h3>{{ layer.source_label }}</h3>
+      <p>{{ layer.boundary }}</p>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

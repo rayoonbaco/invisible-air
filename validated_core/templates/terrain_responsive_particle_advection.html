@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Terrain-Responsive Particle Advection · Atmosphere Window{% endblock %}
+{% block content %}
+<section class="page-shell"><p class="eyebrow">SV2-35 · Terrain-Responsive Particle Advection</p><h1>Let the air reveal terrain response—without pretending it is transport.</h1><p class="lede">Visual tracers now respond to confidence-gated alignment, channeling, shelter, opposition, lateral deflection, and downstream uncertainty while remaining subordinate to the broad wind pathway.</p>
+<div class="panel"><h2>{{ advection.display_label }}</h2><p><strong>State:</strong> {{ advection.data_state }}</p><p>{{ advection.scene_directive }}</p><p>{{ advection.claim_boundary }}</p></div>
+<div class="status-grid"><div><b>Dominant driver</b><span>{{ advection.dominant_driver|replace('_',' ') }}</span></div><div><b>Advection authority</b><span>{{ (advection.advection_authority*100)|round|int }}%</span></div><div><b>Motion coherence</b><span>{{ (advection.coherence*100)|round|int }}%</span></div><div><b>Crosswind drift</b><span>{{ advection.crosswind_drift_px }} px</span></div><div><b>Channel speed</b><span>{{ advection.channel_speed_multiplier }}×</span></div><div><b>Shelter speed</b><span>{{ advection.shelter_speed_multiplier }}×</span></div><div><b>Opposition drag</b><span>{{ (advection.opposition_drag*100)|round|int }}%</span></div><div><b>Uncertainty jitter</b><span>{{ advection.uncertainty_jitter_px }} px</span></div></div>
+<div class="panel"><h2>Along-path response bands</h2><pre>{{ (advection.response_bands or [])|tojson(indent=2) }}</pre></div>
+<div class="panel"><h2>Transparent inputs</h2><pre>{{ (advection.inputs or {})|tojson(indent=2) }}</pre></div></section>
+{% endblock %}

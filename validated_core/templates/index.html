@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Welcome{% endblock %}
+{% block body_class %}campus-welcome{% endblock %}
+{% block content %}
+<main class="welcome-room">
+  <section class="welcome-copy">
+    <p class="campus-kicker">The Roycroft Campus of Invisible Air</p>
+    <h1>See what the air may be doing.</h1>
+    <p class="welcome-lead">A handcrafted scientific instrument for observing possible atmospheric movement, terrain influence, evidence, and uncertainty.</p>
+    <div class="welcome-actions">
+      <a class="campus-primary" href="/observatory">Enter the Observatory</a>
+      <a class="campus-secondary" href="/atlas">Open the Observation Atlas</a>
+    </div>
+    <p class="welcome-boundary">A reconstruction for human review—not direct methane detection, verified transport, concentration, exposure, or attribution.</p>
+  </section>
+  <section class="welcome-instrument" aria-label="Invisible Air scene preview">
+    <div class="welcome-source"></div>
+    <div class="welcome-current"></div>
+    <p>Terrain · movement · uncertainty</p>
+  </section>
+</main>
+{% endblock %}

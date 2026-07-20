@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Invisible Air{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="topbar campus-topbar">
+    <a class="brand" href="/observatory" aria-label="Return to the Invisible Air Observatory">
+      <span class="brand-mark">IA</span>
+      <span>Invisible Air</span>
+    </a>
+    <nav class="primary-nav campus-nav" aria-label="Invisible Air Campus">
+      <a href="/observatory" title="Observe the phenomenon">Observatory</a>
+      <a href="/atlas" title="Document and compare cases">Atlas</a>
+      <a href="/library" title="Trace and verify evidence">Library</a>
+      <a href="/about" title="Understand the instrument principles">About</a>
+    </nav>
+  </header>
+  {% if request.path != '/observatory' %}
+  <a class="way-home" href="/observatory">← Return to the Observatory</a>
+  {% endif %}
+  {% block content %}{% endblock %}
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

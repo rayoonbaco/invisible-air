@@ -1,0 +1,53 @@
+{
+  "contract_version": "integrated_terrain_response_v1",
+  "pass_id": "SV2-42",
+  "layer": "integrated_terrain_response_field",
+  "evidence_state": "inferred",
+  "data_state": "integrated_terrain_response_cache",
+  "status": "ready",
+  "cache_key": "90b608bbf9b4892f57592fbc6d1d1da0ce57bd64d9368a36920986d7c0da4acc",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "dominant_regime": "dispersive",
+  "response_statistics": {
+    "mean_authority": 0.15,
+    "authority_band": "evidence-limited",
+    "regime_ratios": {
+      "confined": 0.035,
+      "transfer": 0.0,
+      "dispersive": 0.8179,
+      "mixed-transition": 0.147
+    }
+  },
+  "agreement_statistics": {
+    "mean": 0.1512,
+    "band": "evidence-limited",
+    "conflict_cell_ratio": 0.7291
+  },
+  "component_support": {
+    "channeling_mean": 0.0744,
+    "shelter_mean": 0.1216,
+    "retention_convergence_mean": 0.0882,
+    "ridge_gap_transfer_mean": 0.0265,
+    "divergence_dispersion_mean": 0.0845,
+    "transition_ambiguity_mean": 0.1776,
+    "regime_confidence_mean": 0.2405
+  },
+  "field_image_url": "/integrated-terrain-response-image",
+  "field_image_sha256": "036eff5938e3bbd9231591c6656abeb2cc69c53760fee5259f45fb9e6a41ad42",
+  "agreement_image_url": "/integrated-terrain-agreement-image",
+  "agreement_image_sha256": "8b5db185a106b084d7645a6e9370bcbf1fa0eeea7657736c5c93b7bcbcd1e5a4",
+  "visual_directives": {
+    "field_opacity": 0.1,
+    "agreement_glow": 0.0635,
+    "conflict_veil": 0.2333
+  },
+  "display_label": "integrated response dispersive \u00b7 evidence-limited authority \u00b7 15% agreement",
+  "scene_directive": "Use one restrained integrated field to summarize confined, transfer, dispersive, and mixed terrain responses. Preserve access to every component and soften areas of disagreement.",
+  "claim_boundary": "The integrated terrain-response field synthesizes DEM-derived visual potentials. It is not measured airflow, CFD, plume transport, methane concentration, exposure, or proof of actual atmospheric behavior."
+}

@@ -1,0 +1,47 @@
+{
+  "contract_version": "terrain_regime_confidence_v1",
+  "pass_id": "SV2-41",
+  "layer": "terrain_regime_confidence_and_boundary_ambiguity",
+  "evidence_state": "inferred",
+  "data_state": "terrain_regime_confidence_cache",
+  "status": "ready",
+  "cache_key": "0184f8f9aef65306bdf4ede670be61f7696ca449905d2e88d9315be5510b40ad",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_statistics": {
+    "mean": 0.4594,
+    "band": "low",
+    "high_support_cell_ratio": 0.003
+  },
+  "ambiguity_statistics": {
+    "mean": 0.3469,
+    "band": "moderate",
+    "elevated_ambiguity_cell_ratio": 0.0006
+  },
+  "regime_support": {
+    "steering_confidence_mean": 0.5263,
+    "transition_mean": 0.2453,
+    "boundary_mean": 0.2143,
+    "terrain_signal_separation_mean": 0.3605
+  },
+  "downgrade_reasons": [
+    "Steering-field confidence is below high support."
+  ],
+  "confidence_image_url": "/terrain-regime-confidence-image",
+  "confidence_image_sha256": "e8e15cfa31e551769cdf03ad5b10d8b1f517b811330c19dcc0be65dff821456b",
+  "ambiguity_image_url": "/terrain-boundary-ambiguity-image",
+  "ambiguity_image_sha256": "6b4138b08491974078bc08ae6f172082bdf9b828d437ea7608d8df8987d6589b",
+  "visual_directives": {
+    "confidence_glow": 0.2848,
+    "ambiguity_veil": 0.2012,
+    "boundary_fade": 0.9376
+  },
+  "display_label": "regime confidence low \u00b7 boundary ambiguity moderate \u00b7 46% support",
+  "scene_directive": "Show a restrained cool confidence illumination and a soft violet ambiguity veil. Fade regime boundaries where separation is weak; never sharpen them into hard fronts.",
+  "claim_boundary": "Terrain-regime confidence expresses support for a DEM-derived interpretive regime map. Boundary ambiguity marks weak separation among terrain-response classes. Neither layer is confidence in methane presence, plume location, atmospheric transport, concentration, exposure, or a measured atmospheric boundary."
+}

@@ -1,0 +1,47 @@
+{
+  "contract_version": "integrated_response_authority_v1",
+  "pass_id": "SV2-43",
+  "layer": "integrated_response_authority_conflict_resolution",
+  "evidence_state": "inferred",
+  "data_state": "integrated_response_authority_cache",
+  "status": "ready",
+  "cache_key": "54e070fc103838ec33e09d8d4763d06102eb243c00a4688481e21910ab7b54b9",
+  "source_integrated_cache_key": "90b608bbf9b4892f57592fbc6d1d1da0ce57bd64d9368a36920986d7c0da4acc",
+  "winning_regime": "dispersive",
+  "suppressed_regimes": [
+    "confined",
+    "transfer",
+    "mixed-transition"
+  ],
+  "authority_statistics": {
+    "mean": 0.0245,
+    "maximum": 0.0684,
+    "band": "evidence-limited",
+    "authorized_cell_ratio": 0.0
+  },
+  "conflict_statistics": {
+    "mean": 0.4997,
+    "band": "moderate",
+    "high_conflict_cell_ratio": 0.0,
+    "source_conflict_cell_ratio": 0.7291
+  },
+  "resolution_policy": {
+    "mode": "conflict-preserving blend",
+    "winner_requires_agreement": true,
+    "conflict_is_preserved": true,
+    "suppression_threshold": "below 55% of winning weighted support",
+    "hard_override_allowed": false
+  },
+  "authority_image_url": "/integrated-response-authority-image",
+  "authority_image_sha256": "e3ea6ebd414f7a8b732f5ae06a8cbb4646819b617350ac2036f852d300daa59b",
+  "conflict_image_url": "/integrated-response-conflict-image",
+  "conflict_image_sha256": "68a587d8c12e767cc9657facc945db3578469170601928817b804ff2b94e5340",
+  "visual_directives": {
+    "authority_opacity": 0.0128,
+    "conflict_veil": 0.1899,
+    "motion_authority": 0.0059
+  },
+  "display_label": "response authority evidence-limited \u00b7 2% \u00b7 conflict moderate",
+  "scene_directive": "Let the integrated response influence visuals only in proportion to agreement-weighted authority. Preserve conflict as a visible veil and never force a winner where support is weak.",
+  "claim_boundary": "Integrated response authority governs only the visual influence of DEM-derived terrain heuristics. It is not confidence in methane presence, measured airflow, plume transport, concentration, exposure, or source responsibility."
+}

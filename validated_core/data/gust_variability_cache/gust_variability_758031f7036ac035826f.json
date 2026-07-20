@@ -1,0 +1,81 @@
+{
+  "contract_version": "gust_variability_window_v1",
+  "pass_id": "SV2-35",
+  "provider": "Open-Meteo Historical Weather API",
+  "source_type": "historical reanalysis / bounded wind-variability context",
+  "observation_timestamp": "2026-01-01T12:20:00Z",
+  "latitude": 34.2,
+  "longitude": -119.1,
+  "requested_variables": [
+    "wind_speed_10m",
+    "wind_direction_10m",
+    "wind_gusts_10m"
+  ],
+  "requested_window_hours_each_side": 2,
+  "evidence_state": "modeled",
+  "method": {
+    "name": "nearest-hour centered variability window",
+    "version": "1.0",
+    "purpose": "Show short-window changes in modeled wind speed, direction, and gust context around a verified observation time."
+  },
+  "claim_boundary": "The gust and variability window is model-derived hourly context. It is not measured turbulence, a sub-hourly gust chronology, a turbulence intensity estimate, a plume-dispersion calculation, or proof of intermittent emissions.",
+  "data_state": "gust_variability_window_cache",
+  "status": "ready",
+  "selected_time_utc": "2026-01-01T12:00:00Z",
+  "time_offset_minutes": -20.0,
+  "window_start_utc": "2026-01-01T10:00:00Z",
+  "window_end_utc": "2026-01-01T14:00:00Z",
+  "expected_hour_count": 5,
+  "available_hour_count": 5,
+  "window_complete": true,
+  "samples": [
+    {
+      "time_utc": "2026-01-01T10:00:00Z",
+      "wind_speed_10m_mph": 4.0,
+      "wind_direction_10m_degrees": 210.0,
+      "wind_gusts_10m_mph": 7.0
+    },
+    {
+      "time_utc": "2026-01-01T11:00:00Z",
+      "wind_speed_10m_mph": 6.0,
+      "wind_direction_10m_degrees": 220.0,
+      "wind_gusts_10m_mph": 10.0
+    },
+    {
+      "time_utc": "2026-01-01T12:00:00Z",
+      "wind_speed_10m_mph": 8.0,
+      "wind_direction_10m_degrees": 230.0,
+      "wind_gusts_10m_mph": 15.0
+    },
+    {
+      "time_utc": "2026-01-01T13:00:00Z",
+      "wind_speed_10m_mph": 11.0,
+      "wind_direction_10m_degrees": 260.0,
+      "wind_gusts_10m_mph": 20.0
+    },
+    {
+      "time_utc": "2026-01-01T14:00:00Z",
+      "wind_speed_10m_mph": 7.0,
+      "wind_direction_10m_degrees": 250.0,
+      "wind_gusts_10m_mph": 12.0
+    }
+  ],
+  "metrics": {
+    "selected_sustained_speed_mph": 8.0,
+    "selected_gust_speed_mph": 15.0,
+    "selected_gust_factor": 1.88,
+    "window_min_speed_mph": 4.0,
+    "window_max_speed_mph": 11.0,
+    "window_speed_range_mph": 7.0,
+    "window_max_gust_mph": 20.0,
+    "window_direction_spread_degrees": 26.1
+  },
+  "variability_class": "high",
+  "confidence_band": "strong",
+  "confidence_score": 0.82,
+  "cache_status": "refreshed",
+  "retrieved_at_utc": "2026-07-20T19:31:49.334878Z",
+  "provider_url": "fixture://gust-variability-window",
+  "display_label": "high short-window variability \u00b7 5/5 hours \u00b7 nearest hour 20 min from observation",
+  "scene_directive": "Use gust and directional variability only as labeled short-window context. It does not yet alter plume geometry or claim turbulence."
+}

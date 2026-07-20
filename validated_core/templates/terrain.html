@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Terrain Lane · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Terrain evidence lane · SV2-4</p>
+  <h1>Let the land change the interpretation.</h1>
+  <p class="lead">{{ terrain.display_label }}</p>
+  <section class="layer-card terrain-lane-card">
+    <p class="eyebrow">{{ terrain.data_state }}</p>
+    <h2>{{ terrain.provider }}</h2>
+    <p><b>Terrain class:</b> {{ terrain.terrain_class }}</p>
+    <p><b>Local relief:</b> {% if terrain.local_relief_m is not none %}{{ terrain.local_relief_m }} m{% else %}not measured yet{% endif %}</p>
+    <p><b>Interpretive cue:</b> {{ terrain.influence }}</p>
+    <p><b>Slope hint:</b> {{ terrain.slope_hint }}</p>
+    <p><b>Samples:</b> {{ terrain.sample_count }} of {{ terrain.sample_grid.requested_points }} cached.</p>
+    <p class="boundary">{{ terrain.what_it_cannot_prove }}</p>
+  </section>
+  {% if terrain.data_state == 'loader_ready_cache_pending' %}
+  <section class="layer-card compact">
+    <h3>Load measured elevation context</h3>
+    <p>With internet access, open <code>/terrain.json?refresh=1</code> once. The app samples the scene bbox, stores the result locally, and uses the cache on later runs.</p>
+  </section>
+  {% endif %}
+  <div class="actions"><a href="/scene">Return to scene</a><a class="secondary" href="/terrain.json">Open terrain JSON</a></div>
+</main>
+{% endblock %}

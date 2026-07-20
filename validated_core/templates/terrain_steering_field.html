@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Terrain Steering Field · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-shell evidence-page">
+  <section class="page-hero"><p class="eyebrow">SV2-35 · Terrain Steering Field</p><h1>See where terrain may turn the air.</h1><p>A map-registered, DEM-derived steering heuristic tied to available wind context—not a fluid simulation.</p></section>
+  <section class="evidence-grid">
+    <article class="evidence-card"><p class="eyebrow">Field state</p><h2>{{ field.display_label }}</h2><p>{{ field.scene_directive }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Wind basis</p><h2>{{ field.wind_speed_mph if field.wind_speed_mph is not none else 'Unavailable' }} mph</h2><p>{{ field.wind_to_degrees if field.wind_to_degrees is not none else '—' }}° toward · {{ field.temporal_basis|default('unresolved')|replace('_',' ') }}</p></article>
+    {% if field.field_statistics %}
+    <article class="evidence-card"><p class="eyebrow">Dominant response</p><h2>{{ field.field_statistics.dominant_response|replace('_',' ')|title }}</h2><p>{{ (field.field_statistics.mean_strength * 100)|round|int }}% mean visual strength · {{ field.field_statistics.strength_band|title }}</p></article>
+    {% for key,value in field.field_statistics.response_ratios.items() %}<article class="evidence-card"><p class="eyebrow">{{ key|replace('_',' ') }}</p><h2>{{ (value*100)|round|int }}%</h2><p>Share of supported raster cells where this response is strongest.</p></article>{% endfor %}
+    {% endif %}
+  </section>
+  {% if field.status == 'ready' %}<section class="truth-block"><p class="eyebrow">Map-registered field</p><img src="{{ field.image_url }}?sha={{ field.image_sha256 }}" alt="Terrain steering field raster" style="width:100%;max-width:960px;background:#071010;border-radius:18px"><p>Color identifies the strongest bounded terrain response; opacity indicates relative heuristic strength.</p></section>{% endif %}
+  <section class="truth-block"><p class="eyebrow">Scientific boundary</p><h2>Terrain-conditioned possibility, not measured airflow.</h2><p>{{ field.claim_boundary }}</p></section>
+</main>
+{% endblock %}

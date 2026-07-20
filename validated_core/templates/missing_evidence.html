@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Missing Evidence{% endblock %}
+{% block content %}
+<main class="missing-page">
+  <p class="eyebrow">SV2-17 · Missing-Evidence Visualization</p>
+  <h1>Evidence ends visibly.</h1>
+  <p class="lede">The scene becomes less complete when critical inputs are absent. Nothing is silently filled.</p>
+  <section class="missing-summary">
+    <div><strong>{{ missing.present_count }}</strong><span>present</span></div>
+    <div><strong>{{ missing.missing_count }}</strong><span>missing</span></div>
+    <div><strong>{{ missing.not_claimed_count }}</strong><span>not claimed</span></div>
+    <div><strong>{{ (missing.completeness_ratio * 100)|round|int }}%</strong><span>review completeness</span></div>
+  </section>
+  {% for category_id, items in missing.categories.items() %}
+  <section class="missing-category">
+    <h2>{{ category_id|replace('_',' ')|title }}</h2>
+    {% if items %}
+    <div class="missing-grid">
+      {% for item in items %}
+      <article class="missing-card missing-card-{{ item.state }}">
+        <span class="evidence-state evidence-state-{{ item.evidence_state }}">{{ item.evidence_state|replace('_',' ') }}</span>
+        <h3>{{ item.label }}</h3>
+        <p><strong>Visual consequence</strong><br>{{ item.visual_consequence }}</p>
+        <p><strong>Resolved by</strong><br>{{ item.resolves_with }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}<p class="quiet-line">No items are being silently assumed.</p>{% endif %}
+  </section>
+  {% endfor %}
+  <p class="boundary">{{ missing.claim_boundary }}</p>
+  <div class="field-actions"><a href="/scene">Return to scene</a><a href="/evidence-states">Evidence states</a><a href="/citations">Citations</a></div>
+</main>
+{% endblock %}

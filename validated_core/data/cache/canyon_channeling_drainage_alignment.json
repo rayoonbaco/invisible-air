@@ -1,0 +1,46 @@
+{
+  "contract_version": "canyon_channeling_drainage_alignment_v1",
+  "pass_id": "SV2-35",
+  "layer": "canyon_channeling_and_drainage_alignment",
+  "evidence_state": "inferred",
+  "data_state": "canyon_channeling_drainage_cache",
+  "status": "ready",
+  "cache_key": "bdd55a604c884069a3b5467a4c051c3de5769e59ddb05434b5933dc3667a3a49",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "wind_to_degrees": 74.0,
+  "wind_speed_mph": 11.9,
+  "temporal_basis": "current_atmospheric_context_only",
+  "confidence_support": 0.5263,
+  "channeling_statistics": {
+    "mean_potential": 0.138,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.0481
+  },
+  "drainage_statistics": {
+    "mean_alignment": 0.0569,
+    "alignment_band": "low",
+    "elevated_cell_ratio": 0.0236
+  },
+  "channel_image_url": "/canyon-channeling-image",
+  "channel_image_sha256": "2a673136f69c809c0780b0362cd5f316af84cd5876bfa6542aa9802e761da97d",
+  "drainage_image_url": "/drainage-alignment-image",
+  "drainage_image_sha256": "38ee680cf5763aeb57b0209e3e76f34eb848e3deb9748715ae1e98ae524da67b",
+  "particle_directives": {
+    "channel_pull_px": 1.74,
+    "channel_speed_multiplier": 1.0203,
+    "drainage_coherence": 0.0492,
+    "channel_band": [
+      0.18,
+      0.78
+    ]
+  },
+  "display_label": "canyon channeling low-moderate \u00b7 drainage alignment low \u00b7 53% support",
+  "scene_directive": "Show restrained cyan channel corridors and blue drainage alignment. Pull visual tracers modestly toward supported corridors and slightly increase coherence and speed only where confidence allows.",
+  "claim_boundary": "Canyon channeling and drainage alignment are DEM-derived visual potentials. They are not measured airflow, verified drainage wind, CFD, plume routing, methane concentration, travel time, exposure, or proof of actual atmospheric behavior."
+}

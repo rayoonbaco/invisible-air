@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Scientific Synthesis · {{ scene.project_name }}{% endblock %}
+{% block content %}
+<main class="detail-shell synthesis-page">
+  <header class="detail-header"><p class="eyebrow">SV2-55 · Scientific synthesis and decision surface</p><h1>{{ synthesis.headline }}</h1><p>{{ synthesis.display_label }}</p></header>
+  <section class="synthesis-grid">
+    {% for item in synthesis.sections %}
+    <article class="synthesis-card state-{{ item.state }}"><span class="state-kicker">{{ item.label }}</span><h2>{{ item.summary }}</h2><p>{{ item.boundary }}</p></article>
+    {% endfor %}
+  </section>
+  <section class="review-action-card"><p class="eyebrow">{{ synthesis.recommended_review.label }}</p><h2>{{ synthesis.recommended_review.action }}</h2><p class="boundary">{{ synthesis.claim_boundary }}</p><div class="field-actions"><a href="/scene">Return to scene</a><a href="/reviewer-guided-evidence-exploration">Explore evidence</a><a href="/citations">Review citations</a></div></section>
+</main>
+{% endblock %}

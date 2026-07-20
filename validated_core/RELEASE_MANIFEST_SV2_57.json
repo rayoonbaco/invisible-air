@@ -1,0 +1,9 @@
+{
+  "release_id": "SV2-57",
+  "name": "Invisible Air Level Five Proof Release",
+  "baseline": "SV2-56",
+  "primary_url": "http://127.0.0.1:8000/scene",
+  "proof_url": "http://127.0.0.1:8000/release-proof",
+  "verifier": "RUN_VERIFY_SV2_57.bat",
+  "scientific_status": "human_review_prototype_with_explicit_evidence_gaps"
+}

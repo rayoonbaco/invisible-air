@@ -1,0 +1,67 @@
+{
+  "contract_version": "terrain_steering_confidence_v1",
+  "pass_id": "SV2-35",
+  "layer": "terrain_steering_confidence",
+  "evidence_state": "inferred",
+  "data_state": "terrain_steering_confidence_cache",
+  "status": "ready",
+  "cache_key": "a305f59044fff00d0cae0ab53a059c560f63d081ca05955f3cb8f67311880fa1",
+  "source_steering_sha256": "a76fe39bee7b3c9e7f7e145db79aa6154cadde68401e5c013067342b418d68dd",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_statistics": {
+    "mean": 0.5263,
+    "band": "moderate",
+    "histogram": {
+      "very_high": 0.0,
+      "high": 0.0075,
+      "moderate": 0.6497,
+      "low": 0.3418,
+      "review_carefully": 0.0009,
+      "insufficient_evidence": 0.0
+    },
+    "valid_cell_ratio": 0.5025
+  },
+  "uncertainty_statistics": {
+    "mean": 0.4737,
+    "band": "elevated_uncertainty"
+  },
+  "contributors": [
+    {
+      "name": "terrain evidence quality",
+      "weight": 0.34,
+      "state": "available"
+    },
+    {
+      "name": "steering signal strength",
+      "weight": 0.3,
+      "state": "low-moderate"
+    },
+    {
+      "name": "spatial coherence",
+      "weight": 0.22,
+      "state": "cell-neighborhood agreement"
+    },
+    {
+      "name": "atmospheric support",
+      "weight": 0.14,
+      "state": "live_current_conditions"
+    }
+  ],
+  "downgrade_reasons": [
+    "observation-time atmosphere unresolved",
+    "gust variability unavailable",
+    "atmospheric stability unavailable"
+  ],
+  "confidence_image_url": "/terrain-steering-confidence-image",
+  "uncertainty_image_url": "/terrain-steering-uncertainty-image",
+  "confidence_image_sha256": "33bbdd36fbac7e82d74bff7a81ba33d08d0cbc20299d000005f418518c8bc01b",
+  "uncertainty_image_sha256": "22874ef0c7e55f1c0c58d30ff322e6d7c366aeaa4811957efd8007d5e009e510",
+  "display_label": "moderate confidence \u00b7 53% \u00b7 elevated uncertainty",
+  "scene_directive": "Use soft confidence illumination and an optional uncertainty veil. Never use confidence brightness as methane concentration or plume certainty.",
+  "claim_boundary": "This field expresses confidence in the terrain-steering heuristic only. It is not confidence in methane presence, plume location, atmospheric transport, emissions magnitude, or source responsibility."
+}

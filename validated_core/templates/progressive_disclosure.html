@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Progressive Disclosure · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Atmosphere Window · SV2-54</p>
+  <h1>Progressive Disclosure and Scene Simplification</h1>
+  <p class="lead">The complete science remains intact, but the main scene now opens in a calm overview and reveals supporting context or deep audit detail only when requested.</p>
+  <div class="registry-list">
+    {% for level in disclosure.levels %}
+    <article class="layer-card">
+      <p class="eyebrow">{{ level.label }}</p>
+      <h3>{{ level.description }}</h3>
+      <p>{{ level.content|join(" · ") }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <article class="layer-card"><h3>Scientific boundary</h3><p>{{ disclosure.claim_boundary }}</p></article>
+  <div class="actions"><a class="primary" href="/scene">Return to simplified scene</a><a class="secondary" href="/reviewer-guided-evidence-exploration">Open evidence explorer</a></div>
+</main>
+{% endblock %}

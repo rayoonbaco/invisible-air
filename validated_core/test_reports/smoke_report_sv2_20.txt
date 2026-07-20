@@ -1,0 +1,12 @@
+SV2-20 — Certified Hillshade Lane
+
+Standalone smoke suite: 191 passed, 0 failed
+Internal live-contract suite (offline-safe baseline): PASS
+Synthetic 768 x 512 float32 DEM derivation: PASS
+Generated hillshade PNG validation: PASS
+Fixed illumination contract: azimuth 315 degrees, altitude 45 degrees, z-factor 1.0
+Python syntax: PASS
+JavaScript syntax: PASS
+Scientific boundary: PASS
+
+The external USGS DEM retrieval must still be exercised on the user's Windows machine. The launcher requests the DEM first and derives hillshade only after the DEM validates.

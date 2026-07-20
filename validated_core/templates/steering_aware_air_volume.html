@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Steering-Aware Air Volume · Atmosphere Window{% endblock %}
+{% block content %}
+<section class="page-shell"><p class="eyebrow">SV2-35 · Steering-Aware Air Volume</p><h1>Let the terrain shape the window—carefully.</h1><p class="lede">Confidence-gated steering evidence now modulates curvature, compression, asymmetry, and uncertainty in the visual air volume without becoming a transport model.</p>
+<div class="panel"><h2>{{ volume.display_label }}</h2><p><strong>State:</strong> {{ volume.data_state }}</p><p>{{ volume.scene_directive }}</p><p>{{ volume.claim_boundary }}</p></div>
+<div class="status-grid"><div><b>Dominant steering driver</b><span>{{ volume.steering_driver|replace('_',' ') }}</span></div><div><b>Modulation strength</b><span>{{ (volume.modulation_strength*100)|round|int }}%</span></div><div><b>Confidence support</b><span>{{ (volume.confidence_support*100)|round|int }}%</span></div><div><b>Uncertainty expansion</b><span>{{ volume.uncertainty_expansion }}×</span></div><div><b>Channel compression</b><span>{{ volume.channel_compression }}×</span></div><div><b>Lateral bias</b><span>{{ volume.lateral_bias_px }} px</span></div></div>
+<div class="panel"><h2>Transparent inputs</h2><pre>{{ (volume.inputs or {})|tojson(indent=2) }}</pre></div></section>
+{% endblock %}

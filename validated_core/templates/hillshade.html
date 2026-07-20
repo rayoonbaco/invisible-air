@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Hillshade · Invisible Air{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">DEM-derived terrain relief · SV2-21</p>
+  <h1>Let the continuous land reveal its shape.</h1>
+  <p class="lead">{{ hillshade.display_label }}</p>
+  <section class="layer-card">
+    <p class="eyebrow">{{ hillshade.data_state }}</p>
+    <h2>Reproducible hillshade lane</h2>
+    <p><b>Source DEM:</b> {{ hillshade.source_dem_provider or 'not available' }}</p>
+    <p><b>DEM retrieval:</b> {{ hillshade.source_dem_retrieved_at_utc or 'not available' }}</p>
+    <p><b>Illumination:</b> azimuth {{ hillshade.illumination.azimuth_degrees }}° · altitude {{ hillshade.illumination.altitude_degrees }}° · z-factor {{ hillshade.illumination.z_factor }}</p>
+    <p><b>Coverage:</b> {{ hillshade.coverage_status|replace('_', ' ') }}</p>
+    {% if hillshade.raster_stats %}<p><b>Elevation range:</b> {{ hillshade.raster_stats.elevation_min_m }}–{{ hillshade.raster_stats.elevation_max_m }} m</p>{% endif %}
+    {% if hillshade.failure_reason %}<p class="boundary"><b>Generation result:</b> {{ hillshade.failure_reason }}</p>{% endif %}
+    <p class="boundary">{{ hillshade.claim_boundary }}</p>
+  </section>
+  {% if hillshade.data_state == 'dem_derived_hillshade_cache' %}
+  <section class="layer-card">
+    <h3>Derived raster preview</h3>
+    <img src="/hillshade-image?sha={{ hillshade.image_sha256 }}" alt="DEM-derived grayscale hillshade" style="display:block;width:100%;border-radius:18px;opacity:.9">
+  </section>
+  {% endif %}
+  <div class="actions"><a href="/scene">Return to scene</a><a class="secondary" href="/hillshade.json">Open hillshade JSON</a><a class="secondary" href="/dem">Inspect source DEM</a></div>
+</main>
+{% endblock %}

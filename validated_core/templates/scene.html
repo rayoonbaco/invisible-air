@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}{{ scene.project_name }} · See the Air{% endblock %}
+{% block body_class %}{% if shot_mode %}shot-mode{% endif %} disclosure-overview level-five-scene soul-scene{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">{% endblock %}
+{% block content %}
+<main class="scene-shell" data-scene='{{ scene|tojson }}'>
+  <section class="scene-stage">
+    <div class="scene-window real-map-scene level-five-window" id="sceneWindow" data-composition='{{ scene.level_five_visual_composition|tojson }}'>
+      <div class="terrain-surface map-fallback-surface" aria-hidden="true"><div class="terrain-grid"></div><div class="terrain-valley"></div><div class="terrain-water"></div><div class="terrain-light"></div></div>
+      <div id="mapLayer" class="map-layer" data-map='{{ scene.basemap|tojson }}' aria-label="Map-registered geographic surface beneath visual air reconstruction"></div>
+      <div id="mapFallback" class="map-fallback-note"><b>Fallback surface</b><span>Map tiles are loading. If they fail, the scene remains valid as geographic context only.</span></div>
+      <canvas id="plumeCanvas" class="plume-canvas"></canvas>
+
+      <div class="scene-orientation-cue" aria-live="polite">
+        <span class="cue-source">Reported source</span>
+        <span class="cue-arrow" aria-hidden="true">→</span>
+        <span class="cue-path">possible terrain-shaped movement</span>
+      </div>
+
+      <header class="soul-scene-intro" aria-label="Invisible Air scene introduction">
+        <p class="eyebrow">Invisible Air</p>
+        <h1>See the air.</h1>
+        <p>Possible movement shaped by wind and terrain.</p>
+      </header>
+
+      <details class="map-mode-drawer glass-drawer">
+        <summary aria-label="Open map styles">Map</summary>
+        <div class="map-mode-control" aria-label="Basemap modes">{% for mode in scene.basemap.basemap_modes %}<button type="button" data-basemap-mode="{{ mode.id }}" class="{% if mode.id == scene.basemap.default_mode %}active{% endif %}">{{ mode.label }}</button>{% endfor %}</div>
+      </details>
+
+      <details class="science-drawer glass-drawer">
+        <summary>Understand</summary>
+        <div class="disclosure-control" aria-label="Scene detail level">
+          <button type="button" data-disclosure-level="overview" class="active">Essence</button>
+          <button type="button" data-disclosure-level="context">Context</button>
+          <button type="button" data-disclosure-level="audit">Science</button>
+        </div>
+      </details>
+
+      <div class="scene-status-strip tier-context" aria-label="Essential evidence state">
+        <span>reconstruction</span>
+        <span>current wind</span>
+        <span>{{ scene.terrain_regime_confidence.confidence_pct }}% support</span>
+      </div>
+
+      <div class="context-status-drawer tier-context">
+        <b>Supporting context</b>
+        <span>Terrain steering · {{ scene.terrain_steering_field.display_label }}</span>
+        <span>Historical atmosphere · {{ scene.historical_weather.display_label }}</span>
+        <span>Evidence time · {{ scene.evidence_time.display_label }}</span>
+        <span>Missing evidence · {{ scene.missing_evidence.display_label }}</span>
+      </div>
+
+      <details class="field-panel simplified-field-panel soul-inspector tier-overview" aria-label="Scene interpretation">
+        <summary>What am I seeing?</summary>
+        <div class="soul-inspector-body">
+          <p class="eyebrow">Possible air movement</p>
+          <h2>{{ scene.integrated_terrain_response.display_label }}</h2>
+          <p class="soul-inspector-summary">Terrain is being read against {{ scene.wind.label|lower }}. This is a human-review reconstruction, not direct methane detection.</p>
+          <dl>
+            <div><dt>Supported by</dt><dd>{{ scene.terrain_confidence.display_label }} terrain · {{ scene.wind.data_state|replace("_", " ") }}</dd></div>
+            <div><dt>Still missing</dt><dd>{{ scene.missing_evidence.display_label }}</dd></div>
+          </dl>
+          <div class="field-actions primary-actions"><a href="/reviewer-guided-evidence-exploration">Inspect evidence</a></div>
+          <details class="nested-evidence">
+            <summary>Boundaries and sources</summary>
+            <p class="boundary">{{ scene.plume_visualization.boundary }}</p>
+            <p class="boundary">{{ scene.evidence_time.claim_boundary }}</p>
+            <div class="field-actions"><a href="/observation">Observation</a><a href="/citations">Citations</a><a href="/data-status">Data status</a></div>
+          </details>
+        </div>
+      </details>
+
+      <div class="micro-legend tier-context">
+        <div><b>Wind</b><span>{{ scene.wind.label }} · {{ scene.wind.timestamp }}</span></div>
+        <div><b>Terrain</b><span>{{ scene.terrain_confidence.display_label }}</span></div>
+        <div><b>Response</b><span>{{ scene.integrated_terrain_response.display_label }}</span></div>
+        <div><b>Authority</b><span>{{ scene.integrated_response_authority.display_label }}</span></div>
+        <div><b>Evidence time</b><span>{{ scene.evidence_time.display_label }}</span></div>
+        <div><b>Unknowns</b><span>{{ scene.missing_evidence.display_label }}</span></div>
+      </div>
+
+      <div class="audit-drawer tier-audit">
+        <details><summary>Deep scientific audit</summary><p class="audit-note">The full scientific system, including living wind, remains available without occupying the primary scene.</p>
+          <div class="audit-grid">
+            <a href="/dem">Full DEM</a><a href="/hillshade">Hillshade</a><a href="/slope-aspect">Slope + aspect</a><a href="/landforms">Landforms</a>
+            <a href="/terrain-steering-field">Steering field</a><a href="/terrain-regime-confidence">Regime confidence</a><a href="/integrated-terrain-response">Integrated response</a><a href="/integrated-response-authority">Response authority</a>
+            <a href="/citations">Citations</a><a href="/evidence-states">Evidence states</a><a href="/missing-evidence">Missing evidence</a><a href="/self-test">Smoke tests</a>
+          </div>
+        </details>
+      </div>
+
+      <div class="performance-indicator" id="performanceIndicator" aria-live="polite"><span></span><b>Adaptive scene</b></div>
+      <div class="map-attribution">{{ scene.basemap.attribution }} · geographic context only · not methane evidence</div>
+      <div class="scale-bar"><span></span><em>0</em><em>2</em><em>4 mi</em></div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/map_scene.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plume_canvas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/scene.js') }}"></script>
+{% endblock %}

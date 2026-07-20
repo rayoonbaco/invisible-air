@@ -1,0 +1,12 @@
+SV2-7 Reliable Launch Confirmation
+Passed: 83
+Failed: 0
+Total: 83
+
+Verified:
+- /health readiness route
+- folder-safe launcher path
+- malformed nested cmd quoting removed
+- server readiness polling before browser open
+- exact /scene and /self-test targets
+- prior wind, terrain, plume, and guardrail contracts preserved

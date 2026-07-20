@@ -1,0 +1,45 @@
+{
+  "contract_version": "basin_retention_cold_air_pooling_v1",
+  "pass_id": "SV2-37",
+  "layer": "basin_retention_and_cold_air_pooling",
+  "evidence_state": "inferred",
+  "data_state": "basin_retention_cold_air_pooling_cache",
+  "status": "ready",
+  "cache_key": "5fbf3d21fb7bd73fe35feb48ed40ad6dafef8387d580e122f9388ea3db4073da",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_support": 0.5263,
+  "atmospheric_basis": "terrain_only_current_context_stability_unresolved",
+  "stability_state": "unknown",
+  "basin_statistics": {
+    "mean_potential": 0.2129,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.0815
+  },
+  "cold_pooling_statistics": {
+    "mean_potential": 0.1001,
+    "potential_band": "low",
+    "elevated_cell_ratio": 0.0
+  },
+  "basin_image_url": "/basin-retention-image",
+  "basin_image_sha256": "ade3b76ce42ff294d90df8c6f626393e977dcb703f310478282b9a7b4fe3b014",
+  "cold_pooling_image_url": "/cold-air-pooling-image",
+  "cold_pooling_image_sha256": "3a7070f60d6184b6884250e06aa045e3dbcd4051b337a3a7108f65e51cb93331",
+  "particle_directives": {
+    "retention_slowdown": 0.9731,
+    "pooling_broadening": 1.0126,
+    "settling_px": 0.32,
+    "retention_band": [
+      0.5,
+      0.88
+    ]
+  },
+  "display_label": "basin retention low-moderate \u00b7 cold-air pooling low \u00b7 53% support",
+  "scene_directive": "Show a restrained blue basin-retention veil and pale cold-air-pooling illumination. Apply only small confidence-gated visual slowdown, broadening, and settling.",
+  "claim_boundary": "Basin retention and cold-air pooling are DEM-derived visual potentials. They are not measured temperature inversions, verified pollutant trapping, observed cold-air drainage, CFD, methane concentration, exposure, or proof that emissions accumulated in a basin."
+}

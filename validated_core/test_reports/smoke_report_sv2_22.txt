@@ -1,0 +1,12 @@
+SV2-27 standalone smoke suite
+Passed: 206
+Failed: 0
+Total: 206
+
+Internal live contract suite
+Passed: 134
+Failed: 0
+Total: 134
+
+Synthetic landform derivation validated class raster, confidence raster, and bounded statistics.
+Verification launcher opens only /scene.

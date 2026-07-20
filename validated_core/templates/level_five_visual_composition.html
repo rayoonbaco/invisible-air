@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Level Five Visual Composition · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="synthesis-page level-five-review-page">
+  <p class="eyebrow">SV2-56 · Level Five Visual Composition and Performance</p>
+  <h1>The science becomes one scene.</h1>
+  <p class="lede">A unified composition makes place, evidence, interpretation, uncertainty, and human review legible in one restrained frame.</p>
+  <section class="synthesis-grid">
+    <article class="synthesis-card"><span class="state-kicker">Visual hero</span><h2>{{ composition.hero_surface|replace('_',' ') }}</h2><p>The map-registered living scene receives {{ (composition.layout.scene_priority*100)|round|int }}% of the composition priority.</p></article>
+    <article class="synthesis-card"><span class="state-kicker">Reading order</span><h2>Evidence before interpretation</h2><p>{{ composition.reading_order|join(' → ') }}</p></article>
+    <article class="synthesis-card"><span class="state-kicker">Adaptive performance</span><h2>High, balanced, and reduced profiles</h2><p>Rendering quality adapts without hiding uncertainty or changing scientific meaning.</p></article>
+  </section>
+  <section class="review-action-card"><span class="state-kicker">Boundary</span><h2>{{ composition.claim_boundary }}</h2><p><a href="/scene">Return to the Level Five scene</a></p></section>
+</main>
+{% endblock %}

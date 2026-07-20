@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Current Wind · {{ scene.build_label }}{% endblock %}
+{% block content %}
+<main class="evidence-shell">
+  <section class="evidence-header">
+    <p class="eyebrow">Atmosphere Window · current wind lane</p>
+    <h1>{{ wind.label }}</h1>
+    <p>{{ wind.provider }} · {{ wind.timestamp }}</p>
+    <p class="boundary">{{ wind.what_it_cannot_prove }}</p>
+    <div class="field-actions">
+      <a href="/scene">Return to scene</a>
+      <a href="/wind.json">Wind JSON</a>
+      <a href="/wind.json?refresh=1">Refresh live wind</a>
+    </div>
+  </section>
+  <section class="evidence-grid">
+    <article class="evidence-card"><p class="eyebrow">State</p><h2>{{ wind.data_state }}</h2><p>Cache: {{ wind.cache_status }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Speed</p><h2>{{ wind.speed_mph }} mph</h2><p>{% if wind.gust_mph %}Gusts {{ wind.gust_mph }} mph{% else %}Gust unavailable{% endif %}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Direction</p><h2>{{ wind.direction_cardinal }} · {{ wind.from_degrees }}°</h2><p>Visual corridor travels toward {{ wind.to_degrees }}°.</p></article>
+    <article class="evidence-card"><p class="eyebrow">Boundary</p><h2>Current, not observation-time</h2><p>{{ wind.what_it_can_help_see }}</p></article>
+  </section>
+</main>
+{% endblock %}

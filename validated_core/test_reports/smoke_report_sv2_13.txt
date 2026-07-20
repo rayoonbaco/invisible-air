@@ -1,0 +1,19 @@
+Invisible Air / Atmosphere Window Realtime
+SV2-13 — Evidence-Time Alignment
+
+Standalone smoke suite:
+Passed: 122
+Failed: 0
+Total: 122
+
+Internal runtime checks:
+Passed: 68
+Failed: 0
+Total: 68
+
+Verified boundaries:
+- current wind remains present-day context only
+- unresolved observation time is shown explicitly
+- a known observation timestamp produces a visible time-gap contract
+- current weather is never promoted to event-time wind
+- plume remains a visual review reconstruction, not historical transport or dispersion modeling

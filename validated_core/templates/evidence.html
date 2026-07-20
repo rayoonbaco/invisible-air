@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Evidence · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">Evidence drawer · SV2-4</p>
+  <h1>What is real, what is registered, and what is still missing.</h1>
+  <p class="lead">{{ packet.summary }}</p>
+  <section class="quad">
+    <article><h3>Real now</h3>{% for item in packet.what_is_real_now %}<p>{{ item }}</p>{% endfor %}</article>
+    <article><h3>Placeholder</h3>{% for item in packet.what_is_placeholder %}<p>{{ item }}</p>{% endfor %}</article>
+    <article><h3>Next real layers</h3>{% for item in packet.next_real_layers %}<p>{{ item }}</p>{% endfor %}</article>
+    <article><h3>Not claimed</h3>{% for item in packet.boundaries.not_claimed %}<p>{{ item }}</p>{% endfor %}</article>
+  </section>
+  <section class="layer-card map-surface-card">
+    <p class="eyebrow">Map surface · {{ packet.map_surface.status }}</p>
+    <h2>{{ packet.map_surface.name }}</h2>
+    <p>{{ packet.map_surface.orientation_note }}</p>
+    <p><b>Plume geometry:</b> {{ packet.plume_geometry.mode }} · {{ packet.plume_geometry.length_km }} km visual path · {{ packet.plume_geometry.width_km }} km visual width.</p>
+    <p><b>Terrain prep:</b> {{ packet.terrain_prep.site_note }}</p>
+    <p class="boundary">{{ packet.map_surface.claim_boundary }}</p>
+    <p class="boundary">{{ packet.plume_geometry.claim_boundary }}</p>
+    <div class="actions"><a class="secondary" href="/map-surface">Open map surface notes</a></div>
+  </section>
+  <section class="layer-card terrain-lane-card">
+    <p class="eyebrow">Terrain lane · {{ packet.terrain_lane.data_state }}</p>
+    <h2>{{ packet.terrain_lane.display_label }}</h2>
+    <p><b>Real now:</b> the loader, USGS sample-grid connector, cache contract, and terrain influence classifier.</p>
+    <p><b>Measured now:</b> {{ packet.terrain_lane.sample_count }} of {{ packet.terrain_lane.sample_grid.requested_points }} elevation samples cached.</p>
+    <p><b>What terrain helps see:</b> {{ packet.terrain_lane.what_it_can_help_see }}.</p>
+    <p class="boundary"><b>Boundary:</b> {{ packet.terrain_lane.what_it_cannot_prove }}.</p>
+    <div class="actions"><a class="secondary" href="/terrain">Open terrain lane</a></div>
+  </section>
+  <section class="registry-list">
+    <h2>Layer contracts</h2>
+    {% for layer in packet.layers %}
+    <article class="layer-card">
+      <div>
+        <p class="eyebrow">{{ layer.layer_id }} · {{ layer.status }}</p>
+        <h3>{{ layer.source_label }}</h3>
+      </div>
+      <p><b>Real:</b> {{ layer.what_is_real }}</p>
+      <p><b>Reconstruction:</b> {{ layer.what_is_reconstruction }}</p>
+      <p><b>Missing:</b> {{ layer.what_is_missing }}</p>
+      <p class="boundary"><b>Boundary:</b> {{ layer.boundary }}</p>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,52 @@
+{
+  "contract_version": "1.0",
+  "pass_id": "SV2-35",
+  "layer": "dem_derived_hillshade",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_dem_provider": "USGS 3DEP Elevation ImageServer",
+  "source_dem_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "source_dem_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "source_dem_retrieved_at_utc": "2026-07-20T19:31:56.410250+00:00",
+  "illumination": {
+    "azimuth_degrees": 315.0,
+    "altitude_degrees": 45.0,
+    "z_factor": 1.0,
+    "interpretation": "fixed northwest illumination for reproducible terrain reading"
+  },
+  "output_path": "data/hillshade_cache/default_scene_hillshade.png",
+  "metadata_path": "data/hillshade_cache/default_scene_hillshade.json",
+  "evidence_state": "measured",
+  "visual_role": "continuous terrain relief beneath the atmospheric review layer",
+  "claim_boundary": "This is a reproducible hillshade derived from the cached DEM. It is not agency-certified, methane evidence, solar illumination at observation time, or atmospheric transport modeling.",
+  "data_state": "dem_derived_hillshade_cache",
+  "cache_status": "refreshed",
+  "coverage_status": "source_dem_bbox_covered",
+  "generated_at_utc": "2026-07-20T19:31:56.910974+00:00",
+  "attempted_at_utc": "2026-07-20T19:31:56.910974+00:00",
+  "display_label": "DEM-derived hillshade ready \u00b7 768 \u00d7 512",
+  "failure_reason": null,
+  "image_sha256": "27ad63d95fb0c18e55cac2b5fd211c0b7e2288e4be56870618170a398222930f",
+  "byte_size": 194298,
+  "output_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "raster_stats": {
+    "elevation_min_m": -0.342,
+    "elevation_max_m": 1518.427,
+    "elevation_range_m": 1518.769,
+    "shade_min": 95,
+    "shade_max": 254,
+    "shade_mean": 213.859,
+    "valid_cell_ratio": 1.0
+  },
+  "image_url": "/hillshade-image"
+}

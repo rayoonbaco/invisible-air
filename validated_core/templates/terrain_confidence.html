@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Terrain Confidence · Atmosphere Window{% endblock %}
+{% block content %}
+<section class="page-shell"><p class="eyebrow">SV2-35 · TERRAIN CONFIDENCE</p><h1>How much trust has the terrain stack earned?</h1><p class="lede">Coverage, valid cells, source resolution, cache integrity, derivative completeness, and landform confidence are separated instead of hidden inside one implied certainty.</p>
+<div class="panel"><h2>{{ confidence.display_label }}</h2><p><strong>State:</strong> {{ confidence.data_state }}</p><p><strong>Evidence:</strong> {{ confidence.evidence_state }}</p><p>{{ confidence.claim_boundary }}</p></div>
+{% if confidence.data_state == 'terrain_confidence_ready' %}<div class="two-col"><div class="panel"><h2>Spatial confidence</h2><img src="/terrain-confidence-image" alt="Terrain evidence confidence" style="width:100%;height:auto"><p>Brightness represents terrain-stack support, not methane certainty.</p></div><div class="panel"><h2>Confidence dimensions</h2>{% for key,item in confidence.dimensions.items() %}<p><strong>{{ key|replace('_',' ')|title }}:</strong> {{ (item.score*100)|round|int }}% · {{ item.state }}</p>{% endfor %}</div></div>{% endif %}
+</section>{% endblock %}

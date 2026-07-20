@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Evidence Library{% endblock %}
+{% block body_class %}campus-page library-room{% endblock %}
+{% block content %}
+<main id="main-content" tabindex="-1" class="campus-reading-room">
+  <header class="room-heading">
+    <span class="campus-kicker">The Library · Trace and verify</span>
+    <h1>Evidence before conclusion.</h1>
+    <p>Follow every claim back to its record, source, transformation, and missing evidence.</p>
+    <p class="room-mission"><b>Question:</b> Can another reviewer verify how this interpretation was assembled?</p>
+  </header>
+  <section class="library-shelves">
+    <article>
+      <span>Evidence</span>
+      <h2>Inspect the reasoning</h2>
+      <a href="/reviewer-guided-evidence-exploration">Evidence review →</a>
+    </article>
+    <article>
+      <span>Observation record</span>
+      <h2>Review what was reported</h2>
+      <a href="/observation">Observation record →</a>
+    </article>
+    <article>
+      <span>Sources</span>
+      <h2>Trace the evidence</h2>
+      <a href="/citations">Source trail →</a>
+    </article>
+  </section>
+  <details class="power-house-access">
+    <summary>Technical Power House</summary>
+    <a href="/scene">Legacy scientific record →</a>
+  </details>
+</main>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Atmospheric Field{% endblock %}
+{% block body_class %}roycroft-observatory final-instrument{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/observatory.css') }}">
+{% endblock %}
+{% block content %}
+<main id="main-content" class="observatory-shell final-instrument-shell" data-scene='{{ scene|tojson }}'>
+  <section class="observatory-room" aria-label="Invisible Air atmospheric influence instrument">
+    <div class="observatory-window" id="sceneWindow">
+      <div id="mapLayer" class="map-layer" data-map='{{ scene.basemap|tojson }}' aria-label="Terrain and geographic context"></div>
+      <div id="mapFallback" class="observatory-fallback"><b>Terrain surface</b><span>Map context is loading.</span></div>
+      <canvas id="plumeCanvas" class="plume-canvas" aria-label="Relative modeled atmospheric influence field"></canvas>
+      <div class="final-vignette" aria-hidden="true"></div>
+
+      <header class="instrument-title">
+        <span>INVISIBLE AIR · ATMOSPHERIC FIELD</span>
+        <h1>See where the air may carry it.</h1>
+        <p>A relative modeled atmospheric influence field shaped by weather, terrain, and source conditions.</p>
+      </header>
+
+      <aside class="source-card" aria-label="Selected source and active conditions">
+        <span class="card-kicker">Selected source</span>
+        <h2>{{ scene.observation_contract.product_type|replace('_',' ')|title }}</h2>
+        <dl>
+          <div><dt>Location</dt><dd>{{ '%.4f'|format(scene.observation_contract.coordinates.lat) }}, {{ '%.4f'|format(scene.observation_contract.coordinates.lon) }}</dd></div>
+          <div><dt>Record</dt><dd>{{ scene.observation_contract.observation_id }}</dd></div>
+          <div><dt>Wind</dt><dd>{{ scene.wind.direction_cardinal }} · {{ scene.wind.speed_mph }} mph</dd></div>
+          <div><dt>Weather state</dt><dd>{{ scene.wind.data_state|replace('_',' ') }}</dd></div>
+          <div><dt>Terrain</dt><dd id="terrainStatus">Model response on</dd></div>
+        </dl>
+        <div class="scenario-note">Current algorithmic scenario using the displayed inputs.</div>
+        <div class="transport-basis" id="transportBasis">Field orientation is being calculated from wind and terrain response.</div>
+        <div class="terrain-switch" aria-label="Terrain comparison">
+          <a id="terrainOn" href="/observatory?terrain=on">Terrain on</a>
+          <a id="terrainOff" href="/observatory?terrain=off">Compare off</a>
+        </div>
+      </aside>
+
+      <section class="field-read" aria-label="How to read the atmospheric field">
+        <div><span>Strongest modeled influence</span><b>Bright central corridor</b></div>
+        <div><span>Wider plausible influence</span><b>Soft outer field</b></div>
+        <div><span>Weakening support</span><b>Broken texture</b></div>
+      </section>
+
+      <div class="two-part-legend" aria-label="Field legend">
+        <span><i class="legend-brightness"></i><b>Brightness</b> Relative modeled influence</span>
+        <span><i class="legend-texture"></i><b>Texture</b> Model support</span>
+      </div>
+
+      <details class="model-basis">
+        <summary>Model &amp; scientific basis</summary>
+        <div>
+          <p><strong>Governing sequence</strong><br>Source initialization → wind transport → atmospheric spread → boundary-layer mixing → bounded terrain response → normalized field.</p>
+          <p><strong>Output</strong><br>A run-relative atmospheric influence field, not measured concentration, exposure, danger, or probability.</p>
+          <p><strong>Active visual rules</strong><br>Brightness shows calculated relative influence. Texture fragments as input and terrain support weaken.</p>
+          <nav><a href="/about">Method</a><a href="/citations">Citations</a><a href="/atlas">Benchmark record</a></nav>
+        </div>
+      </details>
+
+      <div class="model-status" id="modelStatus" aria-live="polite">Calculating atmospheric field…</div>
+      <div class="map-attribution">{{ scene.basemap.attribution }} · geographic context</div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/map_scene.js') }}"></script>
+<script src="{{ url_for('static', filename='js/governing_field_renderer.js') }}"></script>
+{% endblock %}

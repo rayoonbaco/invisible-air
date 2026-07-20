@@ -1,0 +1,38 @@
+{
+  "case_id": "replace-with-stable-id",
+  "title": "Verified observation title",
+  "source_record": {
+    "provider": "",
+    "record_id": "",
+    "record_url": ""
+  },
+  "observation_time": "ISO-8601 timestamp with timezone",
+  "source_geometry": {
+    "type": "Point",
+    "coordinates": [
+      0,
+      0
+    ]
+  },
+  "provider_geometry": {
+    "type": "LineString",
+    "coordinates": []
+  },
+  "terrain_bbox": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "wind_context": {
+    "time_basis": "observation_time",
+    "source": "",
+    "levels": []
+  },
+  "citations": [],
+  "claim_boundaries": [
+    "Reconstruction for human review",
+    "Not direct methane detection",
+    "Not concentration, exposure, or attribution"
+  ]
+}

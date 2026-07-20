@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Terrain–Atmosphere Interaction · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-shell evidence-page">
+  <section class="page-hero"><p class="eyebrow">SV2-35 · Terrain–Atmosphere Interaction Index</p><h1>See where land may matter to moving air.</h1><p>A bounded synthesis of measured terrain and available atmospheric context—never a plume simulation.</p></section>
+  <section class="evidence-grid">
+    <article class="evidence-card"><p class="eyebrow">Composite</p><h2>{{ index.display_label }}</h2><p>{{ index.scene_directive }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Evidence basis</p><h2>{{ index.temporal_basis|replace('_',' ')|title }}</h2><p>{{ index.confidence_band|title }} support · {{ (index.confidence_score * 100)|round|int }}%</p></article>
+    {% for key, item in index.components.items() %}<article class="evidence-card"><p class="eyebrow">{{ key|replace('_',' ') }}</p><h2>{{ item.band|replace('-',' ')|title }}</h2><p>{{ item.basis or item.reason }}</p></article>{% endfor %}
+  </section>
+  <section class="truth-block"><p class="eyebrow">Scientific boundary</p><h2>Interaction context, not transport physics.</h2><p>{{ index.claim_boundary }}</p></section>
+</main>
+{% endblock %}

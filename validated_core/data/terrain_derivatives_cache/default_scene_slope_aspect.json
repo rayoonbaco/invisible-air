@@ -1,0 +1,53 @@
+{
+  "contract_version": "1.0",
+  "pass_id": "SV2-35",
+  "layer": "dem_derived_slope_aspect",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_dem_provider": "USGS 3DEP Elevation ImageServer",
+  "source_dem_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "source_dem_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "slope_output_path": "data/terrain_derivatives_cache/default_scene_slope.png",
+  "aspect_output_path": "data/terrain_derivatives_cache/default_scene_aspect.png",
+  "metadata_path": "data/terrain_derivatives_cache/default_scene_slope_aspect.json",
+  "evidence_state": "measured",
+  "derivation": {
+    "slope": "arctangent of horizontal elevation-gradient magnitude",
+    "aspect": "clockwise downslope orientation from north",
+    "units": "degrees"
+  },
+  "visual_role": "continuous terrain steepness and orientation context for later landform classification",
+  "claim_boundary": "Slope and aspect are DEM-derived terrain context. They are not atmospheric transport, methane evidence, event-time conditions, or proof of source responsibility.",
+  "data_state": "dem_derived_slope_aspect_cache",
+  "cache_status": "refreshed",
+  "coverage_status": "source_dem_bbox_covered",
+  "generated_at_utc": "2026-07-20T19:31:57.009939+00:00",
+  "display_label": "DEM-derived slope + aspect ready \u00b7 768 \u00d7 512",
+  "failure_reason": null,
+  "output_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "slope_sha256": "4b2e3eedca1dbcd4e8524e5e20c3e5cdf8782213a7519463e58e19255c9d7398",
+  "aspect_sha256": "2d0877e3896ec69e5f89cc126077b31e48a2eb0606d7efeba6efe71882fcb1ee",
+  "slope_byte_size": 248422,
+  "aspect_byte_size": 629811,
+  "statistics": {
+    "slope_min_degrees": 0.0,
+    "slope_max_degrees": 59.69,
+    "slope_mean_degrees": 9.827,
+    "slope_p95_degrees": 30.104,
+    "flat_cell_ratio": 0.2249,
+    "aspect_convention": "clockwise degrees from north; flat cells visually neutral",
+    "valid_cell_ratio": 1.0
+  },
+  "slope_image_url": "/slope-image",
+  "aspect_image_url": "/aspect-image"
+}

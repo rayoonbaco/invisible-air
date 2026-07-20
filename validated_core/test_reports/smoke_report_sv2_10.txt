@@ -1,0 +1,16 @@
+SV2-10 — Elevation Lighting and Local Relief
+
+Full smoke suite:
+Passed: 99
+Failed: 0
+Total: 99
+
+Internal self-test:
+Passed: 48
+Failed: 0
+Total: 48
+
+Measured-terrain synthetic contract check:
+- 16 bounded relief cells
+- 15 contour segments
+- sparse-sample scientific boundary present

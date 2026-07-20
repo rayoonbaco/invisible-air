@@ -1,0 +1,35 @@
+{
+  "contract_version": "historical_weather_retrieval_v1",
+  "pass_id": "SV2-35",
+  "provider": "Open-Meteo Historical Weather API",
+  "source_type": "historical reanalysis / archived weather context",
+  "observation_timestamp": "2026-01-01T12:20:00Z",
+  "latitude": 34.2,
+  "longitude": -119.1,
+  "requested_variables": [
+    "wind_speed_10m",
+    "wind_direction_10m",
+    "wind_gusts_10m",
+    "temperature_2m",
+    "surface_pressure"
+  ],
+  "evidence_state": "modeled",
+  "claim_boundary": "Historical weather is model-derived meteorological context near the reported observation time. It is not an on-site measurement, methane detection, exact plume transport, exposure estimate, or attribution finding.",
+  "data_state": "historical_weather_cache",
+  "status": "ready",
+  "selected_time_utc": "2026-01-01T12:00:00Z",
+  "time_offset_minutes": -20.0,
+  "weather": {
+    "wind_speed_10m_mph": 7.0,
+    "wind_direction_10m_degrees": 225.0,
+    "wind_direction_cardinal": "SW",
+    "wind_gusts_10m_mph": 11.0,
+    "temperature_2m_c": 11.0,
+    "surface_pressure_hpa": 1011.0
+  },
+  "cache_status": "refreshed",
+  "retrieved_at_utc": "2026-07-20T19:31:49.323649Z",
+  "provider_url": "fixture://historical-weather",
+  "display_label": "historical weather ready \u00b7 nearest hour 20 min from observation",
+  "scene_directive": "Historical wind may support event-time context, but it remains model-derived and is not yet driving the plume visualization."
+}

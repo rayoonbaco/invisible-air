@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Observation Atlas{% endblock %}
+{% block body_class %}campus-page atlas-room{% endblock %}
+{% block content %}
+<main id="main-content" tabindex="-1" class="campus-reading-room atlas-reading-room">
+  <header class="room-heading atlas-heading">
+    <span class="campus-kicker">The Atlas · Document and compare</span>
+    <h1>Observation Atlas</h1>
+    <p>Keep each case legible across place, evidence state, time, and uncertainty.</p>
+    <!-- Legacy acceptance phrase: Compare how place, wind context, evidence time, and uncertainty -->
+    <p class="room-mission"><b>Question:</b> What does the record contain, and how does this case differ from another?</p>
+    <div class="atlas-living-principle" aria-label="Living Atlas principle">
+      <span class="living-pulse" aria-hidden="true"></span>
+      <div><strong>{{ atlas.living_principle }}</strong><small>{{ atlas.living_note }}</small></div>
+    </div>
+  </header>
+
+  <section class="atlas-room-grid" aria-label="Observation cases">
+    {% for case in atlas.cases %}
+    <article class="atlas-case {% if case.available %}is-ready{% else %}is-reserved{% endif %}">
+      <span class="case-number">{{ '%02d'|format(loop.index) }}</span>
+      <div class="case-body">
+        <div class="case-title-row">
+          <div>
+            <p class="case-state">{{ case.status_label }}</p>
+            <h2>{{ case.title }}</h2>
+            <p class="case-subtitle">{{ case.subtitle }}</p>
+          </div>
+          <div class="case-readiness" aria-label="Case record and interpretation status">
+            <strong>{{ case.record_status.label }}</strong>
+            <span>{{ case.record_status.interpretation }}</span>
+          </div>
+        </div>
+
+        <div class="case-life-line is-{{ case.living_state.mode }}">
+          <span class="life-marker" aria-hidden="true"></span>
+          <div><b>{{ case.living_state.label }}</b><span>{{ case.living_state.now }}</span></div>
+        </div>
+
+        <section class="scientific-state-ledger atlas-state-ledger" aria-label="Scientific state integrity for {{ case.title }}">
+          {% for item in case.scientific_states %}
+          <div class="state-{{ item.state }}"><b>{{ item.label }}</b><span>{{ item.subject }}</span><small>{{ item.statement }}</small></div>
+          {% endfor %}
+        </section>
+        <p class="record-boundary"><b>{{ case.record_status.detail }}</b> · {{ case.record_status.boundary }}</p>
+
+        <figure class="science-plate {% if not case.available %}is-dormant{% endif %}" aria-label="Visual scientific reading for {{ case.title }}">
+          <div class="phenomenon-sketch" aria-hidden="true">
+            {% if case.id == 'ventura-oxnard' %}
+            <svg viewBox="0 0 560 150" role="img">
+              <defs>
+                <linearGradient id="field-live" x1="0" x2="1"><stop offset="0" stop-color="#d7b16a" stop-opacity=".72"/><stop offset=".55" stop-color="#82d8ca" stop-opacity=".52"/><stop offset="1" stop-color="#82d8ca" stop-opacity="0"/></linearGradient>
+                <filter id="soft-live"><feGaussianBlur stdDeviation="7"/></filter>
+              </defs>
+              <path class="terrain-line" d="M0 116 C92 112 145 112 205 105 C260 98 296 88 330 68 C368 45 405 39 440 52 C480 66 515 42 560 24"/>
+              <path class="terrain-fill" d="M0 116 C92 112 145 112 205 105 C260 98 296 88 330 68 C368 45 405 39 440 52 C480 66 515 42 560 24 L560 150 L0 150 Z"/>
+              <ellipse class="source-halo" cx="82" cy="104" rx="18" ry="9"/>
+              <circle class="source-point" cx="82" cy="104" r="4"/>
+              <path class="possible-field" d="M90 102 C160 86 220 88 286 76 C350 64 390 50 452 48"/>
+              <path class="possible-field blur" d="M90 102 C160 86 220 88 286 76 C350 64 390 50 452 48"/>
+              <g class="wind-arrows">
+                <path d="M120 77 L172 68"/><path d="M163 62 L172 68 L164 76"/>
+                <path d="M210 66 L262 57"/><path d="M253 51 L262 57 L254 65"/>
+                <path d="M300 54 L352 43"/><path d="M343 37 L352 43 L344 51"/>
+              </g>
+              <path class="uncertainty-gap" d="M462 45 C486 42 512 35 540 26"/>
+            </svg>
+            {% elif case.id == 'open-basin' %}
+            <svg viewBox="0 0 560 150" role="img">
+              <path class="terrain-line ghost" d="M0 110 C130 107 230 109 340 105 C430 102 500 106 560 101"/>
+              <path class="terrain-fill ghost" d="M0 110 C130 107 230 109 340 105 C430 102 500 106 560 101 L560 150 L0 150 Z"/>
+              <g class="wind-arrows ghost"><path d="M110 70 L190 70"/><path d="M180 63 L190 70 L180 77"/><path d="M250 70 L330 70"/><path d="M320 63 L330 70 L320 77"/></g>
+              <path class="withheld-mark" d="M400 48 l24 24 m0-24 l-24 24"/>
+            </svg>
+            {% else %}
+            <svg viewBox="0 0 560 150" role="img">
+              <path class="terrain-line ghost" d="M0 118 C55 112 92 70 132 76 C180 83 198 118 250 105 C300 93 326 34 372 44 C420 54 440 107 486 90 C520 78 540 50 560 43"/>
+              <path class="terrain-fill ghost" d="M0 118 C55 112 92 70 132 76 C180 83 198 118 250 105 C300 93 326 34 372 44 C420 54 440 107 486 90 C520 78 540 50 560 43 L560 150 L0 150 Z"/>
+              <path class="possible-field ghost" d="M52 101 C120 87 173 103 235 91 C304 77 331 62 398 68 C452 72 500 58 538 45"/>
+              <path class="withheld-mark" d="M264 42 l24 24 m0-24 l-24 24"/>
+            </svg>
+            {% endif %}
+          </div>
+          <figcaption>{{ case.visual_caption }}</figcaption>
+          <div class="science-signals">
+            {% for signal in case.visual_signals %}
+            <div class="science-signal is-{{ signal.state }}">
+              <span class="signal-name">{{ signal.name }}</span>
+              <span class="signal-mark" aria-hidden="true">
+                {% if signal.kind == 'terrain' %}<i class="terrain-glyph"></i>
+                {% elif signal.kind == 'air' %}<i class="air-glyph">→ → →</i>
+                {% elif signal.kind == 'time' %}<i class="time-glyph"><b></b><b></b><b></b><b></b></i>
+                {% else %}<i class="trust-glyph"><b></b><b></b><b></b><b></b><b></b></i>{% endif %}
+              </span>
+              <small>{{ signal.note }}</small>
+            </div>
+            {% endfor %}
+          </div>
+        </figure>
+
+        <div class="temporal-trace {% if not case.available %}is-dormant{% endif %}" aria-label="Evidence trace through time">
+          <div class="trace-heading"><span>Trace through time</span><small>Evidence state, not atmospheric history</small></div>
+          <ol>
+            {% for trace in case.temporal_trace %}
+            <li class="is-{{ trace.state }}"><i aria-hidden="true"></i><b>{{ trace.label }}</b><small>{{ trace.note }}</small></li>
+            {% endfor %}
+          </ol>
+        </div>
+
+        <div class="case-insight {% if not case.available %}is-premise{% endif %}">
+          <span>{{ case.insight_label }}</span>
+          <p>{{ case.field_insight }}</p>
+        </div>
+
+        <ol class="evidence-sequence" aria-label="Evidence state sequence">
+          {% for moment in case.evidence_sequence %}
+          <li class="is-{{ moment.state }}"><span>{{ moment.label }}</span><p>{{ moment.text }}</p></li>
+          {% endfor %}
+        </ol>
+
+        <details class="case-context">
+          <summary>Land · Air · Time · Trust · Memory</summary>
+          <p class="case-question"><b>Question</b> {{ case.question }}</p>
+          <dl class="case-science">
+            <div><dt>Land</dt><dd>{{ case.comparison.terrain }}</dd></div>
+            <div><dt>Air</dt><dd>{{ case.comparison.atmosphere }}</dd></div>
+            <div><dt>Time</dt><dd>{{ case.comparison.evidence_time }}</dd></div>
+            <div><dt>Trust</dt><dd>{{ case.comparison.uncertainty }}</dd></div>
+          </dl>
+          <div class="atlas-memory">
+            <p><b>What holds</b> {{ case.living_state.holds }}</p>
+            <p><b>What could change</b> {{ case.living_state.next }}</p>
+            <p><b>Atlas memory</b> {{ case.living_state.memory }}</p>
+          </div>
+        </details>
+
+        {% if case.available %}
+        <div class="case-action-row">
+          <a class="case-action" href="/observatory?case={{ case.id }}">Enter this observation →</a>
+          <span class="case-provenance">{{ case.comparison.provenance }}</span>
+        </div>
+        {% else %}
+        <div class="case-action-row">
+          <span class="reserved-note">Needs {{ case.readiness.missing|length }} verified fields before activation.</span>
+          <span class="case-provenance">{{ case.source_note }}</span>
+        </div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+
+  <footer class="atlas-footer">
+    <p class="room-boundary">{{ atlas.boundary }}</p>
+    <a href="{{ atlas.template_url }}">View the verified case-package standard →</a>
+  </footer>
+</main>
+{% endblock %}

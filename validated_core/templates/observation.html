@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Observation Record{% endblock %}
+{% block body_class %}campus-page observation-record-room{% endblock %}
+{% block content %}
+<main class="campus-reading-room record-reading">
+  <span class="sr-only">The observation now has a record.</span>
+  <header class="room-heading">
+    <span class="campus-kicker">The Observatory Record</span>
+    <h1>What was reported?</h1>
+    <p>This record preserves the observation identity, what supports it, what is missing, and what the scene must never imply.</p>
+  </header>
+  <section class="record-section record-insight">
+    <span class="campus-kicker">{{ atlas.selected.insight_label }}</span>
+    <h2>{{ atlas.selected.field_insight }}</h2>
+  </section>
+  <section class="record-section">
+    <span class="campus-kicker">Observation identity</span>
+    <h2>{{ observation.observation_id }}</h2>
+    <p class="record-status">{{ observation.status_label }}</p>
+    <dl class="record-list">
+      <div><dt>Provider</dt><dd>{{ observation.provider }}</dd></div>
+      <div><dt>Product type</dt><dd>{{ observation.product_type }}</dd></div>
+      <div><dt>Reported time</dt><dd>{{ observation.reported_time_utc or "Unresolved" }}</dd></div>
+      <div><dt>Coordinates</dt><dd>{% if observation.coordinates.lat is not none %}{{ observation.coordinates.lat }}, {{ observation.coordinates.lon }}{% else %}Unresolved{% endif %}</dd></div>
+      <div><dt>Geometry</dt><dd>{{ observation.geometry_status }}</dd></div>
+      <div><dt>Quantification</dt><dd>{{ observation.quantification_status }}</dd></div>
+      <div><dt>Confidence</dt><dd>{{ observation.confidence_status }}</dd></div>
+      <div><dt>Retrieved</dt><dd>{{ observation.retrieved_at_utc or "Unresolved" }}</dd></div>
+    </dl>
+  </section>
+  <section class="record-section">
+    <span class="campus-kicker">Source</span>
+    {% if observation.source_url %}<h2><a href="{{ observation.source_url }}" target="_blank" rel="noopener">Open the reported source →</a></h2>{% else %}<h2>Source URL unresolved</h2><p>No source link has been loaded. The scene remains source-seeded rather than source-verified.</p>{% endif %}
+    <p>{{ observation.what_is_supported }}</p>
+  </section>
+  <section class="record-section">
+    <span class="campus-kicker">Missing evidence</span>
+    {% if observation.missing_fields %}<ul class="record-missing">{% for item in observation.missing_fields %}<li>{{ item }}</li>{% endfor %}</ul>{% else %}<p>No required manifest fields are missing.</p>{% endif %}
+  </section>
+  <section class="record-section claim-section">
+    <span class="campus-kicker">Claim boundary</span>
+    <h2>Record, not verdict.</h2>
+    <p>{{ observation.claim_boundary }}</p>
+    <p>{{ observation.what_is_not_supported }}</p>
+  </section>
+</main>
+{% endblock %}

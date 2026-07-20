@@ -1,0 +1,23 @@
+{
+  "layer": "wind",
+  "status": "live_current_wind",
+  "data_state": "live_current_conditions",
+  "mode": "open_meteo_current_wind",
+  "provider": "Open-Meteo",
+  "source_label": "Open-Meteo current 10 m wind",
+  "latitude": 34.26,
+  "longitude": -119.03,
+  "speed_mph": 11.9,
+  "gust_mph": 13.0,
+  "from_degrees": 254.0,
+  "to_degrees": 74.0,
+  "direction_cardinal": "WSW",
+  "label": "WSW 11.9 mph \u00b7 current",
+  "timestamp": "2026-07-20T19:30",
+  "retrieved_at_utc": "2026-07-20T19:31:52.367265+00:00",
+  "cache_status": "refreshed",
+  "fallback_reason": null,
+  "claim_strength": "current_weather_context",
+  "what_it_can_help_see": "current wind direction and speed can orient the map-registered visual review corridor",
+  "what_it_cannot_prove": "current wind is not necessarily observation-time wind and cannot prove methane detection, exact plume geometry, source responsibility, or exposure"
+}

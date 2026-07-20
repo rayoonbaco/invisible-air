@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}HUNTER Lens · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-narrow">
+  <p class="eyebrow">HUNTER Lens</p>
+  <h1>AI organizes attention. It does not create evidence.</h1>
+  <p class="lead">The HUNTER Lens asks what the human should inspect next inside the scene.</p>
+  <section class="quad">
+    {% for prompt in hunter.prompts %}
+    <article>
+      <p class="eyebrow">{{ prompt.lens }}</p>
+      <h3>{{ prompt.cue }}</h3>
+      <p>{{ prompt.question }}</p>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

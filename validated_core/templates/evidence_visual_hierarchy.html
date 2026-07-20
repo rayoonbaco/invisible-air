@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Invisible Air · Evidence Visual Hierarchy{% endblock %}
+{% block content %}
+<main class="review-page">
+  <p class="eyebrow">SV2-50 · Evidence-State Color, Contrast, and Visual Hierarchy Governance</p>
+  <h1>Evidence visual hierarchy</h1>
+  <p>{{ hierarchy.display_label }}</p>
+  <section class="review-grid">
+    <article class="review-card"><h2>Authority</h2><p>{{ (hierarchy.hierarchy_authority * 100)|round|int }}%</p><p>{{ hierarchy.hierarchy_mode|replace('_',' ') }}</p></article>
+    <article class="review-card"><h2>Priority order</h2><ol>{% for item in hierarchy.priority_order %}<li>{{ item|replace('_',' ') }}</li>{% endfor %}</ol></article>
+    <article class="review-card"><h2>Contrast rules</h2><dl>{% for key,value in hierarchy.contrast_rules.items() %}<div><dt>{{ key|replace('_',' ') }}</dt><dd>{{ value }}</dd></div>{% endfor %}</dl></article>
+    <article class="review-card"><h2>Palette</h2><div class="palette-grid">{% for key,value in hierarchy.palette.items() %}<div><i style="background:{{ value }}"></i><span>{{ key|replace('_',' ') }}</span><code>{{ value }}</code></div>{% endfor %}</div></article>
+  </section>
+  <p class="boundary">{{ hierarchy.claim_boundary }}</p>
+  <p><a href="/scene">Return to scene</a></p>
+</main>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<section class="page-shell"><p class="eyebrow">SV2-35 · SLOPE AND ASPECT</p><h1>Terrain steepness and orientation.</h1>
+<p class="lede">Continuous derivatives from the validated DEM. These layers describe land—not air transport or methane.</p>
+<div class="panel"><h2>{{ derivatives.display_label }}</h2><p><strong>State:</strong> {{ derivatives.data_state }}</p><p><strong>Evidence:</strong> {{ derivatives.evidence_state }}</p><p>{{ derivatives.claim_boundary }}</p></div>
+{% if derivatives.data_state == 'dem_derived_slope_aspect_cache' %}
+<div class="two-col"><div class="panel"><h2>Slope</h2><img src="/slope-image" alt="DEM-derived slope" style="width:100%;height:auto"><p>Brightness increases with steepness; display capped at 60°.</p></div><div class="panel"><h2>Aspect</h2><img src="/aspect-image" alt="DEM-derived aspect" style="width:100%;height:auto"><p>Hue follows clockwise orientation from north; flat cells are neutral.</p></div></div>
+<div class="panel"><pre>{{ derivatives.statistics | tojson(indent=2) }}</pre></div>{% endif %}
+</section>{% endblock %}

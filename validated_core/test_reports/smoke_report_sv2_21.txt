@@ -1,0 +1,15 @@
+SV2-27 standalone smoke suite
+Passed: 199
+Failed: 0
+Total: 199
+
+Live internal verification
+Passed: 132
+Failed: 0
+Total: 132
+
+Additional validation
+- Python syntax passed
+- Synthetic 2D DEM slope derivation passed
+- Synthetic aspect RGB derivation passed
+- Single-page browser launch contract passed

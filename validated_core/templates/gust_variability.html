@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Gust + Variability · Atmosphere Window{% endblock %}
+{% block content %}
+<main class="page-shell evidence-page">
+  <section class="page-hero">
+    <p class="eyebrow">SV2-35 · Gust and Variability Window</p>
+    <h1>See how the wind changed around the evidence hour.</h1>
+    <p>Short-window speed, direction, and gust context remains separate from turbulence, transport, and plume geometry.</p>
+  </section>
+  <section class="evidence-grid">
+    <article class="evidence-card"><p class="eyebrow">State</p><h2>{{ variability.display_label }}</h2><p>{{ variability.scene_directive }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Coverage</p><h2>{{ variability.available_hour_count }}/{{ variability.expected_hour_count }} hourly samples</h2><p>{{ variability.window_start_utc or "Observation time unresolved" }} → {{ variability.window_end_utc or "unavailable" }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Variability class</p><h2>{{ variability.variability_class|replace('_',' ')|title }}</h2><p>{{ variability.confidence_band|title }} support · {{ (variability.confidence_score * 100)|round|int }}%</p></article>
+    {% if variability.metrics %}
+    <article class="evidence-card"><p class="eyebrow">Selected hour</p><h2>{{ variability.metrics.selected_sustained_speed_mph }} mph sustained</h2><p>{{ variability.metrics.selected_gust_speed_mph }} mph gust · factor {{ variability.metrics.selected_gust_factor }}</p></article>
+    <article class="evidence-card"><p class="eyebrow">Window range</p><h2>{{ variability.metrics.window_speed_range_mph }} mph speed range</h2><p>{{ variability.metrics.window_direction_spread_degrees }}° directional spread · max gust {{ variability.metrics.window_max_gust_mph }} mph</p></article>
+    {% endif %}
+  </section>
+  <section class="truth-block"><p class="eyebrow">Scientific boundary</p><h2>Variability context, not turbulence.</h2><p>{{ variability.claim_boundary }}</p></section>
+</main>
+{% endblock %}

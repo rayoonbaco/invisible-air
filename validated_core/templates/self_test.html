@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Internal Smoke Test · {{ report.pass_id }}{% endblock %}
+{% block content %}
+<main class="evidence-shell">
+  <section class="evidence-header">
+    <p class="eyebrow">Atmosphere Window · internal smoke test</p>
+    <h1>{{ report.pass_id }} · {{ report.status }}</h1>
+    <p>{{ report.passed }} passed · {{ report.failed }} failed · {{ report.total }} total</p>
+    <p class="boundary">{{ report.note }}</p>
+    <div class="field-actions">
+      <a href="/scene">Return to scene</a>
+      <a href="/self-test.json">JSON report</a>
+    </div>
+    {% if report.failed_checks %}
+      <div class="evidence-card" style="margin-top: 1rem; border-color: #ff7a7a;">
+        <p class="eyebrow">FAILED CHECKS — REVIEW FIRST</p>
+        {% for check in report.failed_checks %}
+          <h2>{{ check.name }}</h2>
+          <p>{{ check.detail }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+  <section class="evidence-grid">
+    {% for check in report.checks %}
+      <article class="evidence-card">
+        <p class="eyebrow">{% if check.passed %}PASS{% else %}FAIL{% endif %}</p>
+        <h2>{{ check.name }}</h2>
+        <p>{{ check.detail }}</p>
+      </article>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

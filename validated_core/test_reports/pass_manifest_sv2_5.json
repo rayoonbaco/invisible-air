@@ -1,0 +1,120 @@
+{
+  "pass_id": "SV2-5",
+  "status": "PASS",
+  "passed": 22,
+  "failed": 0,
+  "total": 22,
+  "checks": [
+    {
+      "name": "file:app.py",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:engine/wind_loader.py",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:engine/terrain_loader.py",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:engine/pass_checks.py",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:templates/scene.html",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:templates/self_test.html",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:static/js/plume_canvas.js",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:tests/smoke_test.py",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:RUN_SMOKE_TESTS.bat",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "file:docs/LIVE_WIND_CONNECTOR_SV2_5.md",
+      "passed": true,
+      "detail": "present"
+    },
+    {
+      "name": "scene:build",
+      "passed": true,
+      "detail": "SV2-5 \u00b7 Live Wind Connector"
+    },
+    {
+      "name": "wind:contract",
+      "passed": true,
+      "detail": "default_vector_fallback"
+    },
+    {
+      "name": "wind:direction-range",
+      "passed": true,
+      "detail": "from 248.0 to 68.0"
+    },
+    {
+      "name": "wind:observation-time-boundary",
+      "passed": true,
+      "detail": "boundary present"
+    },
+    {
+      "name": "plume:map-registered",
+      "passed": true,
+      "detail": "map_registered_visual_reconstruction"
+    },
+    {
+      "name": "plume:follows-scene-wind",
+      "passed": true,
+      "detail": "geometry 68.0 / wind 68.0"
+    },
+    {
+      "name": "guardrail:unsafe-claim-1",
+      "passed": true,
+      "detail": "absent"
+    },
+    {
+      "name": "guardrail:unsafe-claim-2",
+      "passed": true,
+      "detail": "absent"
+    },
+    {
+      "name": "guardrail:unsafe-claim-3",
+      "passed": true,
+      "detail": "absent"
+    },
+    {
+      "name": "guardrail:unsafe-claim-4",
+      "passed": true,
+      "detail": "absent"
+    },
+    {
+      "name": "guardrail:unsafe-claim-5",
+      "passed": true,
+      "detail": "absent"
+    },
+    {
+      "name": "guardrail:unsafe-claim-6",
+      "passed": true,
+      "detail": "absent"
+    }
+  ],
+  "note": "Internal checks verify build contracts and guardrails without replacing visual or scientific review."
+}

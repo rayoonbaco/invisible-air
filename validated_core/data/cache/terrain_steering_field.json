@@ -1,0 +1,44 @@
+{
+  "contract_version": "terrain_steering_field_v1",
+  "pass_id": "SV2-35",
+  "layer": "terrain_steering_field",
+  "evidence_state": "inferred",
+  "data_state": "terrain_steering_field_cache",
+  "status": "ready",
+  "cache_key": "0380e404f3120a8066c255ff98c6a4704e58bb118f901070f591c25d41adbeb7",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_dem_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "wind_to_degrees": 74.0,
+  "wind_speed_mph": 11.9,
+  "temporal_basis": "current_atmospheric_context_only",
+  "field_statistics": {
+    "mean_strength": 0.1925,
+    "strength_band": "low-moderate",
+    "dominant_response": "lateral_deflection",
+    "response_ratios": {
+      "alignment": 0.0555,
+      "opposition": 0.0618,
+      "shelter": 0.0401,
+      "channeling": 0.0035,
+      "lateral_deflection": 0.2726
+    },
+    "component_means": {
+      "alignment": 0.0423,
+      "opposition": 0.0513,
+      "shelter": 0.0578,
+      "channeling": 0.0214,
+      "lateral_deflection": 0.1525
+    },
+    "valid_cell_ratio": 1.0
+  },
+  "image_url": "/terrain-steering-field-image",
+  "image_sha256": "a76fe39bee7b3c9e7f7e145db79aa6154cadde68401e5c013067342b418d68dd",
+  "display_label": "low-moderate spatial steering \u00b7 dominant lateral deflection \u00b7 current context only",
+  "scene_directive": "Show the field as a restrained spatial review layer beneath the atmospheric reconstruction. Treat categories as terrain-conditioned possibilities, not actual airflow measurements.",
+  "claim_boundary": "The Terrain Steering Field is a DEM-derived visual heuristic showing where terrain may align, oppose, shelter, channel, or laterally deflect available wind context. It is not CFD, measured airflow, plume transport, methane concentration, or proof of actual atmospheric behavior."
+}

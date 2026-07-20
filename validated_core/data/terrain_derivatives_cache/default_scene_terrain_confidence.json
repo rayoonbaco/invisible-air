@@ -1,0 +1,102 @@
+{
+  "contract_version": "1.0",
+  "pass_id": "SV2-35",
+  "layer": "terrain_confidence",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_dem_provider": "USGS 3DEP Elevation ImageServer",
+  "source_dem_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "source_dem_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "source_resolution_m": {
+    "x": 67.08,
+    "y": 66.93
+  },
+  "confidence_output_path": "data/terrain_derivatives_cache/default_scene_terrain_confidence.png",
+  "metadata_path": "data/terrain_derivatives_cache/default_scene_terrain_confidence.json",
+  "evidence_state": "measured",
+  "confidence_dimensions": [
+    "dem_coverage",
+    "dem_valid_cells",
+    "source_resolution",
+    "cache_integrity",
+    "hillshade_completeness",
+    "slope_aspect_completeness",
+    "landform_completeness",
+    "landform_classification_confidence"
+  ],
+  "visual_role": "show how much trust the measured terrain stack earns without increasing scientific certainty",
+  "claim_boundary": "Terrain confidence scores the completeness and integrity of the terrain evidence stack. It does not validate methane observations, atmospheric transport, event reconstruction, geology, or source responsibility.",
+  "data_state": "terrain_confidence_ready",
+  "cache_status": "refreshed",
+  "coverage_status": "source_dem_bbox_scored",
+  "generated_at_utc": "2026-07-20T19:31:57.413038+00:00",
+  "overall_score": 0.9616,
+  "quality_grade": "high",
+  "display_label": "terrain evidence quality high \u00b7 96% composite",
+  "failure_reason": null,
+  "dimensions": {
+    "dem_coverage": {
+      "score": 1.0,
+      "state": "high"
+    },
+    "dem_valid_cells": {
+      "score": 1.0,
+      "state": "high",
+      "nodata_ratio": 0.0
+    },
+    "source_resolution": {
+      "score": 0.7717,
+      "state": "strong",
+      "approx_max_pixel_m": 67.08
+    },
+    "cache_integrity": {
+      "score": 1.0,
+      "state": "high",
+      "checks": {
+        "dem": true,
+        "hillshade": true,
+        "slope": true,
+        "aspect": true,
+        "landforms": true,
+        "landform_confidence": true
+      }
+    },
+    "hillshade_completeness": {
+      "score": 1.0,
+      "state": "high"
+    },
+    "slope_aspect_completeness": {
+      "score": 1.0,
+      "state": "high"
+    },
+    "landform_completeness": {
+      "score": 1.0,
+      "state": "high"
+    },
+    "landform_classification_confidence": {
+      "score": 0.8445,
+      "state": "strong"
+    }
+  },
+  "output_grid": {
+    "width": 768,
+    "height": 512
+  },
+  "confidence_sha256": "e0a2666e3480a1406d29de954dbf79663e11723ee99294a81303d09fac53f9b3",
+  "confidence_byte_size": 215465,
+  "confidence_image_url": "/terrain-confidence-image",
+  "statistics": {
+    "valid_cell_ratio": 1.0,
+    "nodata_ratio": 0.0,
+    "mean_spatial_confidence": 0.937,
+    "p10_spatial_confidence": 0.8761,
+    "p90_spatial_confidence": 0.9875
+  }
+}

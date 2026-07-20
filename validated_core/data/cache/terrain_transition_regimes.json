@@ -1,0 +1,49 @@
+{
+  "contract_version": "terrain_transition_regimes_v1",
+  "pass_id": "SV2-40",
+  "layer": "terrain_transition_zones_and_flow_regime_boundaries",
+  "evidence_state": "inferred",
+  "data_state": "terrain_transition_regimes_cache",
+  "status": "ready",
+  "cache_key": "169f03e5aaa82c00e494dd72f0f0575c8d7ddcd71879d35d88360d85cd8b5730",
+  "source_dem_sha256": "7e773ec45268128e52fea60e679af80a6091f45249a9ce6547e51836280860f8",
+  "source_bbox": [
+    -119.33,
+    34.12,
+    -118.77,
+    34.43
+  ],
+  "confidence_support": 0.5263,
+  "atmospheric_basis": "terrain_and_current_context_only",
+  "transition_statistics": {
+    "mean_potential": 0.2453,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.0076
+  },
+  "boundary_statistics": {
+    "mean_potential": 0.2143,
+    "potential_band": "low-moderate",
+    "elevated_cell_ratio": 0.13
+  },
+  "regime_mix": {
+    "confined_ratio": 0.0994,
+    "exposed_ratio": 0.1894,
+    "mixed_transition_ratio": 0.0142
+  },
+  "transition_image_url": "/terrain-transition-image",
+  "transition_image_sha256": "4e1db52b5d0285539a0abbd30e98a4fd6f34005a54690be941cb832b27808d1f",
+  "boundary_image_url": "/flow-regime-boundary-image",
+  "boundary_image_sha256": "bc5c7b511d1e0fc0510355f810dc771a5a5add3f1f2e3e75a47c730ab3731530",
+  "particle_directives": {
+    "transition_jitter_px": 0.9,
+    "boundary_softening": 1.0135,
+    "regime_blend": 0.121,
+    "transition_band": [
+      0.38,
+      0.78
+    ]
+  },
+  "display_label": "terrain transitions low-moderate \u00b7 regime boundaries low-moderate \u00b7 53% support",
+  "scene_directive": "Show restrained gold transition illumination and thin pale regime-boundary traces. Blend visual motion gently across these zones rather than creating hard edges.",
+  "claim_boundary": "Terrain transition zones and flow-regime boundaries are DEM-derived interpretive boundaries. They are not measured atmospheric fronts, CFD regime changes, plume edges, concentration gradients, travel-time boundaries, or proof of actual airflow behavior."
+}
