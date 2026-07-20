@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const state = { map: null, canvas: null, ctx: null, field: null, image: null, glowImage: null, detailImage: null, branchImage: null, resizeObserver: null, sourcePhase: 0, animationFrame: null };
+  const state = { map: null, canvas: null, ctx: null, field: null, image: null, glowImage: null, detailImage: null, branchImage: null, resizeObserver: null, sourcePhase: 0, animationFrame: null, dpr: 1 };
 
   function destination(lat, lon, bearingDeg, distanceKm) {
     const radiusKm = 6371.0088;
@@ -24,6 +24,7 @@
     if (!state.canvas) return;
     const rect = state.canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    state.dpr = dpr;
     state.canvas.width = Math.max(1, Math.round(rect.width * dpr));
     state.canvas.height = Math.max(1, Math.round(rect.height * dpr));
     state.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -222,7 +223,16 @@
     const t = transformForGrid(state.field.grid);
     const drawLayer = function (image, blur, alpha) {
       state.ctx.save(); state.ctx.globalCompositeOperation = 'screen'; state.ctx.globalAlpha = alpha;
-      state.ctx.setTransform.apply(state.ctx, t.matrix); state.ctx.filter = 'blur(' + blur + 'px)'; state.ctx.drawImage(image, 0, 0); state.ctx.restore();
+      const dpr = state.dpr || 1;
+      const m = t.matrix;
+      state.ctx.setTransform(
+        m[0] * dpr, m[1] * dpr,
+        m[2] * dpr, m[3] * dpr,
+        m[4] * dpr, m[5] * dpr
+      );
+      state.ctx.filter = 'blur(' + blur + 'px)';
+      state.ctx.drawImage(image, 0, 0);
+      state.ctx.restore();
     };
     drawLayer(state.glowImage, 4.4, 0.74);
     drawLayer(state.image, 0.38, 1);
