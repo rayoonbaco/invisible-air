@@ -5,16 +5,26 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 CACHE_DIR = Path(__file__).resolve().parent.parent / "data" / "live_weather_cache"
-CACHE_TTL_SECONDS = 600
+CACHE_TTL_SECONDS = 3600
+RATE_LIMIT_COOLDOWN_SECONDS = 900
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
+COOLDOWN_FILE = CACHE_DIR / "_provider_cooldown.json"
+
+
+def _rounded_coordinates(lat: float, lon: float) -> tuple[float, float]:
+    return round(float(lat), 2), round(float(lon), 2)
+
 
 def _cache_path(lat: float, lon: float) -> Path:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    return CACHE_DIR / f"{lat:.4f}_{lon:.4f}.json"
+    rounded_lat, rounded_lon = _rounded_coordinates(lat, lon)
+    return CACHE_DIR / f"{rounded_lat:.2f}_{rounded_lon:.2f}.json"
+
 
 def _read_cache(lat: float, lon: float):
     path = _cache_path(lat, lon)
@@ -27,10 +37,40 @@ def _read_cache(lat: float, lon: float):
     except Exception:
         return None
 
+
 def _write_cache(lat: float, lon: float, data: dict[str, Any]) -> None:
     payload = dict(data)
     payload["_cached_at_epoch"] = time.time()
     _cache_path(lat, lon).write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def _read_cooldown() -> dict[str, Any]:
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    if not COOLDOWN_FILE.exists():
+        return {}
+    try:
+        return json.loads(COOLDOWN_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _set_cooldown(error_text: str) -> None:
+    payload = {
+        "until_epoch": time.time() + RATE_LIMIT_COOLDOWN_SECONDS,
+        "error": error_text,
+        "set_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    COOLDOWN_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def _cooldown_active() -> tuple[bool, dict[str, Any]]:
+    data = _read_cooldown()
+    try:
+        active = float(data.get("until_epoch", 0)) > time.time()
+    except (TypeError, ValueError):
+        active = False
+    return active, data
+
 
 def _closest_hour_index(times: list[str]) -> int:
     now = datetime.now(timezone.utc)
@@ -47,6 +87,7 @@ def _closest_hour_index(times: list[str]) -> int:
             pass
     return best_i
 
+
 def _stability(is_day: int, cloud: float, wind: float, pbl: float) -> str:
     if is_day:
         if pbl >= 1400 and cloud < 45 and wind < 5.5:
@@ -60,11 +101,29 @@ def _stability(is_day: int, cloud: float, wind: float, pbl: float) -> str:
         return "very_stable"
     return "stable"
 
+
 def fetch_live_atmosphere(lat: float, lon: float, force_refresh: bool = False) -> dict[str, Any]:
     cached = _read_cache(lat, lon)
     if cached and not force_refresh and cached.get("_cache_age_seconds", 999999) < CACHE_TTL_SECONDS:
         cached["data_state"] = "cached_live"
         return cached
+
+    cooldown_is_active, cooldown = _cooldown_active()
+    if cooldown_is_active and not force_refresh:
+        if cached:
+            cached["data_state"] = "stale_cached_live"
+            cached["live_error"] = cooldown.get("error", "Provider temporarily rate-limited")
+            cached["provider_cooldown_active"] = True
+            return cached
+        return {
+            "provider": "Open-Meteo",
+            "retrieved_at_utc": datetime.now(timezone.utc).isoformat(),
+            "latitude": lat,
+            "longitude": lon,
+            "data_state": "unavailable",
+            "live_error": cooldown.get("error", "Provider temporarily rate-limited"),
+            "provider_cooldown_active": True,
+        }
 
     params = {
         "latitude": f"{lat:.6f}",
@@ -115,7 +174,29 @@ def fetch_live_atmosphere(lat: float, lon: float, force_refresh: bool = False) -
             "data_state": "live",
         }
         _write_cache(lat, lon, data)
+        if COOLDOWN_FILE.exists():
+            COOLDOWN_FILE.unlink()
         return data
+
+    except HTTPError as exc:
+        error_text = f"HTTP Error {exc.code}: {exc.reason}"
+        if exc.code == 429:
+            _set_cooldown(error_text)
+        if cached:
+            cached["data_state"] = "stale_cached_live"
+            cached["live_error"] = error_text
+            cached["provider_cooldown_active"] = exc.code == 429
+            return cached
+        return {
+            "provider": "Open-Meteo",
+            "retrieved_at_utc": datetime.now(timezone.utc).isoformat(),
+            "latitude": lat,
+            "longitude": lon,
+            "data_state": "unavailable",
+            "live_error": error_text,
+            "provider_cooldown_active": exc.code == 429,
+        }
+
     except Exception as exc:
         if cached:
             cached["data_state"] = "stale_cached_live"
@@ -129,6 +210,7 @@ def fetch_live_atmosphere(lat: float, lon: float, force_refresh: bool = False) -
             "data_state": "unavailable",
             "live_error": str(exc),
         }
+
 
 def apply_live_atmosphere(payload: dict[str, Any], live: dict[str, Any]) -> dict[str, Any]:
     if live.get("data_state") == "unavailable":
