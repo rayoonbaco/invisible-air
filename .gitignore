@@ -9,3 +9,8 @@ __pycache__/
 Thumbs.db
 artifacts/
 validated_core/artifacts/
+validated_core/data/cache/
+validated_core/data/live_weather_cache/
+validated_core/data/wind_cache/
+*.before_*
+release_integrity/latest/

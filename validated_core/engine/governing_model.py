@@ -23,6 +23,7 @@ from engine.terrain_field_response import build_terrain_response, TERRAIN_RESPON
 
 MODEL_VERSION = "ia_governing_model_v1.0.0"
 COEFFICIENT_VERSION = "ia_coefficients_2026-07-20-pass50"
+MATERIAL_BEHAVIOR_VERSION = "ia_material_behavior_v1.0.0"
 
 STABILITY = {
     "very_unstable": {"crosswind_growth": 0.22, "vertical_growth": 0.19, "decay_scale": 0.78},
@@ -67,6 +68,26 @@ class TerrainInput:
     local_response_enabled: bool = True
 
 @dataclass(frozen=True)
+class MaterialBehaviorInput:
+    material_profile_id: str = "methane-gas"
+    material_name: str = "Methane gas"
+    pollutant_phase: str = "gas"
+    base_release_height_m: float = 10.0
+    effective_release_height_m: float = 10.0
+    plume_rise_m: float = 0.0
+    crosswind_spread_factor: float = 1.0
+    persistence_factor: float = 1.0
+    settling_velocity_mps: float = 0.0
+    dry_deposition_velocity_mps: float = 0.0
+    wet_scavenging_factor: float = 0.0
+    effective_wet_removal_factor: float = 0.0
+    support_uncertainty_penalty: float = 0.0
+    precipitation_rate_mm_hr: float = 0.0
+    material_behavior_version: str = MATERIAL_BEHAVIOR_VERSION
+    behavior_scope: str = "bounded_screening_scale_relative_influence"
+
+
+@dataclass(frozen=True)
 class GridInput:
     domain_downwind_km: float = 80.0
     domain_crosswind_km: float = 40.0
@@ -78,6 +99,7 @@ class GoverningModelInput:
     source: SourceInput = field(default_factory=SourceInput)
     meteorology: MeteorologyInput = field(default_factory=MeteorologyInput)
     terrain: TerrainInput = field(default_factory=TerrainInput)
+    material: MaterialBehaviorInput = field(default_factory=MaterialBehaviorInput)
     grid: GridInput = field(default_factory=GridInput)
 
 
@@ -101,7 +123,7 @@ def _effective_transport_direction(m: MeteorologyInput, t: TerrainInput) -> tupl
 
 
 def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
-    m, s, t, g = inputs.meteorology, inputs.source, inputs.terrain, inputs.grid
+    m, s, t, material, g = inputs.meteorology, inputs.source, inputs.terrain, inputs.material, inputs.grid
     if m.stability_class not in STABILITY:
         raise ValueError(f"Unsupported stability_class: {m.stability_class}")
     if m.wind_speed_mps <= 0:
@@ -121,9 +143,11 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
     variability_rad = math.radians(max(0.0, m.direction_variability_deg))
     gust_excess = max(0.0, m.gust_factor - 1.0)
     terrain_spread = float(regime["crosswind_spread_factor"])
+    material_spread = float(np.clip(material.crosswind_spread_factor, 0.65, 1.65))
+    effective_release_height_m = max(0.0, float(material.effective_release_height_m))
 
-    initial_sigma_km = 0.35 + 0.025 * max(0.0, s.release_height_m)
-    growth = coeff["crosswind_growth"] * terrain_spread
+    initial_sigma_km = 0.35 + 0.025 * effective_release_height_m
+    growth = coeff["crosswind_growth"] * terrain_spread * material_spread
     turbulent_growth = 0.035 * gust_excess + 0.30 * math.tan(min(variability_rad, math.radians(35.0)))
     base_sigma_y = np.maximum(0.25, initial_sigma_km + xp * (growth + turbulent_growth))
 
@@ -135,14 +159,19 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
     mixing_factor = np.clip(700.0 / max(120.0, m.boundary_layer_depth_m), 0.45, 1.8)
     speed_reach = np.clip(0.58 + 0.24 * m.wind_speed_mps, 0.65, 2.4)
     release_factor = np.clip(s.relative_strength, 0.05, 20.0)
-    decay_length = g.domain_downwind_km * 0.42 * coeff["decay_scale"] * speed_reach
+    persistence_factor = float(np.clip(material.persistence_factor, 0.55, 1.65))
+    decay_length = g.domain_downwind_km * 0.42 * coeff["decay_scale"] * speed_reach * persistence_factor
+    settling_loss_per_km = max(0.0, float(material.settling_velocity_mps)) * 0.024
+    dry_loss_per_km = max(0.0, float(material.dry_deposition_velocity_mps)) * 0.018
+    wet_loss_per_km = max(0.0, float(material.effective_wet_removal_factor)) * 0.012
+    material_loss = np.exp(-xp * (settling_loss_per_km + dry_loss_per_km + wet_loss_per_km))
 
     crosswind = np.exp(-0.5 * ((yy - terrain_center) / sigma_y) ** 2)
     downwind = np.exp(-xp / max(2.0, decay_length))
-    source_transition = 1.0 - np.exp(-xp / max(0.7, 1.2 + s.release_height_m / 35.0))
+    source_transition = 1.0 - np.exp(-xp / max(0.7, 1.2 + effective_release_height_m / 35.0))
     upstream_guard = np.where(xx >= 0.0, 1.0, np.exp(xx / 0.7) * 0.08)
 
-    raw = release_factor * mixing_factor * crosswind * downwind * source_transition * upstream_guard * terrain_local["transmission"]
+    raw = release_factor * mixing_factor * crosswind * downwind * material_loss * source_transition * upstream_guard * terrain_local["transmission"]
     raw += release_factor * mixing_factor * np.exp(-((xx / 0.8) ** 2 + (yy / 0.8) ** 2)) * 0.72
     max_raw = float(raw.max()) or 1.0
     influence = np.clip(raw / max_raw, 0.0, 1.0)
@@ -151,8 +180,9 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
     lateral_support = np.exp(-0.5 * (np.abs(yy) / np.maximum(0.7, sigma_y * 2.15)) ** 2)
     variability_penalty = np.clip(1.0 - m.direction_variability_deg / 95.0 - gust_excess * 0.08, 0.35, 1.0)
     terrain_penalty = np.clip(1.0 - float(regime["support_penalty"]) * t.response_strength, 0.35, 1.0)
+    material_support = np.clip(1.0 - float(material.support_uncertainty_penalty), 0.55, 1.0)
     evidence = np.clip(t.evidence_support, 0.0, 1.0)
-    support = np.clip(distance_support * lateral_support * variability_penalty * terrain_penalty * evidence * terrain_local["support_factor"], 0.0, 1.0)
+    support = np.clip(distance_support * lateral_support * variability_penalty * terrain_penalty * material_support * evidence * terrain_local["support_factor"], 0.0, 1.0)
     support *= (influence > 0.004)
 
     cell_area = (g.domain_downwind_km * 1.08 / (g.nx - 1)) * (2 * g.domain_crosswind_km / (g.ny - 1))
@@ -174,6 +204,7 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
             "mixing": "Boundary-layer-depth scaling of relative raw influence before within-run normalization.",
             "support": "Independent distance, lateral, variability, terrain-evidence, terrain-conflict, and cell-level support field.",
             "local_terrain": "Bounded deterministic cell-level steering, compression, barrier transmission, divergence, and support response; screening-scale, not CFD.",
+            "material_behavior": "Bounded release-height, spread, persistence, settling, deposition, wet-removal, and support modifiers; relative screening behavior, not regulatory dispersion.",
         },
     }
     fingerprint_payload = json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode() + influence.tobytes() + support.tobytes()
@@ -205,6 +236,17 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
             "supported_area_km2_at_0_50": round(float((active & supported).sum() * cell_area), 4),
             "mean_support_in_active_field": round(float(support[active].mean()) if active.any() else 0.0, 5),
             "terrain_response_version": TERRAIN_RESPONSE_VERSION,
+            "material_behavior_version": MATERIAL_BEHAVIOR_VERSION,
+            "material_profile_id": material.material_profile_id,
+            "material_name": material.material_name,
+            "effective_release_height_m": round(float(effective_release_height_m), 5),
+            "effective_buoyancy_factor": round(float(1.0 + material.plume_rise_m / max(10.0, material.base_release_height_m)), 5),
+            "effective_settling_rate_mps": round(float(material.settling_velocity_mps), 6),
+            "effective_persistence_factor": round(float(persistence_factor), 5),
+            "effective_deposition_factor": round(float(dry_loss_per_km), 8),
+            "effective_wet_removal_factor": round(float(material.effective_wet_removal_factor), 5),
+            "material_crosswind_spread_factor": round(float(material_spread), 5),
+            "material_support_factor": round(float(material_support), 5),
             "terrain_local": terrain_local["diagnostics"],
         },
         "manifest": manifest,
@@ -212,9 +254,22 @@ def run_governing_model(inputs: GoverningModelInput) -> dict[str, Any]:
 
 
 def input_from_dict(payload: dict[str, Any]) -> GoverningModelInput:
+    # Material profiles also carry explanatory contract metadata such as
+    # ``not_claimed``. The numerical governing model intentionally accepts only
+    # fields declared by MaterialBehaviorInput and safely ignores presentation
+    # or claim-boundary metadata.
+    material_payload = payload.get("material", {}) or {}
+    allowed_material_fields = MaterialBehaviorInput.__dataclass_fields__
+    material_values = {
+        key: value
+        for key, value in material_payload.items()
+        if key in allowed_material_fields
+    }
+
     return GoverningModelInput(
         source=SourceInput(**payload.get("source", {})),
         meteorology=MeteorologyInput(**payload.get("meteorology", {})),
         terrain=TerrainInput(**payload.get("terrain", {})),
+        material=MaterialBehaviorInput(**material_values),
         grid=GridInput(**payload.get("grid", {})),
     )

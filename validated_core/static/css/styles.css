@@ -1055,3 +1055,42 @@ p,li,dd,small{line-height:1.55}
   text-transform:uppercase;
 }
 @media(max-width:720px){.room-mission{font-size:15px}}
+
+/* PASS 61 — NAVIGATION CLEARANCE
+   Keeps the Return to Observatory control clear of the upper-left flag/banner treatment. */
+.way-home{
+  top:112px;
+  left:32px;
+  z-index:1200;
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:8px 12px;
+  border:1px solid rgba(130,216,202,.42);
+  background:rgba(12,17,15,.88);
+  color:var(--craft-cream);
+  text-decoration:none;
+  backdrop-filter:blur(8px);
+  box-shadow:0 8px 22px rgba(0,0,0,.24);
+}
+.way-home:hover,.way-home:focus-visible{
+  color:var(--craft-teal);
+  border-color:rgba(130,216,202,.78);
+  background:rgba(12,17,15,.96);
+}
+@media(max-width:800px){
+  .way-home{top:94px;left:14px;min-height:44px;padding:9px 12px;}
+}
+
+/* PASS 62 — RELEASE INTEGRITY CLEARANCE
+   Places return navigation below the complete upper-left hero statement on supporting pages. */
+.way-home{
+  top:340px;
+  left:32px;
+}
+@media(max-width:800px){
+  .way-home{top:326px;left:14px;}
+}
+@media(max-width:520px){
+  .way-home{top:350px;max-width:calc(100vw - 28px);}
+}

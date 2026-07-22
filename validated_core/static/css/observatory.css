@@ -957,3 +957,353 @@ body.final-instrument{background:#111410}
 .model-status.is-ready{opacity:0;pointer-events:none}
 .final-instrument .map-attribution{opacity:.7}
 @media(max-width:900px){.source-card{width:276px}.field-read div{width:145px}}
+
+
+/* National Scenario Instrument — Pass 1 */
+.national-source-card{width:min(330px,calc(100vw - 36px))!important;padding:18px 20px!important}
+.scenario-picker{margin:0 0 17px;padding:0 0 15px;border-bottom:1px solid rgba(216,205,184,.15)}
+.scenario-picker label{display:block;margin:0 0 7px;color:var(--brass);font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.scenario-picker select{width:100%;padding:10px 32px 10px 11px;color:var(--cream);border:1px solid rgba(185,152,95,.38);border-radius:0;background:#171915;font:500 12px/1.25 system-ui,sans-serif}
+.national-source-card .source-type{margin:5px 0 13px;color:rgba(239,230,210,.62);font:500 11px/1.35 system-ui,sans-serif}
+.national-source-card .condition-line{padding:10px 0;border-top:1px solid rgba(216,205,184,.12);border-bottom:1px solid rgba(216,205,184,.12);color:rgba(239,230,210,.78);font:600 10px/1.4 system-ui,sans-serif}
+.national-source-card .scenario-interpretation{margin:13px 0 15px;color:rgba(239,230,210,.78);font:400 11px/1.48 system-ui,sans-serif}
+@media(max-width:760px){.national-source-card{right:12px!important;top:12px!important;width:min(290px,calc(100vw - 24px))!important}.national-source-card .scenario-interpretation{display:none}}
+
+
+/* National Scenario Instrument — National Overview Pass */
+.national-view .plume-canvas{display:none!important}
+.national-view .local-only{display:none!important}
+.national-view .instrument-title{max-width:520px}
+.national-view .instrument-title h1{font-size:clamp(44px,5.2vw,78px)}
+.national-view .national-picker-card{top:clamp(24px,4vw,52px)!important}
+.scenario-picker-heading{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.national-reset{color:rgba(239,230,210,.68);font:700 8px/1 system-ui,sans-serif;letter-spacing:.08em;text-decoration:none;text-transform:uppercase;border-bottom:1px solid rgba(185,152,95,.45);padding-bottom:3px}
+.national-reset:hover{color:var(--cream)}
+.national-scenario-icon{background:transparent;border:0}
+.national-scenario-icon span{position:absolute;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#e3a34f;border:1px solid rgba(255,243,202,.95);box-shadow:0 0 0 5px rgba(222,154,74,.12),0 0 12px 4px rgba(222,154,74,.72),0 0 28px 9px rgba(222,154,74,.24);transition:transform .18s ease,box-shadow .18s ease}
+.national-scenario-icon:hover span,.national-scenario-icon.is-active span{transform:translate(-50%,-50%) scale(1.35);box-shadow:0 0 0 7px rgba(255,235,184,.14),0 0 17px 6px rgba(255,198,105,.9),0 0 36px 13px rgba(222,154,74,.32)}
+.national-scenario-tooltip{border:1px solid rgba(185,152,95,.42)!important;background:rgba(20,22,19,.96)!important;color:var(--cream)!important;box-shadow:0 12px 32px rgba(0,0,0,.42)!important;font:500 11px/1.35 system-ui,sans-serif!important}
+.national-scenario-tooltip:before{border-top-color:rgba(20,22,19,.96)!important}
+.national-scenario-tooltip strong{font:600 13px/1.2 Georgia,serif}
+.national-scenario-tooltip span{color:rgba(239,230,210,.62)}
+.national-view .leaflet-tile-pane{filter:grayscale(.22) sepia(.10) saturate(.62) contrast(1.06) brightness(.72)}
+@media(max-width:760px){.national-view .instrument-title{display:none}.national-view .national-picker-card{left:12px!important;right:12px!important;width:auto!important}}
+
+
+/* National Instrument - Museum Quality Redesign */
+.national-view .observatory-window{background:#090c0b}
+.national-view .final-vignette{background:radial-gradient(circle at 48% 44%,transparent 0 38%,rgba(0,0,0,.18) 68%,rgba(0,0,0,.58) 100%),linear-gradient(90deg,rgba(7,10,9,.18),transparent 26%,transparent 72%,rgba(7,10,9,.28))}
+.national-view .leaflet-tile-pane{filter:grayscale(.12) sepia(.08) saturate(.76) contrast(1.12) brightness(.78)!important}
+.national-instrument-header{position:absolute;z-index:40;top:0;left:0;right:0;height:72px;display:grid;grid-template-columns:minmax(260px,1fr) auto minmax(260px,1fr);align-items:center;padding:0 24px;gap:24px;border-bottom:1px solid rgba(185,152,95,.22);background:linear-gradient(180deg,rgba(8,11,10,.98),rgba(8,11,10,.84));box-shadow:0 10px 30px rgba(0,0,0,.28);backdrop-filter:blur(10px)}
+.national-center-title{color:var(--cream);font:500 clamp(18px,1.8vw,27px)/1 Georgia,serif;white-space:nowrap}.national-center-title em{color:#d69d56;font-style:normal}
+.national-live-state{justify-self:end;display:flex;align-items:center;gap:10px;color:var(--cream);text-align:right}.national-live-state b,.national-live-state small{display:block}.national-live-state b{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase}.national-live-state small{margin-top:3px;color:rgba(239,230,210,.48);font:500 9px/1.2 system-ui,sans-serif}
+.national-view .instrument-title{top:104px!important;left:28px!important;width:310px!important;padding:14px 16px 16px;border-left:1px solid rgba(185,152,95,.42);background:linear-gradient(90deg,rgba(8,11,10,.78),rgba(8,11,10,.12));text-shadow:0 2px 20px rgba(0,0,0,.8)}
+.national-view .instrument-title h1{margin-top:8px!important;font-size:34px!important;line-height:1!important;letter-spacing:-.025em!important}.national-view .instrument-title p{margin-top:10px!important;color:rgba(239,230,210,.67)!important;font-size:12px!important;line-height:1.45!important}
+.national-view .national-picker-card{top:96px!important;right:22px!important;width:300px!important;padding:16px 18px!important;border:1px solid rgba(185,152,95,.28)!important;background:linear-gradient(155deg,rgba(15,19,17,.97),rgba(9,12,11,.96))!important;box-shadow:0 22px 60px rgba(0,0,0,.46)!important}
+.national-mini-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:13px 0 14px}.national-mini-stat span{padding:9px 7px;border:1px solid rgba(216,205,184,.09);background:rgba(255,255,255,.018);text-align:center}.national-mini-stat b,.national-mini-stat small{display:block}.national-mini-stat b{color:var(--cream);font:600 16px/1 Georgia,serif}.national-mini-stat small{margin-top:5px;color:rgba(239,230,210,.42);font:600 7px/1.2 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.07em}
+.national-scenario-rail{position:absolute!important;z-index:35!important;left:18px!important;right:18px!important;bottom:104px!important;padding:10px 12px 12px!important;border:1px solid rgba(185,152,95,.18)!important;background:linear-gradient(180deg,rgba(10,13,12,.86),rgba(8,11,10,.96))!important;box-shadow:0 18px 50px rgba(0,0,0,.46)!important;backdrop-filter:blur(9px)!important}
+.rail-heading{display:flex!important;align-items:center!important;justify-content:space-between!important;margin-bottom:8px!important}.rail-heading span{color:var(--brass)!important;font:700 8px/1.2 system-ui,sans-serif!important;letter-spacing:.15em!important;text-transform:uppercase!important}.rail-heading b{color:rgba(239,230,210,.38)!important;font:600 8px/1.2 system-ui,sans-serif!important}
+.rail-cards{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:9px!important}.scenario-card{min-height:88px!important;display:grid!important;grid-template-rows:42px auto auto!important;gap:2px!important;padding:8px 9px 9px!important;color:var(--cream)!important;text-decoration:none!important;border:1px solid rgba(216,205,184,.12)!important;background:linear-gradient(155deg,rgba(27,33,30,.95),rgba(12,15,14,.98))!important;overflow:hidden!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important}.scenario-card:hover{transform:translateY(-3px)!important;border-color:rgba(215,164,91,.74)!important;box-shadow:0 12px 26px rgba(0,0,0,.34)!important}
+.scenario-card-visual{display:block!important;margin:-8px -9px 6px!important;min-height:42px!important;background:radial-gradient(circle at 22% 68%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.82) 3px 8px,transparent 15px),linear-gradient(135deg,rgba(84,127,121,.17),rgba(201,172,105,.17)),repeating-linear-gradient(155deg,rgba(255,255,255,.028) 0 1px,transparent 1px 9px)!important;border-bottom:1px solid rgba(216,205,184,.08)!important}.scenario-card strong{font:600 11px/1.2 Georgia,serif!important}.scenario-card small{color:rgba(239,230,210,.43)!important;font:500 8px/1.2 system-ui,sans-serif!important}.scenario-card-more{opacity:.72!important}
+.national-science-strip{position:absolute!important;z-index:34!important;left:18px!important;right:18px!important;bottom:18px!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:9px!important}.national-science-strip div{min-height:54px!important;padding:9px 11px!important;border:1px solid rgba(216,205,184,.09)!important;background:rgba(8,11,10,.93)!important}.national-science-strip span,.national-science-strip b{display:block!important}.national-science-strip span{color:var(--brass)!important;font:700 7px/1.2 system-ui,sans-serif!important;letter-spacing:.13em!important;text-transform:uppercase!important}.national-science-strip b{margin-top:7px!important;color:rgba(239,230,210,.68)!important;font:500 10px/1.25 system-ui,sans-serif!important}
+.national-view .national-scenario-icon span{width:9px!important;height:9px!important;background:#f0b058!important;box-shadow:0 0 0 5px rgba(240,176,88,.11),0 0 14px 5px rgba(240,176,88,.82),0 0 34px 12px rgba(240,176,88,.26)!important}.national-view .leaflet-control-zoom{top:82px!important;left:10px!important}
+@media(max-width:1100px){.national-instrument-header{grid-template-columns:1fr auto}.national-center-title{display:none}.rail-cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}.scenario-card:nth-child(n+4){display:none!important}}
+@media(max-width:760px){.national-instrument-header{height:62px;padding:0 12px}.national-live-state{display:none}.national-view .instrument-title{display:none!important}.national-view .national-picker-card{top:74px!important;left:12px!important;right:12px!important;width:auto!important}.national-scenario-rail{left:10px!important;right:10px!important;bottom:86px!important}.rail-cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}.scenario-card:nth-child(n+3){display:none!important}.national-science-strip{left:10px!important;right:10px!important;bottom:10px!important;grid-template-columns:1fr 1fr!important}.national-science-strip div:nth-child(n+3){display:none!important}}
+
+
+/* National Instrument - Precision Composition Pass */
+body.national-overview-body > .way-home{display:none!important}
+.national-overview-body .national-brand{min-width:280px;gap:13px!important}
+.national-overview-body .national-brand>span:last-child{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.national-overview-body .national-brand b{display:block!important;white-space:nowrap;letter-spacing:.055em!important}
+.national-overview-body .national-brand small{display:block!important;white-space:nowrap;margin-top:4px!important}
+.national-overview-body .national-instrument-header{grid-template-columns:minmax(300px,1fr) auto minmax(300px,1fr)!important}
+.national-overview-body .national-center-title{justify-self:center}
+.national-overview-body .national-live-state{min-width:270px}
+
+.national-overview-body .instrument-title{top:96px!important;left:24px!important;width:286px!important;padding:13px 15px 15px!important;background:linear-gradient(90deg,rgba(8,11,10,.88),rgba(8,11,10,.18))!important}
+.national-overview-body .instrument-title h1{font-size:32px!important}
+.national-overview-body .instrument-title p{max-width:245px!important}
+.national-overview-body .national-picker-card{top:92px!important;right:20px!important;width:290px!important}
+.national-overview-body .scenario-picker select{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+
+.national-overview-body .leaflet-tile-pane{filter:grayscale(.08) sepia(.06) saturate(.86) contrast(1.12) brightness(.84)!important}
+.national-overview-body .final-vignette{background:radial-gradient(circle at 49% 45%,transparent 0 44%,rgba(0,0,0,.12) 72%,rgba(0,0,0,.45) 100%),linear-gradient(90deg,rgba(5,7,6,.16),transparent 23%,transparent 78%,rgba(5,7,6,.22))!important}
+.national-overview-body .map-layer{background:#0a0d0c!important}
+
+.national-overview-body .national-scenario-icon span{width:10px!important;height:10px!important;border:1px solid rgba(255,244,207,.95)!important}
+.national-overview-body .national-planned-icon{background:transparent!important;border:0!important}
+.national-overview-body .national-planned-icon span{position:absolute;left:50%;top:50%;width:6px;height:6px;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(214,157,83,.62);background:rgba(214,157,83,.12);box-shadow:0 0 0 4px rgba(214,157,83,.035),0 0 11px rgba(214,157,83,.20)}
+.national-overview-body .national-planned-tooltip{border:1px solid rgba(185,152,95,.28)!important;background:rgba(15,18,16,.94)!important;color:rgba(239,230,210,.75)!important;font:500 10px/1.3 system-ui,sans-serif!important}
+.national-overview-body .national-planned-tooltip strong{color:var(--cream);font:600 11px/1.2 Georgia,serif}
+.national-overview-body .national-planned-tooltip em{display:block;margin-top:2px;color:rgba(214,157,83,.72);font-style:normal;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+
+.national-overview-body .national-scenario-rail{left:16px!important;right:16px!important;bottom:102px!important}
+.national-overview-body .scenario-card{min-height:94px!important;grid-template-rows:48px auto auto!important}
+.national-overview-body .scenario-card-visual,.national-overview-body .scenario-card-map{min-height:48px!important;position:relative;overflow:hidden}
+.national-overview-body .scenario-card:nth-child(1) .scenario-card-visual,.national-overview-body .scenario-card:nth-child(1) .scenario-card-map{background:radial-gradient(circle at 18% 68%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.86) 3px 8px,transparent 15px),linear-gradient(118deg,rgba(33,62,65,.78),rgba(130,114,73,.28)),repeating-linear-gradient(160deg,rgba(255,255,255,.035) 0 1px,transparent 1px 8px)!important}
+.national-overview-body .scenario-card:nth-child(2) .scenario-card-visual,.national-overview-body .scenario-card:nth-child(2) .scenario-card-map{background:radial-gradient(circle at 28% 60%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.86) 3px 8px,transparent 15px),linear-gradient(145deg,rgba(105,75,45,.64),rgba(39,58,54,.38)),repeating-linear-gradient(25deg,rgba(255,255,255,.03) 0 1px,transparent 1px 10px)!important}
+.national-overview-body .scenario-card:nth-child(3) .scenario-card-visual,.national-overview-body .scenario-card:nth-child(3) .scenario-card-map{background:radial-gradient(circle at 34% 56%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.86) 3px 8px,transparent 15px),linear-gradient(128deg,rgba(71,79,59,.55),rgba(106,74,61,.48)),repeating-linear-gradient(140deg,rgba(255,255,255,.032) 0 1px,transparent 1px 7px)!important}
+.national-overview-body .scenario-card:nth-child(4) .scenario-card-visual,.national-overview-body .scenario-card:nth-child(4) .scenario-card-map{background:radial-gradient(circle at 42% 64%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.86) 3px 8px,transparent 15px),linear-gradient(150deg,rgba(42,69,58,.58),rgba(79,72,51,.44)),repeating-linear-gradient(72deg,rgba(255,255,255,.028) 0 1px,transparent 1px 9px)!important}
+.national-overview-body .scenario-card:nth-child(5) .scenario-card-visual,.national-overview-body .scenario-card:nth-child(5) .scenario-card-map{background:radial-gradient(circle at 50% 58%,rgba(255,245,204,1) 0 2px,rgba(226,157,77,.86) 3px 8px,transparent 15px),linear-gradient(120deg,rgba(46,70,72,.62),rgba(88,81,57,.40)),repeating-linear-gradient(110deg,rgba(255,255,255,.03) 0 1px,transparent 1px 8px)!important}
+.national-overview-body .scenario-card strong{font-size:12px!important}
+.national-overview-body .scenario-card small{font-size:8px!important}
+
+.national-overview-body .national-science-strip{left:16px!important;right:16px!important;bottom:16px!important}
+.national-overview-body .national-science-strip div{min-height:58px!important;background:linear-gradient(150deg,rgba(12,16,14,.96),rgba(8,11,10,.98))!important}
+.national-overview-body .national-science-strip b{font-size:10px!important}
+
+@media(max-width:1200px){.national-overview-body .national-instrument-header{grid-template-columns:minmax(250px,1fr) auto!important}.national-overview-body .national-center-title{display:none!important}}
+
+/* National Scenario Instrument — Pass 5: Living Constellation */
+.national-ambient-canvas{position:absolute;inset:0;z-index:11;pointer-events:none;opacity:.78;mix-blend-mode:screen}
+.living-node{background:transparent!important;border:0!important}
+.living-node .node-orbit,.living-node .node-halo,.living-node .node-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}
+.living-node .node-orbit{width:31px;height:31px;border:1px solid rgba(230,194,129,.15);animation:nodeOrbit 10s linear infinite}
+.living-node .node-halo{width:24px;height:24px;background:radial-gradient(circle,rgba(229,174,94,.20),rgba(229,174,94,.055) 45%,transparent 72%);filter:blur(1px)}
+.living-node .node-core{width:9px;height:9px;border:1px solid rgba(255,245,211,.96);background:#e7a554;box-shadow:0 0 0 4px rgba(229,165,84,.11),0 0 13px 5px rgba(229,165,84,.72),0 0 31px 12px rgba(229,165,84,.20);animation:nodeBreathe var(--node-cadence,6s) ease-in-out var(--node-delay,0s) infinite}
+.living-node.node-ocean .node-core{background:#d9ddc2;box-shadow:0 0 0 4px rgba(157,210,207,.12),0 0 14px 5px rgba(157,210,207,.69),0 0 32px 12px rgba(118,184,187,.20)}
+.living-node.node-amber .node-core{background:#f0ad4e;box-shadow:0 0 0 4px rgba(240,173,78,.14),0 0 15px 6px rgba(240,173,78,.80),0 0 34px 13px rgba(240,173,78,.24)}
+.living-node.node-white .node-core{background:#f2ead4;box-shadow:0 0 0 4px rgba(242,234,212,.11),0 0 13px 5px rgba(242,234,212,.68),0 0 30px 11px rgba(205,220,214,.18)}
+.living-node.node-sage .node-core{background:#afc8b5;box-shadow:0 0 0 4px rgba(175,200,181,.11),0 0 13px 5px rgba(139,183,164,.65),0 0 31px 12px rgba(112,157,143,.18)}
+.living-node.node-silver .node-core{width:8px;height:8px;background:#d3d5cf;box-shadow:0 0 0 4px rgba(211,213,207,.08),0 0 12px 4px rgba(199,207,203,.56),0 0 27px 10px rgba(166,185,180,.15)}
+.living-node:hover .node-core,.living-node.is-active .node-core{animation-duration:2.4s;transform:translate(-50%,-50%) scale(1.3)}
+.living-node:hover .node-orbit,.living-node.is-active .node-orbit{border-color:rgba(239,205,145,.42)}
+@keyframes nodeBreathe{0%,100%{transform:translate(-50%,-50%) scale(.86);filter:brightness(.88)}44%{transform:translate(-50%,-50%) scale(1.14);filter:brightness(1.18)}58%{transform:translate(-50%,-50%) scale(1.02);filter:brightness(1)}}
+@keyframes nodeOrbit{from{transform:translate(-50%,-50%) rotate(0deg) scale(.96)}50%{transform:translate(-50%,-50%) rotate(180deg) scale(1.04)}to{transform:translate(-50%,-50%) rotate(360deg) scale(.96)}}
+.node-air-whisper{stroke:#b9d7cf!important;filter:drop-shadow(0 0 3px rgba(175,215,205,.24));animation:whisperDrift 8s linear infinite}
+@keyframes whisperDrift{0%{stroke-dashoffset:0;opacity:.07}35%{opacity:.18}70%{opacity:.11}100%{stroke-dashoffset:-44;opacity:.07}}
+.terrain-focus-ring{filter:drop-shadow(0 0 18px rgba(166,205,188,.15));animation:terrainFocus 1.6s ease-in-out infinite alternate}
+@keyframes terrainFocus{from{fill-opacity:.022;stroke-opacity:.18}to{fill-opacity:.055;stroke-opacity:.34}}
+body.node-hover-active .leaflet-tile-pane{filter:grayscale(.05) sepia(.04) saturate(.94) contrast(1.15) brightness(.89)!important;transition:filter .8s ease}
+.living-tooltip{min-width:178px;padding:10px 11px!important}
+.living-tooltip strong,.living-tooltip span{display:block}
+.living-tooltip strong{margin-bottom:5px;color:var(--cream);font:600 13px/1.2 Georgia,serif!important}
+.living-tooltip span{margin-top:2px;color:rgba(239,230,210,.56);font:500 9px/1.3 system-ui,sans-serif}
+.living-tooltip span:first-of-type{margin-bottom:6px;color:rgba(212,174,106,.85)}
+.national-fly-active .national-instrument-header,.national-fly-active .instrument-title,.national-fly-active .national-picker-card,.national-fly-active .national-scenario-rail,.national-fly-active .national-science-strip{opacity:0!important;transform:translateY(-5px);transition:opacity .55s ease,transform .55s ease!important;pointer-events:none!important}
+.national-fly-active .national-planned-icon{opacity:0!important;transition:opacity .35s ease!important}
+.national-fly-active .final-vignette{opacity:.34;transition:opacity 1.1s ease}
+.national-fly-active .leaflet-tile-pane{filter:grayscale(.02) sepia(.03) saturate(1.02) contrast(1.18) brightness(.91)!important;transition:filter 1.2s ease!important}
+@media(prefers-reduced-motion:reduce){.living-node .node-orbit,.living-node .node-core,.node-air-whisper,.terrain-focus-ring{animation:none!important}.national-ambient-canvas{display:none!important}}
+
+/* Pass 6 - Cinematic Arrival Stabilization */
+.cinematic-arrival-pending .plume-canvas,
+.cinematic-arrival-pending .governing-field-canvas,
+.cinematic-arrival-pending canvas[data-atmospheric-field]{
+  opacity:0!important;
+  transition:none!important;
+}
+.cinematic-arrival-ready .plume-canvas,
+.cinematic-arrival-ready .governing-field-canvas,
+.cinematic-arrival-ready canvas[data-atmospheric-field]{
+  opacity:1!important;
+  transition:opacity .55s ease!important;
+}
+.cinematic-arrival-pending .instrument-title,
+.cinematic-arrival-pending .national-source-card,
+.cinematic-arrival-pending .field-read,
+.cinematic-arrival-pending .two-part-legend,
+.cinematic-arrival-pending .model-basis{
+  opacity:.72;
+  transition:opacity .35s ease;
+}
+.cinematic-arrival-ready .instrument-title,
+.cinematic-arrival-ready .national-source-card,
+.cinematic-arrival-ready .field-read,
+.cinematic-arrival-ready .two-part-legend,
+.cinematic-arrival-ready .model-basis{
+  opacity:1;
+  transition:opacity .45s ease;
+}
+.final-instrument-shell .plume-canvas,
+.final-instrument-shell .governing-field-canvas,
+.final-instrument-shell canvas[data-atmospheric-field]{
+  image-rendering:auto!important;
+  contain:none!important;
+  will-change:auto!important;
+  transform-origin:0 0!important;
+  backface-visibility:visible!important;
+}
+.leaflet-zoom-anim .plume-canvas,
+.leaflet-zoom-anim .governing-field-canvas,
+.leaflet-pan-anim .plume-canvas,
+.leaflet-pan-anim .governing-field-canvas{
+  opacity:0!important;
+}
+
+/* Pass 7 - Live Atmospheric Inputs */
+.live-atmosphere-panel{margin:13px 0 14px;padding:11px 12px 12px;border:1px solid rgba(105,201,131,.22);background:linear-gradient(150deg,rgba(28,43,36,.34),rgba(13,17,15,.62))}
+.live-atmosphere-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.live-atmosphere-heading span{color:rgba(221,237,225,.88);font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.live-atmosphere-heading i{display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#69c983;box-shadow:0 0 10px rgba(105,201,131,.78)}
+.live-atmosphere-heading small{color:rgba(239,230,210,.42);font:500 8px/1.2 system-ui,sans-serif}
+.live-atmosphere-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.live-atmosphere-grid span{padding:7px 8px;border:1px solid rgba(216,205,184,.08);background:rgba(255,255,255,.018)}
+.live-atmosphere-grid small,.live-atmosphere-grid b{display:block}
+.live-atmosphere-grid small{color:rgba(212,174,106,.74);font:700 7px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.live-atmosphere-grid b{margin-top:4px;overflow:hidden;color:rgba(239,230,210,.78);font:600 9px/1.25 system-ui,sans-serif;text-overflow:ellipsis;text-transform:capitalize;white-space:nowrap}
+.live-atmosphere-panel.is-unavailable span,.live-atmosphere-panel.is-unavailable b,.live-atmosphere-panel.is-unavailable small{display:block}
+.live-atmosphere-panel.is-unavailable span{color:var(--brass);font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+.live-atmosphere-panel.is-unavailable b{margin-top:6px;color:rgba(239,230,210,.72);font:600 10px/1.3 system-ui,sans-serif}
+.live-atmosphere-panel.is-unavailable small{margin-top:4px;color:rgba(239,230,210,.42);font:500 8px/1.3 system-ui,sans-serif}
+
+
+/* ATMOSPHERIC OBSERVATORY LAUNCH PASS */
+.observation-controls{display:grid;gap:8px}
+.observation-controls .scenario-picker-heading{margin-bottom:0}
+.observation-controls .material-label{margin:6px 0 0;color:rgba(216,205,184,.62);font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.material-read{display:grid;gap:4px;margin:12px 0 0;padding:10px 0;border-top:1px solid rgba(216,205,184,.12);border-bottom:1px solid rgba(216,205,184,.12)}
+.material-read span{color:var(--brass);font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.material-read b{color:rgba(239,230,210,.82);font:600 10px/1.4 system-ui,sans-serif;text-transform:capitalize}
+.material-boundary{margin:11px 0 14px;padding-left:10px;border-left:2px solid rgba(185,152,95,.5);color:rgba(239,230,210,.64);font:400 9.5px/1.45 system-ui,sans-serif}
+.material-boundary strong{color:rgba(239,230,210,.84)}
+@media(max-width:760px){.material-read,.material-boundary{display:none}.observation-controls{gap:6px}.observation-controls .material-label{margin-top:2px}}
+
+
+/* WILDFIRE LAUNCH PASS — launch relevance without changing governing science */
+.final-instrument:not(.national-overview-body) .leaflet-tile-pane{
+  filter:grayscale(.36) sepia(.14) saturate(.54) contrast(1.10) brightness(.62)!important;
+}
+.final-instrument:not(.national-overview-body) .final-vignette{
+  background:radial-gradient(circle at 55% 52%,transparent 35%,rgba(8,10,8,.08) 70%,rgba(8,10,8,.48) 100%);
+  box-shadow:inset 0 0 0 1px rgba(185,152,95,.24),inset 0 0 48px rgba(0,0,0,.27);
+}
+.featured-path{margin-top:8px!important;color:rgba(216,166,97,.96)!important;letter-spacing:.18em!important}
+.material-fine-smoke-aerosol .source-card{border-color:rgba(211,157,84,.58);box-shadow:0 22px 68px rgba(0,0,0,.40),0 0 34px rgba(188,128,62,.07)}
+.material-fine-smoke-aerosol .material-read{border-color:rgba(216,166,97,.20)}
+.material-fine-smoke-aerosol .material-read span,
+.material-fine-smoke-aerosol .card-kicker{color:rgba(222,174,101,.96)}
+.material-fine-smoke-aerosol .plume-canvas{filter:drop-shadow(0 0 14px rgba(224,177,105,.21))}
+.national-source-card .scenario-interpretation{margin:11px 0 10px;font-size:10.5px;line-height:1.42}
+.material-boundary{margin:9px 0 10px;font-size:9px;line-height:1.4}
+.launch-context{margin:0 0 12px;padding:8px 9px;border:1px solid rgba(216,166,97,.17);background:rgba(111,71,30,.08);color:rgba(239,230,210,.58);font:500 8.5px/1.42 system-ui,sans-serif}
+.launch-context strong{color:rgba(232,193,132,.90)}
+.material-read{margin-top:9px;padding:8px 0}
+.live-atmosphere-panel{margin:10px 0 11px;padding:9px 10px 10px}
+.terrain-switch{margin-top:9px}
+@media(max-width:760px){.launch-context{display:none}.featured-path{display:none}}
+
+.launch-contract-phrase{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+
+/* PUBLIC UNDERSTANDING PASS — clarity before launch */
+.final-instrument:not(.national-overview-body) .leaflet-tile-pane{
+  filter:grayscale(.30) sepia(.10) saturate(.62) contrast(1.13) brightness(.70)!important;
+}
+.material-fine-smoke-aerosol .plume-canvas{
+  filter:brightness(1.10) contrast(1.11) drop-shadow(0 0 16px rgba(224,177,105,.25));
+}
+.panel-section-label{
+  display:block;
+  margin:10px 0 5px;
+  color:rgba(222,174,101,.92);
+  font:700 7.5px/1.2 system-ui,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.national-source-card .panel-section-label + h2{margin-top:0}
+.model-reading{margin-top:8px;padding-top:1px;border-top:1px solid rgba(216,205,184,.09)}
+.model-reading .scenario-interpretation{margin:5px 0 8px}
+.claim-boundary-group{margin-top:8px;padding-top:1px;border-top:1px solid rgba(216,205,184,.09)}
+.claim-boundary-group .material-boundary{
+  margin:5px 0 6px;
+  padding-left:9px;
+  border-left:2px solid rgba(185,152,95,.44);
+  color:rgba(239,230,210,.66);
+}
+.claim-boundary-group .launch-context{
+  margin:0 0 9px;
+  padding:7px 8px;
+  font-size:8px;
+  line-height:1.38;
+}
+.exploration-cue{
+  margin:8px 1px 0;
+  color:rgba(239,230,210,.48);
+  font:500 8px/1.38 system-ui,sans-serif;
+}
+.field-read div span{color:rgba(218,174,104,.92)}
+.field-read div b{color:rgba(244,235,216,.88)}
+.two-part-legend span{color:rgba(239,230,210,.56)}
+.two-part-legend b{color:rgba(244,235,216,.86)}
+@media(max-width:760px){
+  .exploration-cue,.panel-section-label{display:none}
+  .model-reading,.claim-boundary-group{border-top:0;margin-top:0;padding-top:0}
+}
+
+
+/* PASS 52 — MULTI-SOURCE OBSERVATION */
+.multi-source-control{position:absolute;z-index:31;left:50%;bottom:82px;transform:translateX(-50%);width:min(510px,calc(100vw - 620px));padding:9px 12px;border:1px solid rgba(198,164,94,.42);background:rgba(10,13,10,.82);backdrop-filter:blur(10px);color:rgba(239,230,210,.78);font:600 10px/1.35 system-ui,sans-serif;letter-spacing:.025em}
+.multi-source-summary{display:flex;align-items:center;gap:8px;white-space:nowrap}.source-count{color:#e0bd72;text-transform:uppercase;letter-spacing:.11em;font-size:9px}.multi-source-actions{display:flex;gap:6px;margin-top:7px}.multi-source-actions button{min-height:28px;padding:5px 10px;border:1px solid rgba(198,164,94,.38);background:rgba(17,22,18,.78);color:rgba(239,230,210,.88);font:700 9px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.multi-source-actions button:hover,.multi-source-actions button:focus-visible,.multi-source-actions button.is-active{border-color:rgba(224,189,114,.9);background:rgba(92,76,42,.36)}.multi-source-actions button:disabled{opacity:.35;cursor:not-allowed}.multi-source-control p{margin:6px 0 0}.multi-source-boundary{color:rgba(180,221,213,.66);font-size:9px}.multi-source-control.is-armed{border-color:rgba(224,189,114,.9)}.multi-source-control.is-armed #sourceInstruction{color:#f1dfaa}.source-index-label{font:700 10px/1 system-ui,sans-serif;color:#fff6cf;text-shadow:0 1px 3px #000}
+@media(max-width:1100px){.multi-source-control{left:20px;right:320px;transform:none;width:auto}}
+@media(max-width:780px){.multi-source-control{left:18px;right:18px;bottom:174px;width:auto;padding:8px 10px}.multi-source-boundary{display:none}.multi-source-summary{white-space:normal}.multi-source-actions button{flex:1}.multi-source-control p{font-size:9px}}
+
+/* Pass 53 — The Living Sources */
+.source-whisper{position:absolute;z-index:48;max-width:230px;padding:9px 11px;border:1px solid rgba(224,189,114,.56);background:rgba(9,12,9,.93);color:rgba(239,230,210,.88);box-shadow:0 14px 38px rgba(0,0,0,.34);backdrop-filter:blur(9px);pointer-events:none;transform:translateY(-100%);font:600 10px/1.35 system-ui,sans-serif;letter-spacing:.018em}
+.source-whisper[hidden]{display:none}
+.source-whisper b{display:block;margin-bottom:3px;color:#f2d58e;font:700 10px/1.2 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.11em}
+.source-whisper span,.source-whisper small,.source-whisper em{display:block}
+.source-whisper small{margin-top:2px;color:rgba(180,221,213,.72);font-size:9px;font-weight:500}
+.source-whisper em{margin-top:6px;padding-top:5px;border-top:1px solid rgba(216,205,184,.13);color:rgba(239,230,210,.62);font-size:9px;font-style:normal}
+.multi-source-control.is-dragging{border-color:rgba(224,189,114,.92)}
+@media(max-width:780px){.source-whisper{max-width:190px;padding:7px 9px}.source-whisper small{display:none}}
+
+
+/* Pass 54 — The Observatory Speaks */
+.source-observation{margin:8px 0 1px!important;padding:7px 9px;border-left:2px solid rgba(224,189,114,.82);background:rgba(224,189,114,.065);color:rgba(244,235,216,.9);font:600 10px/1.42 system-ui,sans-serif;letter-spacing:.012em;opacity:0;transform:translateY(3px);transition:opacity .42s ease,transform .42s ease}
+.source-observation[hidden]{display:none}.source-observation.is-visible{opacity:1;transform:translateY(0)}
+.source-observation::before{content:'MODEL OBSERVATION';display:block;margin-bottom:3px;color:#e0bd72;font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.12em}
+@media(max-width:780px){.source-observation{font-size:9px;padding:6px 8px}.source-observation::before{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.source-observation{transition:none}}
+
+
+/* PASS 55 — WHY DID THIS HAPPEN? */
+.source-explanation{margin:4px 0 1px!important;padding:7px 9px;border-left:2px solid rgba(91,207,198,.72);background:rgba(62,155,151,.065);color:rgba(222,239,234,.88);font:500 10px/1.46 system-ui,sans-serif;letter-spacing:.008em;opacity:0;transform:translateY(3px);transition:opacity .42s ease .08s,transform .42s ease .08s}
+.source-explanation[hidden]{display:none}.source-explanation.is-visible{opacity:1;transform:translateY(0)}
+.source-explanation::before{content:'WHY THE MODEL CHANGED';display:block;margin-bottom:3px;color:rgba(111,221,211,.92);font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.12em}
+@media(max-width:780px){.source-explanation{font-size:9px;padding:6px 8px}.source-explanation::before{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.source-explanation{transition:none}}
+
+
+/* PASS 56 — Living Sites & Material Identity Foundation */
+.material-family-strip{position:absolute;z-index:36;left:18px;right:18px;bottom:175px;display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(185,152,95,.14);background:rgba(8,11,10,.88);backdrop-filter:blur(8px)}
+.material-family{display:grid;grid-template-columns:12px auto;column-gap:7px;align-items:center;padding:5px 9px;border:1px solid rgba(255,255,255,.07);text-decoration:none;background:rgba(255,255,255,.015)}
+.material-family i{grid-row:1/3;width:9px;height:9px;border-radius:50%;box-shadow:0 0 12px currentColor;background:currentColor}.material-family span{color:var(--cream);font:700 8px/1 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em}.material-family small{color:rgba(239,230,210,.44);font:600 7px/1.2 system-ui,sans-serif}.material-family-strip p{margin-left:auto;color:rgba(239,230,210,.43);font:500 7px/1.35 system-ui,sans-serif}.material-family-methane{color:#42c7d2}.material-family-smoke{color:#d6a45d}.material-family-radioactive{color:#a8cc67}.material-family-industrial{color:#a98ad8}
+.national-site-foundation{background:transparent!important;border:0!important}.national-site-foundation span{display:block;width:9px;height:9px;margin:5px;border-radius:50%;background:currentColor;border:1px solid rgba(255,255,255,.72);box-shadow:0 0 0 3px rgba(0,0,0,.45),0 0 14px currentColor}.national-site-foundation.is-planned span{width:6px;height:6px;margin:7px;opacity:.44;border-style:dashed}.national-site-foundation.material-methane{color:#42c7d2}.national-site-foundation.material-smoke{color:#d6a45d}.national-site-foundation.material-radioactive{color:#a8cc67}.national-site-foundation.material-industrial{color:#a98ad8}.site-foundation-tooltip span:last-child{opacity:.55;font-size:8px}
+body.material-methane-gas{--material-accent:#42c7d2}body.material-fine-smoke-aerosol{--material-accent:#d6a45d}body.material-radioactive-mixed-release{--material-accent:#a8cc67}body.material-hot-industrial-plume{--material-accent:#a98ad8}.source-card,.multi-source-control{border-color:color-mix(in srgb,var(--material-accent,#d6a45d) 44%,rgba(185,152,95,.35))}.source-count,.panel-section-label,.material-read span{color:var(--material-accent,#d6a45d)!important}
+@media(max-width:900px){.material-family-strip{display:none}}
+
+/* Pass 57 — Scientific State Integrity */
+.live-source-location{display:block;margin:-3px 0 8px;color:rgba(239,230,210,.54);font:600 8px/1.3 system-ui,sans-serif;letter-spacing:.035em}
+body[data-atmospheric-location-mode="active_source"] .live-atmosphere-panel{border-color:rgba(85,196,190,.34)}
+
+
+/* PASS 58 — The Experiment Contract */
+.experiment-contract{margin:0 0 2px;padding:0 0 2px}
+.parent-demonstration-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:0 0 10px;padding:8px 0 9px;border-top:1px solid rgba(216,205,184,.10);border-bottom:1px solid rgba(216,205,184,.10)}
+.parent-demonstration-row span:first-child{min-width:0}
+.parent-demonstration-row small,.parent-demonstration-row b{display:block}
+.parent-demonstration-row small{color:rgba(239,230,210,.42);font:700 7px/1.2 system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+.parent-demonstration-row b{margin-top:4px;overflow:hidden;color:rgba(239,230,210,.69);font:600 9px/1.25 system-ui,sans-serif;text-overflow:ellipsis;white-space:nowrap}
+.state-integrity-badge{flex:0 0 auto;margin-top:1px;padding:4px 6px;border:1px solid rgba(216,205,184,.18);color:rgba(239,230,210,.55);font:700 7px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.state-integrity-badge[data-state="synchronized"]{border-color:rgba(85,196,190,.42);background:rgba(30,92,89,.16);color:rgba(133,224,216,.92)}
+.state-integrity-badge[data-state="fallback"]{border-color:rgba(214,164,93,.42);background:rgba(110,75,31,.18);color:rgba(232,190,119,.92)}
+.active-experiment-mode{margin:5px 0 10px;color:rgba(239,230,210,.48);font:600 8px/1.35 system-ui,sans-serif;letter-spacing:.02em}
+body[data-atmospheric-location-mode="active_source"] .experiment-contract{border-left:1px solid rgba(85,196,190,.28);padding-left:9px}
+@media(max-width:900px){.parent-demonstration-row{display:block}.state-integrity-badge{display:inline-block;margin-top:7px}.parent-demonstration-row b{white-space:normal}}
+
+
+/* PASS 59 — The Source Creation Contract */
+.active-release-assumption{margin:0 0 10px;padding:7px 8px;border-left:1px solid rgba(214,164,93,.42);background:rgba(92,68,31,.09)}
+.active-release-assumption span,.active-release-assumption b{display:block}
+.active-release-assumption span{color:rgba(232,190,119,.88);font:700 7px/1.2 system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+.active-release-assumption b{margin-top:4px;color:rgba(239,230,210,.68);font:600 8px/1.35 system-ui,sans-serif}
+.active-release-assumption[data-provenance="visitor-assumed"]{border-left-color:rgba(85,196,190,.48);background:rgba(30,92,89,.10)}
+.active-release-assumption[data-provenance="visitor-assumed"] span{color:rgba(133,224,216,.92)}
+
+
+/* PASS 60 — THE EXPERIMENT JOURNAL */
+.multi-source-actions #journalToggleButton{margin-left:auto}.multi-source-actions #journalToggleButton span{display:inline-block;min-width:14px;margin-left:4px;padding:2px 4px;border-radius:9px;background:rgba(85,196,190,.13);color:rgba(133,224,216,.94);font-size:8px}
+.experiment-journal{margin-top:9px;padding-top:8px;border-top:1px solid rgba(216,205,184,.14);max-height:250px;overflow:auto;scrollbar-width:thin}.experiment-journal[hidden]{display:none}.journal-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:2;padding:2px 0 7px;background:rgba(10,13,10,.96)}.journal-heading span{color:rgba(133,224,216,.94);font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}.journal-heading button,.journal-entry button{border:1px solid rgba(85,196,190,.25);background:rgba(30,92,89,.08);color:rgba(193,231,225,.78);font:700 7px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.journal-heading button{padding:5px 7px}.journal-empty{color:rgba(239,230,210,.46);font-size:9px}.journal-entries{display:grid;gap:6px;margin:0;padding:0;list-style:none}.journal-entry{padding:8px 9px;border-left:2px solid rgba(85,196,190,.40);background:rgba(27,63,60,.10)}.journal-entry>div{display:flex;justify-content:space-between;gap:8px}.journal-entry>div span{color:#e0bd72;font:700 8px/1.2 system-ui,sans-serif;letter-spacing:.10em;text-transform:uppercase}.journal-entry time{color:rgba(239,230,210,.38);font:600 8px/1.2 system-ui,sans-serif}.journal-entry b,.journal-entry small,.journal-entry em{display:block}.journal-entry b{margin-top:4px;color:rgba(244,235,216,.90);font:700 9px/1.25 system-ui,sans-serif}.journal-entry small{margin-top:2px;color:rgba(180,221,213,.58);font:500 8px/1.3 system-ui,sans-serif}.journal-entry p{margin:6px 0 0!important;color:rgba(244,235,216,.78);font:600 9px/1.4 system-ui,sans-serif}.journal-entry em{margin-top:4px;color:rgba(180,221,213,.66);font:500 8px/1.4 system-ui,sans-serif;font-style:normal}.journal-entry button{margin-top:7px;padding:5px 7px}.journal-entry button:hover,.journal-entry button:focus-visible,.journal-heading button:hover,.journal-heading button:focus-visible{border-color:rgba(111,221,211,.72);background:rgba(30,92,89,.22)}
+@media(max-width:780px){.multi-source-actions{flex-wrap:wrap}.multi-source-actions #journalToggleButton{margin-left:0}.experiment-journal{max-height:190px}.journal-entry em{display:none}}

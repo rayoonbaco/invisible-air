@@ -383,18 +383,58 @@
 
 (function(){
   function installScientificCamera(){
-    const map=window.__AW_MAP__; const el=document.getElementById('mapLayer');
+    const map=window.__AW_MAP__;
+    const el=document.getElementById('mapLayer');
+    const shell=document.getElementById('main-content');
+
     if(!map||!el||el.__awScientificCameraInstalled) return;
+
+    /*
+      Scenario Camera Integrity Repair
+
+      Cinematic motion is restricted to the national overview.
+      Selected scenario pages retain a stable scientific review frame.
+    */
+    if(shell && shell.dataset.nationalView !== 'true'){
+      el.__awScientificCameraInstalled=true;
+      el.dataset.scientificCamera='disabled-for-scenario-integrity';
+      return;
+    }
+
     const cfg=JSON.parse(el.dataset.map||'{}').scientific_cinematic_camera||{};
     if(cfg.data_state!=='scientific_cinematic_camera_ready') return;
+
     el.__awScientificCameraInstalled=true;
+
     if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let cancelled=false; const cancel=()=>{cancelled=true;};
-    ['dragstart','zoomstart','mousedown','touchstart','wheel','keydown'].forEach(e=>map.on(e,cancel));
-    const frames=cfg.keyframes||[]; const baseZoom=map.getZoom();
+
+    let cancelled=false;
+    const cancel=()=>{cancelled=true;};
+
+    ['dragstart','zoomstart','mousedown','touchstart','wheel','keydown'].forEach(
+      eventName=>map.on(eventName,cancel)
+    );
+
+    const frames=cfg.keyframes||[];
+    const baseZoom=map.getZoom();
     let delay=900;
-    frames.slice(1).forEach(frame=>{ delay+=Number(frame.duration_ms||1600); setTimeout(()=>{if(cancelled)return; map.flyTo([frame.lat,frame.lon],baseZoom+Number(frame.zoom_delta||0),{animate:true,duration:Math.max(.6,Number(frame.duration_ms||1600)/1000)});},delay); });
+
+    frames.slice(1).forEach(frame=>{
+      delay+=Number(frame.duration_ms||1600);
+      setTimeout(()=>{
+        if(cancelled) return;
+        map.flyTo(
+          [frame.lat,frame.lon],
+          baseZoom+Number(frame.zoom_delta||0),
+          {
+            animate:true,
+            duration:Math.max(.6,Number(frame.duration_ms||1600)/1000)
+          }
+        );
+      },delay);
+    });
   }
+
   window.addEventListener('load',()=>setTimeout(installScientificCamera,700));
   window.addEventListener('aw:map-ready',()=>setTimeout(installScientificCamera,500));
 })();
@@ -598,3 +638,187 @@
   window.addEventListener('load',()=>setTimeout(installReviewerEvidenceExplorer,1550));
   window.addEventListener('aw:map-ready',()=>setTimeout(installReviewerEvidenceExplorer,1250));
 })();
+
+/* Scenario Handoff Correctness Pass - robust */
+(function () {
+  'use strict';
+
+  function selectedScenarioCenter() {
+    const shell = document.getElementById('main-content');
+    if (!shell) return null;
+
+    try {
+      const scene = JSON.parse(shell.dataset.scene || '{}');
+      const handoff = scene.scenario_handoff || {};
+      const location = scene.location || {};
+      const lat = Number(handoff.latitude != null ? handoff.latitude : location.lat);
+      const lon = Number(handoff.longitude != null ? handoff.longitude : location.lon);
+
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+
+      return {
+        lat: lat,
+        lon: lon,
+        zoom: Number((scene.basemap || {}).zoom || 9),
+        scenarioId: handoff.scenario_id || ((scene.active_scenario || {}).id || null)
+      };
+    } catch (error) {
+      console.error('Scenario handoff scene parse failed', error);
+      return null;
+    }
+  }
+
+  window.addEventListener('aw:map-ready', function (event) {
+    const map = event.detail && event.detail.map;
+    const shell = document.getElementById('main-content');
+    const center = selectedScenarioCenter();
+
+    if (!map || !shell || !center || shell.dataset.nationalView === 'true') return;
+
+    shell.dataset.activeScenarioId = center.scenarioId || '';
+    shell.dataset.handoffLatitude = String(center.lat);
+    shell.dataset.handoffLongitude = String(center.lon);
+
+    function enforceCenter() {
+      map.stop();
+      map.setView([center.lat, center.lon], center.zoom, { animate: false });
+      map.invalidateSize({ pan: false, debounceMoveend: true });
+    }
+
+    enforceCenter();
+    window.setTimeout(enforceCenter, 100);
+    window.setTimeout(function () {
+      enforceCenter();
+      map.fire('moveend');
+      map.fire('zoomend');
+    }, 260);
+  });
+})();
+
+/* Scenario Map Ownership Guard */
+(function () {
+  'use strict';
+
+  function distanceKm(a, b) {
+    const toRad = value => value * Math.PI / 180;
+    const earthKm = 6371.0088;
+    const dLat = toRad(Number(b.lat) - Number(a.lat));
+    const dLon = toRad(Number(b.lon) - Number(a.lon));
+    const lat1 = toRad(Number(a.lat));
+    const lat2 = toRad(Number(b.lat));
+    const h = Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+    return earthKm * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+
+  function scenarioContract() {
+    const shell = document.getElementById('main-content');
+    if (!shell || shell.dataset.nationalView === 'true') return null;
+    try {
+      const scene = JSON.parse(shell.dataset.scene || '{}');
+      const handoff = scene.scenario_handoff || {};
+      const location = scene.location || {};
+      const lat = Number(handoff.latitude != null ? handoff.latitude : location.lat);
+      const lon = Number(handoff.longitude != null ? handoff.longitude : location.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+      return {
+        scenarioId: handoff.scenario_id || ((scene.active_scenario || {}).id || ''),
+        source: { lat: lat, lon: lon },
+        bbox: handoff.local_bbox || location.bbox || null
+      };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function targetCenter(method, args) {
+    try {
+      if (method === 'setView' || method === 'flyTo' || method === 'panTo') {
+        const value = L.latLng(args[0]);
+        return { lat: value.lat, lon: value.lng };
+      }
+      if (method === 'fitBounds' || method === 'flyToBounds') {
+        const bounds = L.latLngBounds(args[0]);
+        const value = bounds.getCenter();
+        return { lat: value.lat, lon: value.lng };
+      }
+    } catch (error) {
+      return null;
+    }
+    return null;
+  }
+
+  window.addEventListener('aw:map-ready', function (event) {
+    const map = event.detail && event.detail.map;
+    const contract = scenarioContract();
+    if (!map || !contract || map.__iaOwnershipGuardInstalled) return;
+
+    map.__iaOwnershipGuardInstalled = true;
+    const audit = [];
+    window.__IA_MAP_OWNERSHIP_AUDIT__ = audit;
+
+    let userInteractionUntil = 0;
+    const markUserInteraction = function () {
+      userInteractionUntil = Date.now() + 2200;
+    };
+
+    map.getContainer().addEventListener('pointerdown', markUserInteraction, true);
+    map.getContainer().addEventListener('wheel', markUserInteraction, { capture: true, passive: true });
+    map.getContainer().addEventListener('keydown', markUserInteraction, true);
+
+    ['setView', 'flyTo', 'fitBounds', 'flyToBounds', 'panTo'].forEach(function (method) {
+      if (typeof map[method] !== 'function') return;
+      const original = map[method].bind(map);
+
+      map[method] = function () {
+        const args = Array.prototype.slice.call(arguments);
+        const center = targetCenter(method, args);
+        const distance = center ? distanceKm(contract.source, center) : null;
+        const userAuthorized = Date.now() <= userInteractionUntil;
+        const isInitialSetup = performance.now() < 1500;
+        const outsideScenario = Number.isFinite(distance) && distance > 450;
+        const blocked = outsideScenario && !userAuthorized && !isInitialSetup;
+
+        audit.push({
+          at: new Date().toISOString(),
+          performance_ms: Math.round(performance.now()),
+          method: method,
+          target_center: center,
+          distance_from_scenario_km: distance,
+          user_authorized: userAuthorized,
+          initial_setup: isInitialSetup,
+          blocked: blocked,
+          stack: (new Error('Map ownership audit').stack || '').split('\n').slice(1, 7)
+        });
+
+        if (blocked) {
+          console.warn('Invisible Air blocked stale map movement', audit[audit.length - 1]);
+          document.body.dataset.mapOwnershipGuard = 'blocked-stale-movement';
+          return map;
+        }
+
+        return original.apply(map, args);
+      };
+    });
+
+    window.setTimeout(function () {
+      const center = map.getCenter();
+      const current = { lat: center.lat, lon: center.lng };
+      const drift = distanceKm(contract.source, current);
+      window.__IA_MAP_OWNERSHIP_STATUS__ = {
+        scenarioId: contract.scenarioId,
+        source: contract.source,
+        currentCenter: current,
+        driftKm: drift,
+        guardInstalled: true,
+        auditCount: audit.length,
+        blockedCount: audit.filter(item => item.blocked).length,
+        checkedAt: Date.now()
+      };
+      if (drift > 450) {
+        map.setView([contract.source.lat, contract.source.lon], Math.max(8, map.getZoom()), { animate: false });
+      }
+    }, 5600);
+  });
+})();
+

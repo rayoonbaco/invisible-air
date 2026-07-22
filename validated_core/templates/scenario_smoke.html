@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Invisible Air Scenario Integrity Smoke Suite</title>
+  <style>
+    :root{color-scheme:dark;--bg:#090c0b;--panel:#111512;--line:#2b332d;--cream:#eee5d2;--muted:#9eaa9f;--pass:#69c983;--fail:#e16d60;--amber:#d4a05b}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--cream);font-family:system-ui,sans-serif}
+    header{padding:24px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;align-items:end}
+    h1{margin:0;font:500 30px/1.1 Georgia,serif}header p{margin:8px 0 0;color:var(--muted);font-size:13px}
+    #summary{font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    main{padding:20px 28px}table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line)}
+    th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+    th{color:var(--amber);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+    .pass{color:var(--pass);font-weight:800}.fail{color:var(--fail);font-weight:800}.running{color:var(--amber)}
+    details{margin-top:16px;border:1px solid var(--line);background:var(--panel);padding:12px}
+    iframe{position:fixed;left:-10000px;top:0;width:1440px;height:900px;border:0}
+    .note{margin-top:14px;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Scenario Integrity Smoke Suite</h1>
+    <p>Automated checks for handoff, field source, plume rendering, delayed map movement, and map ownership.</p>
+  </div>
+  <div id="summary" class="running">Running...</div>
+</header>
+<main>
+  <table>
+    <thead><tr><th>Scenario</th><th>API handoff</th><th>Field source</th><th>Plume canvas</th><th>Map drift</th><th>Ownership</th><th>Result</th></tr></thead>
+    <tbody id="results"></tbody>
+  </table>
+  <div class="note">Pass thresholds: source mismatch <= 2 km; map remains within 160 km at approximately 1.2, 3.2, and 7.2 seconds; ownership guard is installed.</div>
+  <details><summary>Raw diagnostic report</summary><pre id="raw"></pre></details>
+</main>
+<iframe id="runner" title="Automated scenario runner"></iframe>
+<script>
+const scenarios = {{ scenarios|tojson }};
+const tbody = document.getElementById('results');
+const frame = document.getElementById('runner');
+const report = [];
+
+function distanceKm(a,b){
+  const rad=x=>x*Math.PI/180,R=6371.0088;
+  const dLat=rad(b.lat-a.lat),dLon=rad(b.lon-a.lon),la1=rad(a.lat),la2=rad(b.lat);
+  const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+}
+function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+function status(value,ok){return `<span class="${ok?'pass':'fail'}">${value}</span>`}
+
+async function apiCheck(s){
+  const response=await fetch(`/api/scenario-handoff/${encodeURIComponent(s.id)}`,{cache:'no-store'});
+  const data=await response.json();
+  return {ok:response.ok&&data.status==='PASS',data};
+}
+
+async function loadScenario(s){
+  return new Promise((resolve,reject)=>{
+    const timeout=setTimeout(()=>reject(new Error('iframe load timeout')),20000);
+    frame.onload=()=>{clearTimeout(timeout);resolve()};
+    frame.src=`/?scenario=${encodeURIComponent(s.id)}&live=0&smoke=1&_=${Date.now()}`;
+  });
+}
+
+async function browserCheck(s){
+  await loadScenario(s);
+  await wait(1200);
+  const w=frame.contentWindow;
+  const d=frame.contentDocument;
+  const samples=[];
+
+  for(const delay of [0,2000,4000]){
+    if(delay) await wait(delay);
+    const map=w.__AW_MAP__;
+    if(!map) throw new Error('Leaflet map unavailable');
+    const center=map.getCenter();
+    samples.push({lat:center.lat,lon:center.lng});
+  }
+
+  const expected={lat:Number(s.latitude),lon:Number(s.longitude)};
+  const drift=samples.map(center=>distanceKm(expected,center));
+  const maxDrift=Math.max(...drift);
+  const diag=w.__IA_FIELD_DIAGNOSTICS__||{};
+  const ownership=w.__IA_MAP_OWNERSHIP_STATUS__||{};
+  const audit=w.__IA_MAP_OWNERSHIP_AUDIT__||[];
+  const canvas=d.getElementById('plumeCanvas');
+
+  const sourceOk=diag.sourceMatches===true&&Number(diag.sourceMismatchKm)<=2;
+  const canvasOk=Boolean(canvas&&canvas.width>100&&canvas.height>100&&diag.canvasEvidence&&diag.canvasEvidence.lastDrawAt);
+  const mapOk=maxDrift<=160;
+  const ownershipOk=ownership.guardInstalled===true;
+
+  const delayedOxnardCalls=audit.filter(item=>
+    item.method==='flyTo'&&item.target_center&&
+    Math.abs(Number(item.target_center.lat)-34.28)<0.02&&
+    Math.abs(Number(item.target_center.lon)+119.038)<0.02
+  );
+  const unsafeOxnardCalls=delayedOxnardCalls.filter(item=>!item.blocked);
+
+  return {
+    sourceOk,canvasOk,mapOk,ownershipOk,maxDrift,samples,diag,ownership,audit,
+    delayedOxnardCallCount:delayedOxnardCalls.length,
+    unsafeOxnardCallCount:unsafeOxnardCalls.length
+  };
+}
+
+async function run(){
+  for(const s of scenarios){
+    const row=document.createElement('tr');
+    row.innerHTML=`<td>${s.name}</td><td class="running">Running</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>`;
+    tbody.appendChild(row);
+    const rec={scenario:s.id,name:s.name};
+
+    try{
+      const api=await apiCheck(s);
+      rec.api=api;
+      row.children[1].innerHTML=status(api.ok?'PASS':'FAIL',api.ok);
+
+      const browser=await browserCheck(s);
+      rec.browser=browser;
+
+      row.children[2].innerHTML=status(browser.sourceOk?`PASS (${Number(browser.diag.sourceMismatchKm).toFixed(2)} km)`:'FAIL',browser.sourceOk);
+      row.children[3].innerHTML=status(browser.canvasOk?'PASS':'FAIL',browser.canvasOk);
+      row.children[4].innerHTML=status(browser.mapOk?`PASS (${browser.maxDrift.toFixed(1)} km)`:`FAIL (${browser.maxDrift.toFixed(1)} km)`,browser.mapOk);
+
+      const ownershipPass=browser.ownershipOk&&browser.unsafeOxnardCallCount===0;
+      const ownershipLabel=browser.unsafeOxnardCallCount>0
+        ? `FAIL (${browser.unsafeOxnardCallCount} unsafe)`
+        : browser.delayedOxnardCallCount>0
+          ? `PASS (${browser.delayedOxnardCallCount} blocked)`
+          : 'PASS (clean)';
+
+      row.children[5].innerHTML=status(ownershipLabel,ownershipPass);
+
+      rec.ok=api.ok&&browser.sourceOk&&browser.canvasOk&&browser.mapOk&&ownershipPass;
+      row.children[6].innerHTML=status(rec.ok?'PASS':'FAIL',rec.ok);
+    }catch(error){
+      rec.ok=false;
+      rec.error=String(error);
+      row.children[6].innerHTML=status('FAIL',false);
+    }
+
+    report.push(rec);
+    document.getElementById('raw').textContent=JSON.stringify(report,null,2);
+  }
+
+  const passed=report.filter(item=>item.ok).length;
+  const summary=document.getElementById('summary');
+  summary.className=passed===report.length?'pass':'fail';
+  summary.textContent=`${passed}/${report.length} scenarios passed`;
+}
+run();
+</script>
+</body>
+</html>

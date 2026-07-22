@@ -21,7 +21,7 @@
       <a href="/about" title="Understand the instrument principles">About</a>
     </nav>
   </header>
-  {% if request.path != '/observatory' %}
+  {% if request.path != '/observatory' and not national_view %}
   <a class="way-home" href="/observatory">← Return to the Observatory</a>
   {% endif %}
   {% block content %}{% endblock %}

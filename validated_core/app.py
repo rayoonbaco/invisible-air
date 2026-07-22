@@ -57,8 +57,17 @@ from engine.final_release_audit import final_release_audit_context
 from engine.observation_atlas import observation_atlas
 from engine.scientific_personality import scientific_personality_context
 from engine.governing_model import input_from_dict, run_governing_model
+from engine.scenario_registry import apply_scenario, get_scenario, list_scenarios
+from engine.material_profiles import build_material_behavior, get_material_profile, list_material_profiles
+from engine.live_atmosphere import apply_live_atmosphere, fetch_live_atmosphere
+from engine.site_registry import list_curated_sites, get_curated_site
 
 app = Flask(__name__)
+
+
+def _cardinal_label(deg: float) -> str:
+    labels = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+    return labels[round((deg % 360.0) / 22.5) % 16]
 
 
 @app.get("/health")
@@ -68,8 +77,22 @@ def health():
 
 @app.get("/")
 def index():
-    scene = default_scene_config()
-    return render_template("index.html", scene=scene)
+    requested_scenario = request.args.get("scenario")
+    national_view = not bool(requested_scenario)
+    scenario = get_scenario(requested_scenario)
+    material_profile = get_material_profile(request.args.get("material"))
+    scene_config = apply_scenario(default_scene_config(), scenario, material_profile["id"])
+    scene_config["scientific_personality"] = scientific_personality_context(scene_config)
+    return render_template(
+        "observatory.html",
+        scene=scene_config,
+        scenarios=list_scenarios(),
+        material_profiles=list_material_profiles(),
+        active_material_profile=material_profile,
+        active_scenario=scenario,
+        national_view=national_view,
+        curated_sites=list_curated_sites(),
+    )
 
 
 @app.get("/scene")
@@ -80,13 +103,129 @@ def scene():
 
 @app.get("/observatory")
 def observatory():
-    selected_case = request.args.get("case", "ventura-oxnard")
-    scene_config = default_scene_config()
+    # Launch path: open on a clearly labeled smoke demonstration while keeping
+    # the national overview and all existing scenarios unchanged.
+    requested_scenario = request.args.get("scenario") or "four-corners"
+    requested_material = request.args.get("material") or "fine-smoke-aerosol"
+    scenario = get_scenario(requested_scenario)
+    material_profile = get_material_profile(requested_material)
+    scene_config = apply_scenario(default_scene_config(), scenario, material_profile["id"])
     scene_config["scientific_personality"] = scientific_personality_context(scene_config)
-    atlas = observation_atlas(selected_case)
-    return render_template("observatory.html", scene=scene_config, atlas=atlas)
+    return render_template(
+        "observatory.html",
+        scene=scene_config,
+        scenarios=list_scenarios(),
+        material_profiles=list_material_profiles(),
+        active_material_profile=material_profile,
+        active_scenario=scenario,
+        national_view=False,
+        curated_sites=list_curated_sites(),
+    )
 
 
+@app.get("/smoke/scenarios")
+def scenario_smoke_dashboard():
+    return render_template("scenario_smoke.html", scenarios=list_scenarios())
+
+@app.get("/api/scenarios")
+def scenario_list_json():
+    return jsonify({"scenarios": list_scenarios()})
+
+
+@app.get("/api/material-profiles")
+def material_profile_list_json():
+    return jsonify({"default_material_profile_id": "methane-gas", "material_profiles": list_material_profiles(), "governing_physics_changed": False})
+
+
+@app.get("/api/material-profile/<profile_id>")
+def material_profile_json(profile_id):
+    profile = get_material_profile(profile_id)
+    return jsonify({"requested_profile_id": profile_id, "resolved_profile": profile, "governing_physics_changed": False})
+
+
+
+
+
+
+
+@app.get("/api/curated-sites")
+def curated_sites_json():
+    return jsonify({
+        "sites": list_curated_sites(),
+        "contract": "curated demonstration contexts; not current incident verification or measured emissions",
+        "pass_id": "PASS56-LIVING-SITES-FOUNDATION",
+    })
+
+
+@app.get("/api/curated-site/<site_id>")
+def curated_site_json(site_id):
+    site = get_curated_site(site_id)
+    if site is None:
+        return jsonify({"error": "unknown curated site", "site_id": site_id}), 404
+    return jsonify({"site": site, "contract": "demonstration context only"})
+
+@app.get("/api/live-atmosphere/<scenario_id>")
+def live_atmosphere_json(scenario_id):
+    scenario = get_scenario(scenario_id)
+    refresh = request.args.get("refresh", "0").lower() in {"1", "true", "yes"}
+    latitude = float(scenario["latitude"])
+    longitude = float(scenario["longitude"])
+    location_mode = "scenario_origin"
+    source_lat = request.args.get("source_lat")
+    source_lon = request.args.get("source_lon")
+    if source_lat is not None or source_lon is not None:
+        try:
+            latitude = float(source_lat)
+            longitude = float(source_lon)
+        except (TypeError, ValueError):
+            return jsonify({"error": "source_lat and source_lon must be valid numbers"}), 400
+        if not (-90.0 <= latitude <= 90.0 and -180.0 <= longitude <= 180.0):
+            return jsonify({"error": "source coordinates are outside valid latitude/longitude bounds"}), 400
+        location_mode = "active_source"
+    data = fetch_live_atmosphere(latitude, longitude, force_refresh=refresh)
+    data["location_mode"] = location_mode
+    data["requested_latitude"] = latitude
+    data["requested_longitude"] = longitude
+    data["scenario_id"] = scenario["id"]
+    return jsonify(data)
+
+@app.get("/api/scenario-handoff/<scenario_id>")
+def scenario_handoff_json(scenario_id):
+    scenario = get_scenario(scenario_id)
+    material_profile = get_material_profile(request.args.get("material"))
+    scene_config = apply_scenario(default_scene_config(), scenario, material_profile["id"])
+    payload = _observatory_governing_input(scene_config)
+
+    location = scene_config.get("location", {})
+    center = scene_config.get("basemap", {}).get("center", {})
+    source = payload.get("source", {})
+
+    passed = (
+        float(location.get("lat")) == float(scenario["latitude"])
+        and float(location.get("lon")) == float(scenario["longitude"])
+        and float(center.get("lat")) == float(scenario["latitude"])
+        and float(center.get("lon")) == float(scenario["longitude"])
+        and float(source.get("latitude")) == float(scenario["latitude"])
+        and float(source.get("longitude")) == float(scenario["longitude"])
+        and scene_config.get("material_profile", {}).get("id") == material_profile["id"]
+    )
+
+    return jsonify({
+        "scenario_id": scenario["id"],
+        "scenario_name": scenario["name"],
+        "registry_source": {
+            "latitude": scenario["latitude"],
+            "longitude": scenario["longitude"],
+        },
+        "scene_location": location,
+        "map_center": center,
+        "map_source_seed": scene_config.get("basemap", {}).get("source_seed_point"),
+        "governing_source": source,
+        "material_profile": scene_config.get("material_profile"),
+        "material_contract": scene_config.get("material_contract"),
+        "governing_physics_changed": False,
+        "status": "PASS" if passed else "FAIL",
+    })
 
 
 def _observatory_governing_input(scene_config):
@@ -104,6 +243,10 @@ def _observatory_governing_input(scene_config):
     variability = scene_config.get("gust_variability", {})
     terrain_field = scene_config.get("terrain_steering_field", {})
     terrain_confidence = scene_config.get("terrain_confidence", {})
+    material_profile = scene_config.get("material_profile") or get_material_profile()
+    live_atmosphere = scene_config.get("live_atmosphere", {})
+    precipitation_rate = float(live_atmosphere.get("precipitation_rate_mm_hr") or 0.0)
+    material_behavior = build_material_behavior(material_profile, precipitation_rate)
 
     stability_class = str(stability.get("stability_class") or "neutral").lower()
     if stability_class not in {"very_unstable", "unstable", "neutral", "stable", "very_stable"}:
@@ -125,10 +268,10 @@ def _observatory_governing_input(scene_config):
         "source": {
             "latitude": float(coordinates.get("lat") or location.get("lat") or 34.2256),
             "longitude": float(coordinates.get("lon") or location.get("lon") or -119.1189),
-            "relative_strength": 1.0,
-            "release_height_m": 10.0,
-            "release_duration_minutes": 60.0,
-            "pollutant_phase": "gas",
+            "relative_strength": float(material_profile.get("relative_strength", 1.0)),
+            "release_height_m": float(material_profile.get("release_height_m", 10.0)),
+            "release_duration_minutes": float(material_profile.get("release_duration_minutes", 60.0)),
+            "pollutant_phase": material_profile.get("pollutant_phase", "gas"),
         },
         "meteorology": {
             "wind_from_deg": float(wind.get("from_degrees") or 248.0),
@@ -144,6 +287,7 @@ def _observatory_governing_input(scene_config):
             "response_strength": 0.8 if terrain_available else 0.0,
             "evidence_support": max(0.2, min(1.0, evidence_support)),
         },
+        "material": material_behavior,
         "grid": {
             "domain_downwind_km": 80.0,
             "domain_crosswind_km": 40.0,
@@ -175,8 +319,45 @@ def governing_field_json():
 @app.get("/observatory-field.json")
 def observatory_field_json():
     """Pass 49 model-driven field for the active Observatory scene."""
-    scene_config = default_scene_config()
+    scenario = get_scenario(request.args.get("scenario"))
+    material_profile = get_material_profile(request.args.get("material"))
+    scene_config = apply_scenario(default_scene_config(), scenario, material_profile["id"])
     payload = _observatory_governing_input(scene_config)
+    # Multi-source observation support: each source is still evaluated independently
+    # by the unchanged governing model. The browser composites the resulting
+    # dimensionless fields; this endpoint never claims chemical interaction or
+    # measured concentration.
+    source_lat = request.args.get("source_lat")
+    source_lon = request.args.get("source_lon")
+    if source_lat is not None or source_lon is not None:
+        try:
+            latitude = float(source_lat)
+            longitude = float(source_lon)
+        except (TypeError, ValueError):
+            return jsonify({"error": "source_lat and source_lon must be valid numbers"}), 400
+        if not (-90.0 <= latitude <= 90.0 and -180.0 <= longitude <= 180.0):
+            return jsonify({"error": "source coordinates are outside valid latitude/longitude bounds"}), 400
+        payload.setdefault("source", {})["latitude"] = latitude
+        payload.setdefault("source", {})["longitude"] = longitude
+    payload["meteorology"]["wind_from_deg"] = float(scenario["wind_from_deg"])
+    payload["meteorology"]["wind_speed_mps"] = float(scenario["wind_speed_mps"])
+    payload["meteorology"]["stability_class"] = scenario["stability_class"]
+    payload["terrain"]["regime"] = scenario["terrain_regime"]
+    payload["terrain"]["local_profile"] = scenario["terrain_profile"]
+    live_enabled = request.args.get("live", "1").lower() not in {"0", "false", "off", "no"}
+    active_source = payload.get("source", {})
+    active_latitude = float(active_source.get("latitude", scenario["latitude"]))
+    active_longitude = float(active_source.get("longitude", scenario["longitude"]))
+    live_atmosphere = fetch_live_atmosphere(active_latitude, active_longitude, force_refresh=request.args.get("refresh_live", "0").lower() in {"1", "true", "yes"}) if live_enabled else {"data_state": "disabled"}
+    if isinstance(live_atmosphere, dict):
+        live_atmosphere["location_mode"] = "active_source" if source_lat is not None or source_lon is not None else "scenario_origin"
+        live_atmosphere["requested_latitude"] = active_latitude
+        live_atmosphere["requested_longitude"] = active_longitude
+        live_atmosphere["scenario_id"] = scenario["id"]
+    if live_enabled:
+        payload = apply_live_atmosphere(payload, live_atmosphere)
+    precipitation_rate = float(live_atmosphere.get("precipitation_rate_mm_hr") or 0.0) if isinstance(live_atmosphere, dict) else 0.0
+    payload["material"] = build_material_behavior(material_profile, precipitation_rate)
     terrain_mode = request.args.get("terrain", "on").lower()
     profile_override = request.args.get("terrain_profile")
     if terrain_mode in {"off", "0", "false"}:
@@ -184,10 +365,23 @@ def observatory_field_json():
     if profile_override in {"open", "valley_aligned", "cross_ridge", "complex"}:
         payload.setdefault("terrain", {})["local_profile"] = profile_override
     result = run_governing_model(input_from_dict(payload))
+    live_wind_label = scene_config.get("wind", {}).get("label", "Wind context unavailable")
+    if isinstance(live_atmosphere, dict) and live_atmosphere.get("data_state") not in {"disabled", "unavailable"}:
+        live_speed_mph = round(float(live_atmosphere.get("wind_speed_mps") or 0.0) / 0.44704, 1)
+        live_wind_label = f"{_cardinal_label(float(live_atmosphere.get('wind_direction_deg') or 0.0))} · {live_speed_mph} mph"
+    source_label = scene_config.get("location", {}).get("label", "Selected source")
+    if source_lat is not None or source_lon is not None:
+        source_label = f"Active source at {active_latitude:.4f}, {active_longitude:.4f}"
     result["observatory"] = {
-        "source_label": scene_config.get("location", {}).get("label", "Selected source"),
-        "wind_label": scene_config.get("wind", {}).get("label", "Wind context unavailable"),
+        "source_label": source_label,
+        "wind_label": live_wind_label,
         "input_translation": payload,
+        "live_atmosphere": live_atmosphere,
+        "material_profile": scene_config.get("material_profile"),
+        "material_contract": scene_config.get("material_contract"),
+        "governing_physics_changed": False,
+        "source_mode": "independent_single_source_run",
+        "contract_note": "Each requested source is evaluated independently by the unchanged governing model. Browser overlap represents combined relative influence, not measured concentration or chemical interaction.",
     }
     return jsonify(result)
 

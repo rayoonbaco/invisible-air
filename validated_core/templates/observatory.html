@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Invisible Air · Atmospheric Field{% endblock %}
-{% block body_class %}roycroft-observatory final-instrument{% endblock %}
+{% block title %}Invisible Air · Atmospheric Observatory{% endblock %}
+{% block body_class %}roycroft-observatory final-instrument material-{{ active_material_profile.id }}{% if national_view %} national-overview-body{% endif %}{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/observatory.css') }}">
 {% endblock %}
 {% block content %}
-<main id="main-content" class="observatory-shell final-instrument-shell" data-scene='{{ scene|tojson }}'>
+<main id="main-content" class="observatory-shell final-instrument-shell{% if national_view %} national-view{% endif %}" data-material="{{ active_material_profile.id }}" data-scene='{{ scene|tojson }}' data-scenarios='{{ scenarios|tojson }}' data-curated-sites='{{ curated_sites|tojson }}' data-national-view='{{ "true" if national_view else "false" }}'>
   <section class="observatory-room" aria-label="Invisible Air atmospheric influence instrument">
     <div class="observatory-window" id="sceneWindow">
       <div id="mapLayer" class="map-layer" data-map='{{ scene.basemap|tojson }}' aria-label="Terrain and geographic context"></div>
@@ -14,52 +14,187 @@
       <canvas id="plumeCanvas" class="plume-canvas" aria-label="Relative modeled atmospheric influence field"></canvas>
       <div class="final-vignette" aria-hidden="true"></div>
 
+      {% if national_view %}
+      <header class="national-instrument-header">
+        <div class="national-brand">
+          <span class="national-brand-mark">IA</span>
+          <span><b>Invisible Air</b><small>Atmospheric Observatory</small></span>
+        </div>
+        <div class="national-center-title">Observe how air, terrain, and material behavior interact.</div>
+        <div class="national-live-state">
+          <span class="live-dot"></span>
+          <span><b>National scenario network</b><small>Five active demonstrations</small></span>
+        </div>
+      </header>
+      {% endif %}
+
       <header class="instrument-title">
-        <span>INVISIBLE AIR · ATMOSPHERIC FIELD</span>
+        <span>INVISIBLE AIR · ATMOSPHERIC OBSERVATORY</span>
+        {% if national_view %}
+        <h1>National source scenarios</h1>
+        <p>Choose a glowing source to open its atmospheric field.</p>
+        {% else %}
+        {% if active_material_profile.id == "fine-smoke-aerosol" %}
+        <span class="featured-path">FEATURED WILDFIRE-SMOKE DEMONSTRATION</span>
+        <span class="launch-contract-phrase">See where the air may carry it.</span>
+        <h1>See how smoke may travel.</h1>
+        <p>Explore how wind, terrain, and particle behavior shape a relative smoke-influence field.</p>
+        {% else %}
         <h1>See where the air may carry it.</h1>
-        <p>A relative modeled atmospheric influence field shaped by weather, terrain, and source conditions.</p>
+        <p>Observe how wind, terrain, and material behavior shape this relative atmospheric influence field.</p>
+        {% endif %}
+        {% endif %}
       </header>
 
-      <aside class="source-card" aria-label="Selected source and active conditions">
-        <span class="card-kicker">Selected source</span>
-        <h2>{{ scene.observation_contract.product_type|replace('_',' ')|title }}</h2>
-        <dl>
-          <div><dt>Location</dt><dd>{{ '%.4f'|format(scene.observation_contract.coordinates.lat) }}, {{ '%.4f'|format(scene.observation_contract.coordinates.lon) }}</dd></div>
-          <div><dt>Record</dt><dd>{{ scene.observation_contract.observation_id }}</dd></div>
-          <div><dt>Wind</dt><dd>{{ scene.wind.direction_cardinal }} · {{ scene.wind.speed_mph }} mph</dd></div>
-          <div><dt>Weather state</dt><dd>{{ scene.wind.data_state|replace('_',' ') }}</dd></div>
-          <div><dt>Terrain</dt><dd id="terrainStatus">Model response on</dd></div>
-        </dl>
-        <div class="scenario-note">Current algorithmic scenario using the displayed inputs.</div>
-        <div class="transport-basis" id="transportBasis">Field orientation is being calculated from wind and terrain response.</div>
-        <div class="terrain-switch" aria-label="Terrain comparison">
-          <a id="terrainOn" href="/observatory?terrain=on">Terrain on</a>
-          <a id="terrainOff" href="/observatory?terrain=off">Compare off</a>
+      <aside class="source-card national-source-card{% if national_view %} national-picker-card{% endif %}" aria-label="Selected national scenario">
+        <form class="scenario-picker observation-controls" method="get" action="/">
+          <div class="scenario-picker-heading">
+            <label for="scenarioSelect">Observation scenario</label>
+            {% if not national_view %}<a class="national-reset" href="/">National view</a>{% endif %}
+          </div>
+          <select id="scenarioSelect" name="scenario" onchange="if(this.value){this.form.submit();}">
+            {% for item in scenarios %}<option value="{{ item.id }}" {% if item.id == active_scenario.id %}selected{% endif %}>{{ item.name }} — {{ item.region }}</option>{% endfor %}
+          </select>
+          {% if not national_view %}
+          <label class="material-label" for="materialSelect">Material profile</label>
+          <select id="materialSelect" name="material" onchange="this.form.submit();">
+            {% for profile in material_profiles %}<option value="{{ profile.id }}" {% if profile.id == active_material_profile.id %}selected{% endif %}>{{ profile.short_label }} — {{ profile.category|replace('_', ' ') }}</option>{% endfor %}
+          </select>
+          {% endif %}
+        </form>
+        <span class="card-kicker">{% if national_view %}National source scenarios{% else %}Selected scenario{% endif %}</span>
+        {% if national_view %}
+        <h2>Explore the lower 48</h2>
+        <p class="source-type">Choose a glowing source point or select a scenario.</p>
+        <div class="national-mini-stat">
+          <span><b>{{ scenarios|length }}</b><small>Active scenarios</small></span>
+          <span><b>1</b><small>Governing model</small></span>
+          <span><b>{{ curated_sites|length }}</b><small>Registry foundation</small></span>
         </div>
+        <p class="scenario-interpretation">Every scenario runs through the same source, wind, stability, terrain, and uncertainty pipeline.</p>
+        {% else %}
+        <div class="experiment-contract" aria-label="Experiment context">
+          <div class="parent-demonstration-row">
+            <span><small>Parent demonstration</small><b id="parentScenarioName">{{ active_scenario.name }} · {{ active_scenario.region }}</b></span>
+            <span id="stateIntegrityBadge" class="state-integrity-badge" data-state="scenario">Scenario origin</span>
+          </div>
+          <span class="panel-section-label">Active experiment</span>
+          <h2 id="activeObservationTitle">{{ active_scenario.name }}</h2>
+          <p id="activeObservationContext" class="source-type">{{ active_material_profile.name }} · source at scenario origin</p>
+          <p id="activeExperimentMode" class="active-experiment-mode">Curated source · scenario atmospheric inputs</p>
+          <p id="activeReleaseAssumption" class="active-release-assumption"><span>Release assumption</span><b>Ground-level · continuous relative release · normalized strength</b></p>
+        </div>
+        <div id="activeWindLine" class="condition-line">{{ scene.wind.direction_cardinal }} wind · {{ scene.wind.speed_mph }} mph · <span id="terrainStatus">terrain response on</span></div>
+        <div class="material-read" aria-label="Active material assumptions">
+          <span>How the material behaves</span>
+          <b>{{ active_material_profile.buoyancy_behavior|replace('_', ' ') }} · {{ active_material_profile.settling_behavior|replace('_', ' ') }} settling</b>
+        </div>
+        {% if active_material_profile.id == "fine-smoke-aerosol" %}
+        <div class="model-reading">
+          <span class="panel-section-label">What the model shows</span>
+          <p class="scenario-interpretation">A wind-driven corridor, a broader plausible spread, and areas where model support weakens.</p>
+        </div>
+        {% else %}
+        <div class="model-reading">
+          <span class="panel-section-label">What the model shows</span>
+          <p class="scenario-interpretation">{{ active_scenario.interpretation }}</p>
+        </div>
+        {% endif %}
+        <div class="claim-boundary-group">
+          <span class="panel-section-label">What it does not claim</span>
+          <p class="material-boundary">{{ active_material_profile.claim_boundary }}</p>
+          {% if active_material_profile.id == "fine-smoke-aerosol" %}
+          <p class="launch-context">Not a live fire perimeter, smoke forecast, AQI reading, or health advisory.</p>
+          {% endif %}
+        </div>
+        <section id="liveAtmospherePanel" class="live-atmosphere-panel" aria-live="polite"><span>Atmospheric inputs</span><b>Loading current conditions...</b></section>
+        <div class="terrain-switch" aria-label="Terrain comparison">
+          <a id="terrainOn" href="/?scenario={{ active_scenario.id }}&material={{ active_material_profile.id }}&terrain=on">Terrain on</a>
+          <a id="terrainOff" href="/?scenario={{ active_scenario.id }}&material={{ active_material_profile.id }}&terrain=off">Compare off</a>
+        </div>
+        <p class="exploration-cue">Explore another scenario above, or compare how terrain changes the field.</p>
+        {% endif %}
       </aside>
 
-      <section class="field-read" aria-label="How to read the atmospheric field">
-        <div><span>Strongest modeled influence</span><b>Bright central corridor</b></div>
-        <div><span>Wider plausible influence</span><b>Soft outer field</b></div>
-        <div><span>Weakening support</span><b>Broken texture</b></div>
+      {% if not national_view %}
+      <section class="multi-source-control" id="multiSourceControl" aria-label="Multi-source observation controls">
+        <div class="multi-source-summary">
+          <span class="source-count" id="sourceCount">3 sources</span>
+          <span>Independent fields · visually combined</span>
+        </div>
+        <div class="multi-source-actions">
+          <button type="button" id="addSourceButton" aria-pressed="false">Add source</button>
+          <button type="button" id="undoSourceButton" disabled>Undo</button>
+          <button type="button" id="resetSourcesButton">Reset</button>
+          <button type="button" id="journalToggleButton" aria-expanded="false" aria-controls="experimentJournal">Journal <span id="journalCount">0</span></button>
+        </div>
+        <p id="sourceInstruction">Select “Add source,” then click the map. Up to two visitor sources.</p>
+        <p id="sourceObservation" class="source-observation" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+        <p id="sourceExplanation" class="source-explanation" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+        <p class="multi-source-boundary">Overlap shows combined relative influence—not measured smoke concentration or chemical interaction.</p>
+        <section id="experimentJournal" class="experiment-journal" aria-label="Experiment journal" hidden>
+          <div class="journal-heading"><span>Experiment journal</span><button type="button" id="exportJournalButton">Export notes</button></div>
+          <p id="journalEmpty" class="journal-empty">Move or add a source to preserve the first experiment.</p>
+          <ol id="journalEntries" class="journal-entries"></ol>
+        </section>
+      </section>
+      {% endif %}
+
+      <section class="field-read{% if national_view %} local-only{% endif %}" aria-label="How to read the atmospheric field">
+        <div><span>Bright corridor</span><b>Strongest modeled influence</b></div>
+        <div><span>Diffuse field</span><b>Broader plausible spread</b></div>
+        <div><span>Broken texture</span><b>Weakening model support</b></div>
       </section>
 
-      <div class="two-part-legend" aria-label="Field legend">
-        <span><i class="legend-brightness"></i><b>Brightness</b> Relative modeled influence</span>
-        <span><i class="legend-texture"></i><b>Texture</b> Model support</span>
+      <div class="two-part-legend{% if national_view %} local-only{% endif %}" aria-label="Field legend">
+        <span><i class="legend-brightness"></i><b>Brighter field</b> stronger relative influence</span>
+        <span><i class="legend-texture"></i><b>Broken texture</b> weakening model support</span>
       </div>
 
-      <details class="model-basis">
+      {% if national_view %}
+      <section class="national-scenario-rail" aria-label="Explore national scenarios">
+        <div class="rail-heading"><span>Explore scenarios</span><b>{{ scenarios|length }} active demonstrations</b></div>
+        <div class="rail-cards">
+          {% for item in scenarios %}
+          <a class="scenario-card" href="/?scenario={{ item.id }}">
+            <span class="scenario-card-visual" aria-hidden="true"></span>
+            <strong>{{ item.name }}</strong><small>{{ item.region }}</small>
+          </a>
+          {% endfor %}
+          <div class="scenario-card scenario-card-more">
+            <span class="scenario-card-visual scenario-card-grid" aria-hidden="true"></span>
+            <strong>Living-site foundation</strong><small>{{ curated_sites|length }} curated contexts · 50-site architecture ready</small>
+          </div>
+        </div>
+      </section>
+      <section class="material-family-strip" aria-label="Material identity system">
+        {% for profile in material_profiles %}
+        <a href="/?scenario={{ active_scenario.id }}&material={{ profile.id }}" class="material-family material-family-{{ profile.visual_identity.family }}">
+          <i aria-hidden="true"></i><span>{{ profile.short_label }}</span><small>{{ profile.category|replace('_',' ') }}</small>
+        </a>
+        {% endfor %}
+        <p>Color identifies material family; brightness and texture still carry modeled influence and support.</p>
+      </section>
+      <section class="national-science-strip" aria-label="Science at a glance">
+        <div><span>Governing model</span><b>Source + atmosphere + terrain</b></div>
+        <div><span>Scenario inputs</span><b>Wind / stability / terrain</b></div>
+        <div><span>Living inputs</span><b>Current atmosphere + assumed release</b></div>
+        <div><span>Output</span><b>Relative influence field</b></div>
+      </section>
+      {% endif %}
+
+      <details class="model-basis{% if national_view %} local-only{% endif %}">
         <summary>Model &amp; scientific basis</summary>
         <div>
           <p><strong>Governing sequence</strong><br>Source initialization → wind transport → atmospheric spread → boundary-layer mixing → bounded terrain response → normalized field.</p>
-          <p><strong>Output</strong><br>A run-relative atmospheric influence field, not measured concentration, exposure, danger, or probability.</p>
+          <p><strong>Output</strong><br>A run-relative atmospheric influence field shaped by the selected material profile—not measured concentration, exposure, danger, dose, or probability.</p>
           <p><strong>Active visual rules</strong><br>Brightness shows calculated relative influence. Texture fragments as input and terrain support weaken.</p>
-          <nav><a href="/about">Method</a><a href="/citations">Citations</a><a href="/atlas">Benchmark record</a></nav>
+          <nav><a href="/about">Method</a><a href="/citations">Citations</a></nav>
         </div>
       </details>
 
-      <div class="model-status" id="modelStatus" aria-live="polite">Calculating atmospheric field…</div>
+      <p class="sr-only" id="transportBasis">Relative modeled influence and Model support are calculated independently for each source.</p>
+      <div class="model-status{% if national_view %} local-only{% endif %}" id="modelStatus" aria-live="polite">Calculating atmospheric field…</div>
       <div class="map-attribution">{{ scene.basemap.attribution }} · geographic context</div>
     </div>
   </section>
@@ -68,5 +203,10 @@
 {% block extra_scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ url_for('static', filename='js/map_scene.js') }}"></script>
+<script src="{{ url_for('static', filename='js/national_scenario_map.js') }}"></script>
+{% if not national_view %}
 <script src="{{ url_for('static', filename='js/governing_field_renderer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cinematic_arrival_stabilizer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/live_atmosphere_status.js') }}"></script>
+{% endif %}
 {% endblock %}
